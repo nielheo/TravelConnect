@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TravelConnect.Web.Models;
+using TravelConnect.Sabre;
 
 namespace TravelConnect.Web.Controllers
 {
@@ -12,7 +13,24 @@ namespace TravelConnect.Web.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            //TravelConnect.Sabre.SabreConnector connector = new Sabre.SabreConnector();
+            //var result = AccessTokenManager.GetAccessToken();
+            //result = AccessTokenManager.GetAccessToken();
+            //result = AccessTokenManager.GetAccessToken();
+            //result = AccessTokenManager.GetAccessToken();
+            //result = AccessTokenManager.GetAccessToken();
+
+            SabreConnector.SendRequest("/v1/lists/supported/countries"
+                , "pointofsalecountry=US", false);
+
+            SabreConnector.SendRequest("/v1/lists/supported/countries"
+                , "pointofsalecountry=DE", false);
+
+            var result = SabreConnector.SendRequest("/v1/lists/supported/countries"
+                , "pointofsalecountry=IT", false);
+
+
+            return View(result);
         }
 
         public IActionResult About()
