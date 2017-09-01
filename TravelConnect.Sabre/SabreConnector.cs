@@ -1,55 +1,37 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
+using TravelConnect.Models;
 
 namespace TravelConnect.Sabre
 {
-    public class SabreConnector
+    public interface ISabreConnector
     {
-        private static string endPoint = "https://api.test.sabre.com";
+        Task<string> SendRequest(string url, string request, bool isPost);
+    }
 
-        public static string GetAccessToken(string clientId, string clientSecret)
+    public partial class SabreConnector : ISabreConnector
+    {
+        private string endPoint = "https://api.test.sabre.com";
+        private static AccessToken _AccessToken = null;
+
+        private readonly TCContext _context;
+
+        public SabreConnector(TCContext _context)
         {
-            var plainTextBytes = Encoding.UTF8.GetBytes(string.Format("{0}:{1}", clientId, clientSecret));
-            string base64Credential = Convert.ToBase64String(plainTextBytes);
-
-            string request = "grant_type=client_credentials";
-            byte[] data = Encoding.ASCII.GetBytes(request);
-
-            WebRequest webRequest = WebRequest.Create(endPoint + "/v2/auth/token");
-            webRequest.Method = "POST";
-            webRequest.Headers[HttpRequestHeader.Authorization] = "Basic " + base64Credential;
-            webRequest.ContentType = "application/x-www-form-urlencoded";
-            webRequest.ContentLength = data.Length;
-
-            using (Stream stream = webRequest.GetRequestStream())
-            {
-                stream.Write(data, 0, data.Length);
-            }
-
-            string sLine = "";
-            using (WebResponse response = webRequest.GetResponse())
-            {
-                using (Stream stream = response.GetResponseStream())
-                {
-                    using (StreamReader sr = new StreamReader(stream))
-                    {
-                        sLine = sr.ReadToEnd();
-                    }
-                }
-            }
-
-            return sLine.ToString();
+            this._context = _context;
         }
-
-
-        public static string SendRequest(string url, string request, bool isPost)
+        
+        public async Task<string> SendRequest(string url, string request, bool isPost)
         {
             WebRequest webRequest;
-            string token = AccessTokenManager.GetAccessToken();
+            string token = await AccessToken();
+
             //string token = AccessTokenManager.GetAccessToken().Token;
             if (isPost)
             {
@@ -86,5 +68,7 @@ namespace TravelConnect.Sabre
 
             return sLine.ToString();
         }
+
+        
     }
 }

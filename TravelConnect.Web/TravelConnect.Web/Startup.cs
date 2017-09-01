@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TravelConnect.Models;
 using Microsoft.EntityFrameworkCore;
+using TravelConnect.Sabre;
 
 namespace TravelConnect.Web
 {
@@ -32,6 +33,8 @@ namespace TravelConnect.Web
                     "Password=123qwe!@#Q;";
 
             services.AddDbContext<TCContext>(options => options.UseSqlServer(connection, b => b.MigrationsAssembly("TravelConnect.Web")));
+
+            services.AddTransient<ISabreConnector, SabreConnector>();
         }
   
 

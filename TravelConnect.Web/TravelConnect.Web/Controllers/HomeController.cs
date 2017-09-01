@@ -11,24 +11,30 @@ namespace TravelConnect.Web.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        ISabreConnector _SabreConnector;
+
+        public HomeController(ISabreConnector _SabreConnector)
         {
-            //TravelConnect.Sabre.SabreConnector connector = new Sabre.SabreConnector();
-            //var result = AccessTokenManager.GetAccessToken();
-            //result = AccessTokenManager.GetAccessToken();
-            //result = AccessTokenManager.GetAccessToken();
-            //result = AccessTokenManager.GetAccessToken();
-            //result = AccessTokenManager.GetAccessToken();
+            this._SabreConnector = _SabreConnector;
+        }
 
-            SabreConnector.SendRequest("/v1/lists/supported/countries"
-                , "pointofsalecountry=US", false);
+        public async Task<IActionResult> Index()
+        {
+            //var getCountryTasks = new List<Task<string>>();
 
-            SabreConnector.SendRequest("/v1/lists/supported/countries"
-                , "pointofsalecountry=DE", false);
+            //getCountryTasks.Add(_SabreConnector.SendRequest("/v1/lists/supported/countries"
+            //    , "pointofsalecountry=US", false));
 
-            var result = SabreConnector.SendRequest("/v1/lists/supported/countries"
+            //getCountryTasks.Add(_SabreConnector.SendRequest("/v1/lists/supported/countries"
+            //    , "pointofsalecountry=DE", false));
+
+            //getCountryTasks.Add(_SabreConnector.SendRequest("/v1/lists/supported/countries"
+            //    , "pointofsalecountry=IT", false));
+
+            //await Task.WhenAll(getCountryTasks);
+
+            var result = await _SabreConnector.SendRequest("/v1/lists/supported/countries"
                 , "pointofsalecountry=IT", false);
-
 
             return View(result);
         }
