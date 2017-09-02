@@ -12,7 +12,7 @@ namespace TravelConnect.Sabre
 {
     public partial class SabreConnector
     {
-        private string RequestAccessToken(string clientId, string clientSecret)
+        private async Task<string> RequestAccessTokenAsync(string clientId, string clientSecret)
         {
             var plainTextBytes = Encoding.UTF8.GetBytes(string.Format("{0}:{1}", clientId, clientSecret));
             string base64Credential = Convert.ToBase64String(plainTextBytes);
@@ -20,7 +20,7 @@ namespace TravelConnect.Sabre
             string request = "grant_type=client_credentials";
             byte[] data = Encoding.ASCII.GetBytes(request);
 
-            WebRequest webRequest = WebRequest.Create(endPoint + "/v2/auth/token");
+            var webRequest = (HttpWebRequest) WebRequest.Create(endPoint + "/v2/auth/token");
             webRequest.Method = "POST";
             webRequest.Headers[HttpRequestHeader.Authorization] = "Basic " + base64Credential;
             webRequest.ContentType = "application/x-www-form-urlencoded";
@@ -28,25 +28,23 @@ namespace TravelConnect.Sabre
 
             using (Stream stream = webRequest.GetRequestStream())
             {
-                stream.Write(data, 0, data.Length);
+                await stream.WriteAsync(data, 0, data.Length);
             }
 
-            string sLine = "";
-            using (WebResponse response = webRequest.GetResponse())
+            var content = new MemoryStream();
+            using (WebResponse response = await webRequest.GetResponseAsync())
             {
                 using (Stream stream = response.GetResponseStream())
                 {
-                    using (StreamReader sr = new StreamReader(stream))
-                    {
-                        sLine = sr.ReadToEnd();
-                    }
+                    await stream.CopyToAsync(content);
+                    
                 }
             }
 
-            return sLine.ToString();
+            return Encoding.UTF8.GetString(content.ToArray());
         }
 
-        private async Task<SabreCredential> GetSabreCredential()
+        private async Task<SabreCredential> GetSabreCredentialAsync()
         {
             var sabreCredential = await _context.SabreCredentials
                .SingleOrDefaultAsync(s => s.IsActive);
@@ -54,13 +52,13 @@ namespace TravelConnect.Sabre
             return sabreCredential;
         }
 
-        private async Task<AccessToken> GetAccessToken()
+        private async Task<AccessToken> GetAccessTokenAsync()
         {
             AccessToken accessToken = null;
 
-            SabreCredential sabreCredential = await GetSabreCredential();
+            SabreCredential sabreCredential = await GetSabreCredentialAsync();
 
-            string json = RequestAccessToken(
+            string json = await RequestAccessTokenAsync(
                 sabreCredential.ClientId,
                 sabreCredential.ClientSecret);
 
@@ -79,18 +77,18 @@ namespace TravelConnect.Sabre
             return accessToken;
         }
 
-        private async Task<string> AccessToken()
+        private async Task<string> AccessTokenAsync()
         {
             //AccessToken accessToken = null;
             if (_AccessToken == null)
             {
-                _AccessToken = await GetAccessToken();
+                _AccessToken = await GetAccessTokenAsync();
 
             }
             else
             {
                 if (_AccessToken.ExpiryTime <= DateTime.Now)
-                    _AccessToken = await GetAccessToken();
+                    _AccessToken = await GetAccessTokenAsync();
             }
 
             if (_AccessToken == null)

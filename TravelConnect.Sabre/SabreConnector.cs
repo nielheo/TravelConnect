@@ -12,7 +12,7 @@ namespace TravelConnect.Sabre
 {
     public interface ISabreConnector
     {
-        Task<string> SendRequest(string url, string request, bool isPost);
+        Task<string> SendRequestAsync(string url, string request, bool isPost);
     }
 
     public partial class SabreConnector : ISabreConnector
@@ -27,17 +27,17 @@ namespace TravelConnect.Sabre
             this._context = _context;
         }
         
-        public async Task<string> SendRequest(string url, string request, bool isPost)
+        public async Task<string> SendRequestAsync(string url, string request, bool isPost)
         {
-            WebRequest webRequest;
-            string token = await AccessToken();
+            HttpWebRequest webRequest;
+            string token = await AccessTokenAsync();
 
             //string token = AccessTokenManager.GetAccessToken().Token;
             if (isPost)
             {
                 byte[] data = Encoding.ASCII.GetBytes(request);
 
-                webRequest = WebRequest.Create(endPoint + url);
+                webRequest = (HttpWebRequest) WebRequest.Create(endPoint + url);
                 webRequest.Method = "POST";
                 webRequest.ContentType = "application/x-www-form-urlencoded";
                 webRequest.ContentLength = data.Length;
@@ -45,28 +45,25 @@ namespace TravelConnect.Sabre
 
                 using (Stream stream = webRequest.GetRequestStream())
                 {
-                    stream.Write(data, 0, data.Length);
+                    await stream.WriteAsync(data, 0, data.Length);
                 }
             }
             else
             {
-                webRequest = WebRequest.Create(endPoint + url + "?" + request);
+                webRequest = (HttpWebRequest) WebRequest.Create(endPoint + url + "?" + request);
                 webRequest.Headers[HttpRequestHeader.Authorization] = "Bearer " + token;
             }
 
-            string sLine = "";
-            using (WebResponse response = webRequest.GetResponse())
+            MemoryStream content = new MemoryStream();
+            using (WebResponse response = await webRequest.GetResponseAsync())
             {
                 using (Stream stream = response.GetResponseStream())
                 {
-                    using (StreamReader sr = new StreamReader(stream))
-                    {
-                        sLine = sr.ReadToEnd();
-                    }
+                    await stream.CopyToAsync(content);
                 }
             }
 
-            return sLine.ToString();
+            return Encoding.UTF8.GetString(content.ToArray());
         }
 
         

@@ -33,7 +33,7 @@ namespace TravelConnect.Web.Controllers
 
             //await Task.WhenAll(getCountryTasks);
 
-            var result = await _SabreConnector.SendRequest("/v1/lists/supported/countries"
+            var result = await _SabreConnector.SendRequestAsync("/v1/lists/supported/countries"
                 , "pointofsalecountry=IT", false);
 
             return View(result);
