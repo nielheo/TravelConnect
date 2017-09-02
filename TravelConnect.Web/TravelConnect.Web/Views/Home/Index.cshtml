@@ -1,4 +1,4 @@
-﻿@model string
+﻿@model TravelConnect.Models.Responses.AirportAutocompleteRS
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -78,6 +78,13 @@
     </div>
     <div class="col-md-3">
         <h2>How to</h2>
+        <select>
+            <option value=""></option>
+            @foreach(var airport in Model.AirportsRS)
+            {
+                <option value="@(airport.Code)">@(airport.FullName)</option>
+            }
+        </select>
         @Model
         <ul>
             <li><a href="https://go.microsoft.com/fwlink/?LinkID=398600">Add a Controller and View</a></li>

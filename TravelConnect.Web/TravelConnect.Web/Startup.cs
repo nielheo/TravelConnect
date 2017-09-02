@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using TravelConnect.Models;
 using Microsoft.EntityFrameworkCore;
 using TravelConnect.Sabre;
+using TravelConnect.Interfaces;
+using TravelConnect.Services;
 
 namespace TravelConnect.Web
 {
@@ -35,8 +37,10 @@ namespace TravelConnect.Web
             services.AddDbContext<TCContext>(options => options.UseSqlServer(connection, b => b.MigrationsAssembly("TravelConnect.Web")));
 
             services.AddTransient<ISabreConnector, SabreConnector>();
+            services.AddTransient<IGeoService, GeoService>();
+
         }
-  
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

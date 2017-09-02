@@ -5,17 +5,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TravelConnect.Web.Models;
-using TravelConnect.Sabre;
+using TravelConnect.Interfaces;
 
 namespace TravelConnect.Web.Controllers
 {
     public class HomeController : Controller
     {
-        ISabreConnector _SabreConnector;
+        IGeoService _GeoService;
 
-        public HomeController(ISabreConnector _SabreConnector)
+        public HomeController(IGeoService _GeoService)
         {
-            this._SabreConnector = _SabreConnector;
+            this._GeoService = _GeoService;
         }
 
         public async Task<IActionResult> Index()
@@ -36,10 +36,12 @@ namespace TravelConnect.Web.Controllers
             ///var result = await _SabreConnector.SendRequestAsync("/v1/lists/supported/countries"
             //    , "pointofsalecountry=IT", false);
 
-            TravelConnect.uAPI.AirService airService = new uAPI.AirService();
-            airService.Ping();
+            var result = await _GeoService.GetAirportAutocompleteAsync("bang");
+            
+            //TravelConnect.uAPI.AirService airService = new uAPI.AirService();
+            //airService.Ping();
 
-            return View(airService);
+            return View(result);
         }
 
         public IActionResult About()

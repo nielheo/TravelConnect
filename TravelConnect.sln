@@ -9,7 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelConnect.Models", "Tra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelConnect.Sabre", "TravelConnect.Sabre\TravelConnect.Sabre.csproj", "{7E81E0D2-B32B-4F25-9A80-B10E2B98A936}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelConnect.uAPI", "TravelConnect.uAPI\TravelConnect.uAPI.csproj", "{11D85618-8E38-4541-AB8F-EEFC36FE53EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelConnect.uAPI", "TravelConnect.uAPI\TravelConnect.uAPI.csproj", "{11D85618-8E38-4541-AB8F-EEFC36FE53EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelConnect.Services", "TravelConnect.Services\TravelConnect.Services.csproj", "{27910560-2065-4E74-B7B0-2E49FEBBF172}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelConnect.Interfaces", "TravelConnect.Interfaces\TravelConnect.Interfaces.csproj", "{D3EB2C32-D903-4649-AE61-6D225439BABD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{11D85618-8E38-4541-AB8F-EEFC36FE53EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11D85618-8E38-4541-AB8F-EEFC36FE53EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11D85618-8E38-4541-AB8F-EEFC36FE53EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27910560-2065-4E74-B7B0-2E49FEBBF172}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27910560-2065-4E74-B7B0-2E49FEBBF172}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27910560-2065-4E74-B7B0-2E49FEBBF172}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27910560-2065-4E74-B7B0-2E49FEBBF172}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3EB2C32-D903-4649-AE61-6D225439BABD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3EB2C32-D903-4649-AE61-6D225439BABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3EB2C32-D903-4649-AE61-6D225439BABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3EB2C32-D903-4649-AE61-6D225439BABD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
