@@ -33,10 +33,13 @@ namespace TravelConnect.Web.Controllers
 
             //await Task.WhenAll(getCountryTasks);
 
-            var result = await _SabreConnector.SendRequestAsync("/v1/lists/supported/countries"
-                , "pointofsalecountry=IT", false);
+            ///var result = await _SabreConnector.SendRequestAsync("/v1/lists/supported/countries"
+            //    , "pointofsalecountry=IT", false);
 
-            return View(result);
+            TravelConnect.uAPI.AirService airService = new uAPI.AirService();
+            airService.Ping();
+
+            return View(airService);
         }
 
         public IActionResult About()

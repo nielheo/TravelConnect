@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\TravelConnect.Models\TravelConnect.Models.csproj" />
     <ProjectReference Include="..\..\TravelConnect.Sabre\TravelConnect.Sabre.csproj" />
+    <ProjectReference Include="..\..\TravelConnect.uAPI\TravelConnect.uAPI.csproj" />
   </ItemGroup>
 
 </Project>
