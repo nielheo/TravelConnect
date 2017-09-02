@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,7 +43,8 @@ namespace TravelConnect.Sabre
                 webRequest.ContentType = "application/x-www-form-urlencoded";
                 webRequest.ContentLength = data.Length;
                 webRequest.Headers[HttpRequestHeader.Authorization] = "Bearer " + token;
-
+                webRequest.Headers[HttpRequestHeader.AcceptEncoding] = "gzip";
+                
                 using (Stream stream = webRequest.GetRequestStream())
                 {
                     await stream.WriteAsync(data, 0, data.Length);
@@ -52,17 +54,30 @@ namespace TravelConnect.Sabre
             {
                 webRequest = (HttpWebRequest) WebRequest.Create(endPoint + url + "?" + request);
                 webRequest.Headers[HttpRequestHeader.Authorization] = "Bearer " + token;
+                webRequest.Headers[HttpRequestHeader.AcceptEncoding] = "gzip";
             }
 
             MemoryStream content = new MemoryStream();
-            using (WebResponse response = await webRequest.GetResponseAsync())
+            using (HttpWebResponse response = (HttpWebResponse)await webRequest.GetResponseAsync())
             {
-                using (Stream stream = response.GetResponseStream())
+                switch (response.ContentEncoding?.ToLower())
                 {
-                    await stream.CopyToAsync(content);
+                    case "gzip":
+                    case "deflate":
+                        using (GZipStream stream = new GZipStream(response.GetResponseStream(), CompressionMode.Decompress))
+                        {
+                            await stream.CopyToAsync(content);
+                        }
+                        break;
+                    default:
+                        using (Stream stream = response.GetResponseStream())
+                        {
+                            await stream.CopyToAsync(content);
+                        }
+                        break;
                 }
             }
-
+            
             return Encoding.UTF8.GetString(content.ToArray());
         }
 
