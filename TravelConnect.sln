@@ -11,13 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelConnect.Sabre", "Trav
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelConnect.uAPI", "TravelConnect.uAPI\TravelConnect.uAPI.csproj", "{11D85618-8E38-4541-AB8F-EEFC36FE53EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelConnect.Services", "TravelConnect.Services\TravelConnect.Services.csproj", "{27910560-2065-4E74-B7B0-2E49FEBBF172}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelConnect.Services", "TravelConnect.Services\TravelConnect.Services.csproj", "{27910560-2065-4E74-B7B0-2E49FEBBF172}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelConnect.Interfaces", "TravelConnect.Interfaces\TravelConnect.Interfaces.csproj", "{D3EB2C32-D903-4649-AE61-6D225439BABD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelConnect.Interfaces", "TravelConnect.Interfaces\TravelConnect.Interfaces.csproj", "{D3EB2C32-D903-4649-AE61-6D225439BABD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelConnect.Api", "TravelConnect.Api\TravelConnect.Api.csproj", "{378FCB00-A674-439E-A3AF-5196092193B3}"
-EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{14F02F68-876C-401C-B9BB-48217D204041}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelConnect.Api", "TravelConnect.Api\TravelConnect.Api.csproj", "{378FCB00-A674-439E-A3AF-5196092193B3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelConnect.React", "TravelConnect.React\TravelConnect.React.csproj", "{5B05C76B-312F-4374-9E27-734BF66251A1}"
 EndProject
@@ -55,10 +53,6 @@ Global
 		{378FCB00-A674-439E-A3AF-5196092193B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{378FCB00-A674-439E-A3AF-5196092193B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{378FCB00-A674-439E-A3AF-5196092193B3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{14F02F68-876C-401C-B9BB-48217D204041}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{14F02F68-876C-401C-B9BB-48217D204041}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{14F02F68-876C-401C-B9BB-48217D204041}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{14F02F68-876C-401C-B9BB-48217D204041}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5B05C76B-312F-4374-9E27-734BF66251A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5B05C76B-312F-4374-9E27-734BF66251A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B05C76B-312F-4374-9E27-734BF66251A1}.Release|Any CPU.ActiveCfg = Release|Any CPU

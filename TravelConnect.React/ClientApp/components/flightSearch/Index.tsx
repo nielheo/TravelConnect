@@ -1,15 +1,36 @@
 ﻿import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
+const typeahead = require('react-bootstrap-typeahead') as any;
+
+//const Autocomplete = require("react-autocomplete") as any;
+const AsyncTypeahead = typeahead.asyncContainer(typeahead.Typeahead) as any;
+
 export default class FlightSearch extends React.Component<RouteComponentProps<{}>, any> {
     constructor() {
         super();
-        this.state = { isReturn: true };
+        this.state = {
+            isReturn: true,
+            origin: {},
+            destination: {}
+        };
     } 
 
     toggleIsReturn = () => {
         this.setState({
             isReturn: !this.state.isReturn
+        })
+    }
+
+    _handleOriginChanged = (selectedItem: any) => {
+        this.setState({
+            origin: selectedItem
+        })
+    }
+
+    _handleDestinationChanged = (selectedItem: any) => {
+        this.setState({
+            destination: selectedItem
         })
     }
 
@@ -29,11 +50,47 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{}
                     <tr>
                         <td cellPadding='5'>
                             <label>Origin Airport</label>
-                            <input type="text" className='form-control' />
+                            <AsyncTypeahead
+                                onChange={this._handleOriginChanged}
+                                onSearch={(query: any) => (
+                                    fetch(`/api/airportautocomplete?query=${query}`)
+                                        .then(resp => resp.json())
+                                        .then(json => {
+                                            this.setState({
+                                                options: json.airportsRS.map((item: any) => {
+                                                    return {
+                                                        id: item.code,
+                                                        label: item.fullName
+                                                    }
+                                                })
+                                            })
+                                        })
+                                )}
+                                delay={500}
+                                options={this.state.options}
+                            />
                         </td>
                         <td cellPadding='5'>
                             <label>Destination Airport</label>
-                            <input type="text" className='form-control' />
+                            <AsyncTypeahead
+                                onChange={this._handleDestinationChanged}
+                                onSearch={(query: any) => (
+                                    fetch(`/api/airportautocomplete?query=${query}`)
+                                        .then(resp => resp.json())
+                                        .then(json => {
+                                            this.setState({
+                                                options: json.airportsRS.map((item: any) => {
+                                                    return {
+                                                        id: item.code,
+                                                        label: item.fullName
+                                                    }
+                                                })
+                                            })
+                                        })
+                                )}
+                                delay={500}
+                                options={this.state.options}
+                            />
                         </td>
                     </tr>
                     <tr>
