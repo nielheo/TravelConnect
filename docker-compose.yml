@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  travelconnect.api:
+    image: travelconnect.api
+    build:
+      context: ./TravelConnect.Api
+      dockerfile: Dockerfile

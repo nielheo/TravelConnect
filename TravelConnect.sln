@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelConnect.Services", "T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelConnect.Interfaces", "TravelConnect.Interfaces\TravelConnect.Interfaces.csproj", "{D3EB2C32-D903-4649-AE61-6D225439BABD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelConnect.Api", "TravelConnect.Api\TravelConnect.Api.csproj", "{378FCB00-A674-439E-A3AF-5196092193B3}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{14F02F68-876C-401C-B9BB-48217D204041}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{D3EB2C32-D903-4649-AE61-6D225439BABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3EB2C32-D903-4649-AE61-6D225439BABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3EB2C32-D903-4649-AE61-6D225439BABD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{378FCB00-A674-439E-A3AF-5196092193B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{378FCB00-A674-439E-A3AF-5196092193B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{378FCB00-A674-439E-A3AF-5196092193B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{378FCB00-A674-439E-A3AF-5196092193B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14F02F68-876C-401C-B9BB-48217D204041}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14F02F68-876C-401C-B9BB-48217D204041}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14F02F68-876C-401C-B9BB-48217D204041}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14F02F68-876C-401C-B9BB-48217D204041}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
