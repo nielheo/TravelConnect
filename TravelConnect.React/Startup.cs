@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TravelConnect.Models;
+using Microsoft.EntityFrameworkCore;
+using TravelConnect.Sabre;
+using TravelConnect.Interfaces;
+using TravelConnect.Services;
 
 namespace TravelConnect_React
 {
@@ -23,6 +28,17 @@ namespace TravelConnect_React
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            var connection =
+                    "Data Source=(local);" +
+                    "Initial Catalog=TravelConnect;" +
+                    "User id=sa;" +
+                    "Password=123qwe!@#Q;";
+
+            services.AddDbContext<TCContext>(options => options.UseSqlServer(connection, b => b.MigrationsAssembly("TravelConnect.Web")));
+
+            services.AddTransient<ISabreConnector, SabreConnector>();
+            services.AddTransient<IGeoService, GeoService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

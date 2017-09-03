@@ -4,9 +4,12 @@ import { Layout } from './components/Layout';
 import Home from './components/Home';
 import FetchData from './components/FetchData';
 import Counter from './components/Counter';
+import FlightSearch from './components/flightSearch';
 
 export const routes = <Layout>
     <Route exact path='/' component={ Home } />
-    <Route path='/counter' component={ Counter } />
+    <Route path='/counter' component={Counter} />
+    <Route path='/flight/search' component={FlightSearch} />
+
     <Route path='/fetchdata/:startDateIndex?' component={ FetchData } />
 </Layout>;
