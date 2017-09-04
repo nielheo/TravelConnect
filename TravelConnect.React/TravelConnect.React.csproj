@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\components\flightSearch\Index.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\flightSearch\AirportAutocomplete.tsx" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
