@@ -3,7 +3,7 @@
 const typeahead = require('react-bootstrap-typeahead') as any;
 const AsyncTypeahead = typeahead.asyncContainer(typeahead.Typeahead) as any;
 
-export default class AirportAutocomplete extends React.Component<{onChange: any, label: any}, any> {
+export default class AirportAutocomplete extends React.Component<{ onChange: any, label: string, error: string}, any> {
     constructor() {
         super();
         this.state = {
@@ -22,8 +22,8 @@ export default class AirportAutocomplete extends React.Component<{onChange: any,
 
     public render() {
         console.log(this.state)
-        return <div>
-            <label>{this.props.label}</label>
+        return <div className={'form-group ' + (this.props.error ? 'has-error' : '')}>
+            <label className="control-label">{this.props.label}</label>
             <AsyncTypeahead
                 onChange={this.props.onChange}
                 onSearch={(query: any) => (
@@ -43,6 +43,10 @@ export default class AirportAutocomplete extends React.Component<{onChange: any,
                 delay={500}
                 options={this.state.options}
             />
+            {
+                this.props.error &&
+                <span className='control-label'>{this.props.error}</span>
+            }
         </div>
     }
 }

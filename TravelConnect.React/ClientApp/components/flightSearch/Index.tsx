@@ -11,10 +11,11 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{}
         super();
         this.state = {
             isReturn: true,
-            origin: {},
-            destination: {},
+            origin: null,
+            destination: null,
             departure: moment().add(2, 'days'),
             return: moment().add(5, 'days'),
+            clicked: false,
         };
     } 
 
@@ -37,9 +38,10 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{}
         })
     }
 
-    _handleOnClick = () => {
-        console.log("----")
-        console.log(this.state)
+    _handleSearchClick = () => {
+        this.setState({
+            clicked: true,
+        })
     }
 
     _handleDepartureChange = (date: any) => {
@@ -56,64 +58,74 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{}
 
     public render() {
         console.log(this.state)
+        console.log(this.state.clicked && !this.state.origin)
         return <div>
-            <h1>Search your flight</h1>
+            
+            <div className="row">
+                <div className="col-md-12">
+                    <h1>Search your flight</h1>
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-md-12">
+                    <input type="radio" onChange={this.toggleIsReturn} checked={!this.state.isReturn} /> One Way&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" onChange={this.toggleIsReturn} checked={this.state.isReturn} /> Round Trip
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-md-6">
+                    <AirportAutocomplete
+                        onChange={this._handleOriginChanged}
+                        label="Origin Airport"
+                        error={this.state.clicked && !this.state.origin ? 'Origin Airport is required' : ''}
+                    />
+                </div>
+                <div className="col-md-6">
+                    <AirportAutocomplete
+                        onChange={this._handleDestinationChanged}
+                        label="Destination Airport"
+                        error={this.state.clicked && !this.state.destination ? 'Destination Airport is required' : ''}
+                    />
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-md-6">
+                    <div className="form-group">
+                        <label className="control-label">Departure Date</label>
+                        <DatePicker
+                            className="form-control"
+                            onChange={this._handleDepartureChange}
+                            selected={this.state.departure}
+                        />
+                    </div>
+                </div>
+                <div className="col-md-6">
+                    <div className="form-group">
+                        <label className="control-label">Return Date</label>
+                        <DatePicker
+                            className="form-control"
+                            onChange={this._handleReturnChange}
+                            selected={this.state.return}
+                            disabled={!this.state.isReturn}
+                        />
+                    </div>
+                </div>
+            </div>
             <table className="form-horizontal">
                 <tbody>
-                    <tr>
-                        <td cellPadding="5">
-                            <input type="radio" onChange={this.toggleIsReturn} checked={!this.state.isReturn} /> One Way&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="radio" onChange={this.toggleIsReturn} checked={this.state.isReturn} /> Round Trip
-                            { this.state.isReturn }
-                        </td>
-                    </tr>
+                    
                     <tr>
                         <td cellPadding='5'>
-                            <AirportAutocomplete
-                                onChange={this._handleOriginChanged}
-                                label="Origin Airport"
-                                
-                            />
+                            
                         </td>
                         <td cellPadding='5'>
-                            <AirportAutocomplete
-                                onChange={this._handleDestinationChanged}
-                                label="Destination Airport"
-                            />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td cellPadding='5'>
-                            <label>Departure Date</label>
-                            <DatePicker
-                                className="form-control"
-                                onChange={this._handleDepartureChange}
-                                selected={this.state.departure}
-                            />
-                        </td>
-                        <td cellPadding='5'>
-                            <form>
-                            <div className="control-group warning">
-                                <label>Return Date</label>
-                                <DatePicker
-                                    className="form-control"
-                                    onChange={this._handleReturnChange}
-                                    selected={this.state.return}
-                                />
-                            </div>
-                            <div className="control-group warning">
-                                <label className="control-label" htmlFor="inputWarning">Input with warning</label>
-                                    <div className="controls">
-                                    <input type="text" id="inputWarning" />
-                                            <span className="help-inline">Something may have gone wrong</span>
-                                </div>
-                                </div>
-                                </form>
+                            
+
                         </td>
                     </tr>
                     <tr>
                         <td cellPadding={5}>
-                            <button onClick={this._handleOnClick}>Search</button>
+                            <button onClick={this._handleSearchClick}>Search</button>
                         </td>
                     </tr>
                 </tbody>
