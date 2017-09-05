@@ -1,7 +1,10 @@
-﻿import * as React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+﻿import * as React from 'react'
+import { RouteComponentProps } from 'react-router-dom'
+import DatePicker from 'react-datepicker'
+import * as moment from 'moment'
 
 import AirportAutocomplete from './AirportAutocomplete'
+
 
 export default class FlightSearch extends React.Component<RouteComponentProps<{}>, any> {
     constructor() {
@@ -9,7 +12,9 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{}
         this.state = {
             isReturn: true,
             origin: {},
-            destination: {}
+            destination: {},
+            departure: moment().add(2, 'days'),
+            return: moment().add(5, 'days'),
         };
     } 
 
@@ -35,6 +40,18 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{}
     _handleOnClick = () => {
         console.log("----")
         console.log(this.state)
+    }
+
+    _handleDepartureChange = (date: any) => {
+        this.setState({
+            departure:date
+        })
+    }
+
+    _handleReturnChange = (date: any) => {
+        this.setState({
+            return: date
+        })
     }
 
     public render() {
@@ -68,11 +85,30 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{}
                     <tr>
                         <td cellPadding='5'>
                             <label>Departure Date</label>
-                            <input type="text" className='form-control' />
+                            <DatePicker
+                                className="form-control"
+                                onChange={this._handleDepartureChange}
+                                selected={this.state.departure}
+                            />
                         </td>
                         <td cellPadding='5'>
-                            <label>Return Date</label>
-                            <input type="text" className='form-control' disabled={!this.state.isReturn} />
+                            <form>
+                            <div className="control-group warning">
+                                <label>Return Date</label>
+                                <DatePicker
+                                    className="form-control"
+                                    onChange={this._handleReturnChange}
+                                    selected={this.state.return}
+                                />
+                            </div>
+                            <div className="control-group warning">
+                                <label className="control-label" htmlFor="inputWarning">Input with warning</label>
+                                    <div className="controls">
+                                    <input type="text" id="inputWarning" />
+                                            <span className="help-inline">Something may have gone wrong</span>
+                                </div>
+                                </div>
+                                </form>
                         </td>
                     </tr>
                     <tr>

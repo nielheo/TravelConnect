@@ -5,6 +5,7 @@
   "dependencies": {
     "@types/history": "4.6.0",
     "@types/react": "15.0.35",
+    "@types/react-datepicker": "^0.52.2",
     "@types/react-dom": "15.5.1",
     "@types/react-hot-loader": "3.0.3",
     "@types/react-redux": "4.4.45",
@@ -18,7 +19,7 @@
     "aspnet-webpack-react": "^3.0.0",
     "awesome-typescript-loader": "3.2.1",
     "bootstrap": "3.3.7",
-    "css-loader": "0.28.4",
+    "css-loader": "^0.28.7",
     "domain-task": "^3.0.3",
     "event-source-polyfill": "0.0.9",
     "extract-text-webpack-plugin": "2.1.2",
@@ -26,9 +27,11 @@
     "history": "4.6.3",
     "jquery": "3.2.1",
     "json-loader": "0.5.4",
+    "moment": "^2.18.1",
     "node-noop": "1.0.0",
     "react": "15.6.1",
     "react-bootstrap-typeahead": "^2.0.0-alpha.3",
+    "react-datepicker": "^0.53.0",
     "react-dom": "15.6.1",
     "react-hot-loader": "3.0.0-beta.7",
     "react-redux": "5.0.5",
@@ -42,5 +45,6 @@
     "webpack": "2.5.1",
     "webpack-hot-middleware": "2.18.2",
     "webpack-merge": "4.1.0"
-  }
+  },
+  "devDependencies": {}
 }
