@@ -1,6 +1,8 @@
 ﻿import * as React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import * as moment from 'moment'
+//import CryptoJS from 'crypto-js'
+const CryptoJS = require('crypto-js') as any;
 
 import AirportAutocomplete from './AirportAutocomplete'
 import SelectDate from './SelectDate'
@@ -8,6 +10,9 @@ import SelectDate from './SelectDate'
 export default class FlightSearch extends React.Component<RouteComponentProps<{}>, any> {
     constructor() {
         super();
+        //let now = moment()
+        //let today = moment({ year: now.year(), month: now.month(), day: now.day() })
+
         this.state = {
             isReturn: true,
             origin: null,
@@ -15,6 +20,7 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{}
             departure: moment().add(2, 'days'),
             return: moment().add(5, 'days'),
             clicked: false,
+            isDataValid: false,
         };
     } 
 
@@ -37,10 +43,44 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{}
         })
     }
 
+    _validateSearch = () => {
+        let valid: boolean = true
+        if (!this.state.origin) valid = false
+        if (!this.state.destination) valid = false
+        if (this.state.isReturn && (this.state.return < this.state.departure)) valid = false
+
+        if (this.state.isDataValid !== valid)
+            this.setState({
+                isDataValid: valid
+            })
+        return valid
+    }
+
     _handleSearchClick = () => {
+
         this.setState({
             clicked: true,
         })
+        
+        if (this._validateSearch()) {
+            let request = {
+                origin: this.state.origin.id,
+                destination: this.state.destination.id,
+                depart: this.state.departure.format('L'),
+                return: this.state.isReturn ? this.state.return.format('L') : null
+            }
+            console.log(request)
+            let enc = CryptoJS.AES.encrypt(JSON.stringify(request), 'DheoTech').toString()
+            /*
+            console.log(enc)
+
+
+            var bytes = CryptoJS.AES.decrypt(enc, 'DheoTech');
+            var plaintext = bytes.toString(CryptoJS.enc.Utf8);
+            console.log(plaintext)
+            */
+            this.props.history.push('/flight/result/' + encodeURIComponent(enc))
+        }
     }
 
     _handleDepartureChange = (date: any) => {
@@ -58,6 +98,7 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{}
     public render() {
         //console.log(this.state)
         //console.log(this.state.clicked && !this.state.origin)
+        
         return <div className="col-md-12">
             
             <div className="row">
@@ -102,7 +143,7 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{}
                         label="Return Date"
                         onChange={this._handleReturnChange}
                         selected={this.state.isReturn ? this.state.return : null}
-                        error=""
+                        error={this.state.isReturn && (this.state.return < this.state.departure) ? 'Invalid date' : ''}
                         disabled={!this.state.isReturn}
                     />
                 </div>

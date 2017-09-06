@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "dependencies": {
+    "@types/crypto-js": "^3.1.35",
     "@types/history": "4.6.0",
     "@types/react": "15.0.35",
     "@types/react-datepicker": "^0.52.2",
@@ -19,6 +20,7 @@
     "aspnet-webpack-react": "^3.0.0",
     "awesome-typescript-loader": "3.2.1",
     "bootstrap": "3.3.7",
+    "crypto-js": "^3.1.9-1",
     "css-loader": "^0.28.7",
     "domain-task": "^3.0.3",
     "event-source-polyfill": "0.0.9",
