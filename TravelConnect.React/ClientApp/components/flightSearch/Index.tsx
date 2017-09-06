@@ -1,10 +1,9 @@
 ﻿import * as React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import DatePicker from 'react-datepicker'
 import * as moment from 'moment'
 
 import AirportAutocomplete from './AirportAutocomplete'
-
+import SelectDate from './SelectDate'
 
 export default class FlightSearch extends React.Component<RouteComponentProps<{}>, any> {
     constructor() {
@@ -57,9 +56,9 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{}
     }
 
     public render() {
-        console.log(this.state)
-        console.log(this.state.clicked && !this.state.origin)
-        return <div>
+        //console.log(this.state)
+        //console.log(this.state.clicked && !this.state.origin)
+        return <div className="col-md-12">
             
             <div className="row">
                 <div className="col-md-12">
@@ -90,46 +89,29 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{}
             </div>
             <div className="row">
                 <div className="col-md-6">
-                    <div className="form-group">
-                        <label className="control-label">Departure Date</label>
-                        <DatePicker
-                            className="form-control"
-                            onChange={this._handleDepartureChange}
-                            selected={this.state.departure}
-                        />
-                    </div>
+                    <SelectDate 
+                        label="Departure Date"
+                        onChange={this._handleDepartureChange}
+                        selected={this.state.departure}
+                        error=""
+                        disabled={false}
+                    />
                 </div>
                 <div className="col-md-6">
-                    <div className="form-group">
-                        <label className="control-label">Return Date</label>
-                        <DatePicker
-                            className="form-control"
-                            onChange={this._handleReturnChange}
-                            selected={this.state.return}
-                            disabled={!this.state.isReturn}
-                        />
-                    </div>
+                    <SelectDate
+                        label="Return Date"
+                        onChange={this._handleReturnChange}
+                        selected={this.state.isReturn ? this.state.return : null}
+                        error=""
+                        disabled={!this.state.isReturn}
+                    />
                 </div>
             </div>
-            <table className="form-horizontal">
-                <tbody>
-                    
-                    <tr>
-                        <td cellPadding='5'>
-                            
-                        </td>
-                        <td cellPadding='5'>
-                            
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td cellPadding={5}>
-                            <button onClick={this._handleSearchClick}>Search</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div className="row">
+                <div className="col-md-12">
+                    <button onClick={this._handleSearchClick}>Search</button>
+                </div>
+            </div>
         </div>
     }
 }

@@ -22,6 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\components\flightSearch\SelectDate.tsx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\TravelConnect.Interfaces\TravelConnect.Interfaces.csproj" />
     <ProjectReference Include="..\TravelConnect.Models\TravelConnect.Models.csproj" />
     <ProjectReference Include="..\TravelConnect.Sabre\TravelConnect.Sabre.csproj" />
@@ -31,6 +35,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\components\flightSearch\Index.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightSearch\AirportAutocomplete.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\flightSearch\SelectDate.tsx" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

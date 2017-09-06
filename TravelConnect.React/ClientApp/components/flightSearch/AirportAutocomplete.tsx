@@ -7,21 +7,10 @@ export default class AirportAutocomplete extends React.Component<{ onChange: any
     constructor() {
         super();
         this.state = {
-            isReturn: true,
-            origin: {},
-            destination: {}
         };
     }
 
-    toggleIsReturn = () => {
-        this.setState({
-            isReturn: !this.state.isReturn
-        })
-    }
-
-
     public render() {
-        console.log(this.state)
         return <div className={'form-group ' + (this.props.error ? 'has-error' : '')}>
             <label className="control-label">{this.props.label}</label>
             <AsyncTypeahead
