@@ -40,6 +40,7 @@ namespace TravelConnect.Api
 
             services.AddTransient<ISabreConnector, SabreConnector>();
             services.AddTransient<IGeoService, GeoService>();
+            services.AddTransient<IFlightService, FlightService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -40,7 +40,7 @@ namespace TravelConnect.Sabre
 
                 webRequest = (HttpWebRequest) WebRequest.Create(endPoint + url);
                 webRequest.Method = "POST";
-                webRequest.ContentType = "application/x-www-form-urlencoded";
+                webRequest.ContentType = "application/json";
                 webRequest.ContentLength = data.Length;
                 webRequest.Headers[HttpRequestHeader.Authorization] = "Bearer " + token;
                 webRequest.Headers[HttpRequestHeader.AcceptEncoding] = "gzip";
@@ -78,7 +78,7 @@ namespace TravelConnect.Sabre
                 }
             }
             
-            return Encoding.UTF8.GetString(content.ToArray());
+            return  Encoding.UTF8.GetString(content.ToArray());
         }
 
         

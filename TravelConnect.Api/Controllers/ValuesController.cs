@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TravelConnect.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/values")]
     public class ValuesController : Controller
     {
         // GET api/values
