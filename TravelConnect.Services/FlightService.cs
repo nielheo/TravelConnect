@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using TravelConnect.Interfaces;
 using TravelConnect.Models.Responses;
 using TravelConnect.Sabre;
@@ -18,16 +19,16 @@ namespace TravelConnect.Services
             this._SabreConnector = _SabreConnector;
         }
 
-        public AirLowFareSearchRS AirLowFareSearch(SearchRQ request)
+        public async Task<AirLowFareSearchRS> AirLowFareSearch(SearchRQ request)
         {
-            string result = 
+            string result = await
             _SabreConnector.SendRequestAsync("/v3.2.0/shop/flights?mode=live&limit=200&offset=1",
-                JsonConvert.SerializeObject(request.AirLowFareSearchRQ,
+                JsonConvert.SerializeObject(request.AirLowFareSearchRQ(),
                     Formatting.None, new JsonSerializerSettings
                         {
                             NullValueHandling = NullValueHandling.Ignore,
                             DateFormatString = "yyyy-MM-ddTHH:mm:ss"
-                    }), true).Result;
+                    }), true);
 
             AirLowFareSearchRS rs = 
             JsonConvert.DeserializeObject<AirLowFareSearchRS>(result);

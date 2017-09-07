@@ -52,6 +52,8 @@ namespace TravelConnect.Models.Requests
         public bool ValidInterlineTicket { get; set; }
         public bool SmokingAllowed { get; set; }
         public Cabinpref[] CabinPref { get; set; }
+        public Vendorpref[] VendorPref { get; set; }
+
         public TPA_Extensions TPA_Extensions { get; set; }
     }
 
@@ -74,6 +76,12 @@ namespace TravelConnect.Models.Requests
     public class Cabinpref
     {
         public string Cabin { get; set; }
+        public string PreferLevel { get; set; }
+    }
+
+    public class Vendorpref
+    {
+        public string Code { get; set; }
         public string PreferLevel { get; set; }
     }
 

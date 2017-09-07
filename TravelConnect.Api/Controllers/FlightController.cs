@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using TravelConnect.Interfaces;
 using TravelConnect.Services.Models;
 using TravelConnect.Models.Responses;
+using Newtonsoft.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -37,29 +38,45 @@ namespace TravelConnect.Api.Controllers
 
         // POST api/values
         [HttpPost]
-        public AirLowFareSearchRS Post([FromBody]string value)
+        public async Task<AirLowFareSearchRS> Post([FromBody]SearchRQ request)
         {
-            SearchRQ rq = new SearchRQ
-            {
-                Segments = new List<SegmentRQ>()
-                {
-                    new SegmentRQ
-                    {
-                        Origin = "BKK",
-                        Destination = "SIN",
-                        Departure =DateTime.Today.AddDays(7)
-                    },
-                    new SegmentRQ
-                    {
-                        Origin = "SIN",
-                        Destination = "BKK",
-                        Departure =DateTime.Today.AddDays(10)
-                    }
-                },
-                AvailableFlightsOnly = true
-            };
+            //SearchRQ rq = new SearchRQ
+            //{
+            //    Segments = new List<SegmentRQ>()
+            //    {
+            //        new SegmentRQ
+            //        {
+            //            Origin = "BKK",
+            //            Destination = "SIN",
+            //            Departure =DateTime.Today.AddDays(7)
+            //        },
+            //        new SegmentRQ
+            //        {
+            //            Origin = "SIN",
+            //            Destination = "BKK",
+            //            Departure =DateTime.Today.AddDays(10)
+            //        }
+            //    },
+            //    Ptcs = new List<PtcRQ>
+            //    {
+            //        new PtcRQ
+            //        {
+            //            Code = "ADT",
+            //            Quantity = 1
+            //        },
+            //        new PtcRQ
+            //        {
+            //            Code = "CNN",
+            //            Quantity = 1
+            //        }
+            //    },
+            //    AvailableFlightsOnly = true
+            //};
 
-            return _FlightService.AirLowFareSearch(rq);
+            //string st = JsonConvert.SerializeObject(rq);
+            //SearchRQ request = JsonConvert.DeserializeObject<SearchRQ>(rq);
+
+            return await _FlightService.AirLowFareSearch(request);
         }
 
         // PUT api/values/5

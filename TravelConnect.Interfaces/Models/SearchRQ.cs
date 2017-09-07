@@ -13,25 +13,32 @@ namespace TravelConnect.Services.Models
         public string Destination { get; set; }
     }
 
+    public class PtcRQ
+    {
+        public string Code { get; set; }
+        public int Quantity { get; set; }
+    }
+
     public class SearchRQ
     {
         public List<SegmentRQ> Segments { get; set; }
+        public List<PtcRQ> Ptcs { get; set; }
         public bool AvailableFlightsOnly { get; set; }
-        public AirLowFareSearchRQ AirLowFareSearchRQ
-        {
-            get
-            {
-                AirLowFareSearchRQ rq = new AirLowFareSearchRQ();
-                int segmentIndex = 1;
-                rq.OTA_AirLowFareSearchRQ = new OTA_Airlowfaresearchrq
-                {
-                    AvailableFlightsOnly = this.AvailableFlightsOnly,
 
-                    Target = "Production",
-                    POS = new POS
+        public AirLowFareSearchRQ AirLowFareSearchRQ()
+        {
+
+            AirLowFareSearchRQ rq = new AirLowFareSearchRQ();
+            int segmentIndex = 1;
+            rq.OTA_AirLowFareSearchRQ = new OTA_Airlowfaresearchrq
+            {
+                AvailableFlightsOnly = this.AvailableFlightsOnly,
+
+                Target = "Production",
+                POS = new POS
+                {
+                    Source = new Source[]
                     {
-                        Source = new Source[]
-                        {
                             new Source
                             {
                                 PseudoCityCode = "F9CE",
@@ -42,66 +49,73 @@ namespace TravelConnect.Services.Models
                                     CompanyName = new Companyname()
                                 }
                             }
-                        }
-                    },
-                    OriginDestinationInformation = this.Segments.Select(s =>
-                        new Origindestinationinformation
-                        {
-                            RPH = (segmentIndex++).ToString(),
-                            DepartureDateTime = s.Departure,
-                            OriginLocation = new Originlocation
-                            {
-                                LocationCode = s.Origin
-                            },
-                            DestinationLocation = new Destinationlocation
-                            {
-                                LocationCode = s.Destination
-                            }
-                        }).ToArray(),
-                    TravelerInfoSummary = new Travelerinfosummary
+                    }
+                },
+                OriginDestinationInformation = this.Segments.Select(s =>
+                    new Origindestinationinformation
                     {
-                        SeatsRequested = new int[] { 1 },
-                        AirTravelerAvail = new Airtraveleravail[]
+                        RPH = (segmentIndex++).ToString(),
+                        DepartureDateTime = s.Departure,
+                        OriginLocation = new Originlocation
                         {
+                            LocationCode = s.Origin
+                        },
+                        DestinationLocation = new Destinationlocation
+                        {
+                            LocationCode = s.Destination
+                        }
+                    }).ToArray(),
+                TravelerInfoSummary = new Travelerinfosummary
+                {
+                    SeatsRequested = new int[] { 1 },
+                    AirTravelerAvail = new Airtraveleravail[]
+                    {
                             new Airtraveleravail
                             {
-                                PassengerTypeQuantity = new Passengertypequantity[]
-                                {
+                                PassengerTypeQuantity = this.Ptcs.Select(p =>
                                     new Passengertypequantity
                                     {
-                                        Code = "ADT",
-                                        Quantity = 1
+                                        Code = p.Code,
+                                        Quantity = p.Quantity,
+                                        Changeable = false
                                     }
-
-                                }
+                                ).ToArray()
                             }
-                        }
-                    },
-                    TravelPreferences = new Travelpreferences
+                    }
+                },
+                TravelPreferences = new Travelpreferences
+                {
+                    CabinPref = new Cabinpref[]
                     {
-                        CabinPref = new Cabinpref[]
-                        {
                             new Cabinpref
                             {
                                 Cabin = "Y",
                                 PreferLevel = "Preferred"
                             }
-                        }, 
                     },
-                    TPA_Extensions = new TPA_Extensions2
+                    VendorPref = new Vendorpref[]
                     {
-                        IntelliSellTransaction = new Intelliselltransaction
-                        {
-                            RequestType = new Requesttype
+                            new Vendorpref
                             {
-                                Name = "50ITINS"
+                                Code = "3K",
+                                PreferLevel = "Unacceptable"
                             }
+                    }
+                },
+                TPA_Extensions = new TPA_Extensions2
+                {
+                    IntelliSellTransaction = new Intelliselltransaction
+                    {
+                        RequestType = new Requesttype
+                        {
+                            Name = "50ITINS"
                         }
                     }
-                };
+                }
+            };
 
-                return rq;
-            }
+            return rq;
+
         }
     }
 }
