@@ -6,6 +6,7 @@ const CryptoJS = require('crypto-js') as any;
 
 import AirportAutocomplete from './AirportAutocomplete'
 import SelectDate from './SelectDate'
+import SelectPax from './SelectPax'
 
 export default class FlightSearch extends React.Component<RouteComponentProps<{}>, any> {
     constructor() {
@@ -19,6 +20,9 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{}
             destination: null,
             departure: moment().add(2, 'days'),
             return: moment().add(5, 'days'),
+            totalAdt: 1,
+            totalCnn: 0,
+            totalInf: 0,
             clicked: false,
             isDataValid: false,
         };
@@ -63,12 +67,16 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{}
         })
         
         if (this._validateSearch()) {
-            let request = {
+            let request:any = {
                 origin: this.state.origin.id,
                 destination: this.state.destination.id,
                 depart: this.state.departure.format('L'),
-                return: this.state.isReturn ? this.state.return.format('L') : null
+                return: this.state.isReturn ? this.state.return.format('L') : null,
+                paxs: []
             }
+            if (this.state.totalAdt) request.paxs.push({ code: 'ADT', qty: this.state.totalAdt })
+            if (this.state.totalCnn) request.paxs.push({ code: 'CNN', qty: this.state.totalCnn })
+            if (this.state.totalInf) request.paxs.push({ code: 'INF', qty: this.state.totalInf })
             console.log(request)
             let enc = CryptoJS.AES.encrypt(JSON.stringify(request), 'DheoTech').toString()
             /*
@@ -93,6 +101,26 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{}
         this.setState({
             return: date
         })
+    }
+
+    _handleAdultChange = (e: any) => {
+        this.setState({
+            totalAdt: e.target.value
+        })
+    }
+
+    _handleChildChange = (e: any) => {
+        this.setState({
+            totalCnn: e.target.value
+        })
+        console.log(e.target.value)
+    }
+
+    _handleInfantChange = (e: any) => {
+        this.setState({
+            totalInf: e.target.value
+        })
+        console.log(e.target.value)
     }
 
     public render() {
@@ -145,6 +173,35 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{}
                         selected={this.state.isReturn ? this.state.return : null}
                         error={this.state.isReturn && (this.state.return < this.state.departure) ? 'Invalid date' : ''}
                         disabled={!this.state.isReturn}
+                    />
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-md-3">
+                    <SelectPax
+                        onChange={this._handleAdultChange}
+                        selected={this.state.totalAdt}
+                        label='Adult'
+                        disabled={false}
+                        error=''
+                    />
+                </div>
+                <div className="col-md-3">
+                    <SelectPax
+                        onChange={this._handleChildChange}
+                        selected={this.state.totalCnn}
+                        label='Child'
+                        disabled={false}
+                        error=''
+                    />
+                </div>
+                <div className="col-md-3">
+                    <SelectPax
+                        onChange={this._handleInfantChange}
+                        selected={this.state.totalInf}
+                        label='Infant'
+                        disabled={false}
+                        error=''
                     />
                 </div>
             </div>

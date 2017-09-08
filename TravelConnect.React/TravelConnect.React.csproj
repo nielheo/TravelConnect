@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <None Remove="ClientApp\components\flightSearch\SelectDate.tsx" />
+    <None Remove="ClientApp\components\flightSearch\SelectPax.tsx" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,6 +38,7 @@
     <TypeScriptCompile Include="ClientApp\components\flightSearch\Index.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightSearch\AirportAutocomplete.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightSearch\SelectDate.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\flightSearch\SelectPax.tsx" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
