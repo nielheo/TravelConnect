@@ -1,16 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using TravelConnect.Models;
-using Microsoft.EntityFrameworkCore;
-using TravelConnect.Sabre;
 using TravelConnect.Interfaces;
+using TravelConnect.Models;
+using TravelConnect.Sabre;
 using TravelConnect.Services;
 
 namespace TravelConnect_React
@@ -39,6 +35,7 @@ namespace TravelConnect_React
 
             services.AddTransient<ISabreConnector, SabreConnector>();
             services.AddTransient<IGeoService, GeoService>();
+            services.AddTransient<IFlightService, FlightService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+
 //using System.Runtime.Serialization.Formatters.Soap;
 using System.Text.RegularExpressions;
 
 namespace TravelConnect.uAPI.Utility
 {
-    class Helper
+    internal class Helper
     {
         // return a date that is n days in future
         public static String daysInFuture(int n)
@@ -77,7 +75,6 @@ namespace TravelConnect.uAPI.Utility
 
                 return UTF8Encoding.UTF8.GetString(Stream.GetBuffer(), 0, (int)Stream.Position);
             }
-
         }*/
     }
 }

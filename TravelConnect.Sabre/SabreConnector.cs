@@ -1,8 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.IO.Compression;
 using System.Net;
 using System.Text;
@@ -27,7 +23,7 @@ namespace TravelConnect.Sabre
         {
             this._context = _context;
         }
-        
+
         public async Task<string> SendRequestAsync(string url, string request, bool isPost)
         {
             HttpWebRequest webRequest;
@@ -38,13 +34,13 @@ namespace TravelConnect.Sabre
             {
                 byte[] data = Encoding.ASCII.GetBytes(request);
 
-                webRequest = (HttpWebRequest) WebRequest.Create(endPoint + url);
+                webRequest = (HttpWebRequest)WebRequest.Create(endPoint + url);
                 webRequest.Method = "POST";
                 webRequest.ContentType = "application/json";
                 webRequest.ContentLength = data.Length;
                 webRequest.Headers[HttpRequestHeader.Authorization] = "Bearer " + token;
                 webRequest.Headers[HttpRequestHeader.AcceptEncoding] = "gzip";
-                
+
                 using (Stream stream = webRequest.GetRequestStream())
                 {
                     await stream.WriteAsync(data, 0, data.Length);
@@ -52,7 +48,7 @@ namespace TravelConnect.Sabre
             }
             else
             {
-                webRequest = (HttpWebRequest) WebRequest.Create(endPoint + url + "?" + request);
+                webRequest = (HttpWebRequest)WebRequest.Create(endPoint + url + "?" + request);
                 webRequest.Headers[HttpRequestHeader.Authorization] = "Bearer " + token;
                 webRequest.Headers[HttpRequestHeader.AcceptEncoding] = "gzip";
             }
@@ -69,6 +65,7 @@ namespace TravelConnect.Sabre
                             await stream.CopyToAsync(content);
                         }
                         break;
+
                     default:
                         using (Stream stream = response.GetResponseStream())
                         {
@@ -77,10 +74,8 @@ namespace TravelConnect.Sabre
                         break;
                 }
             }
-            
-            return  Encoding.UTF8.GetString(content.ToArray());
-        }
 
-        
+            return Encoding.UTF8.GetString(content.ToArray());
+        }
     }
 }

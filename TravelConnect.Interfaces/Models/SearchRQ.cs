@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using TravelConnect.Models.Requests;
 
-namespace TravelConnect.Services.Models
+namespace TravelConnect.Interfaces.Models
 {
     public class SegmentRQ
     {
@@ -24,16 +23,16 @@ namespace TravelConnect.Services.Models
         public List<SegmentRQ> Segments { get; set; }
         public List<PtcRQ> Ptcs { get; set; }
         public bool AvailableFlightsOnly { get; set; }
+        public bool DirectFlightsOnly { get; set; }
 
         public AirLowFareSearchRQ AirLowFareSearchRQ()
         {
-
             AirLowFareSearchRQ rq = new AirLowFareSearchRQ();
             int segmentIndex = 1;
             rq.OTA_AirLowFareSearchRQ = new OTA_Airlowfaresearchrq
             {
                 AvailableFlightsOnly = this.AvailableFlightsOnly,
-
+                DirectFlightsOnly = this.DirectFlightsOnly,
                 Target = "Production",
                 POS = new POS
                 {
@@ -108,14 +107,13 @@ namespace TravelConnect.Services.Models
                     {
                         RequestType = new Requesttype
                         {
-                            Name = "50ITINS"
+                            Name = "200ITINS"
                         }
                     }
                 }
             };
 
             return rq;
-
         }
     }
 }

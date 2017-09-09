@@ -8,9 +8,9 @@ import FlightSearch from './components/flightSearch'
 import FlightResult from './components/flightResult'
 
 export const routes = <Layout>
-    <Route exact path='/' component={ Home } />
-    <Route path='/counter' component={Counter} />
-    <Route path='/flight/search' component={FlightSearch} />
-    <Route path='/flight/result/:route' component={FlightResult} />
-    <Route path='/fetchdata/:startDateIndex?' component={ FetchData } />
+  <Route exact path='/' component={Home} />
+  <Route path='/counter' component={Counter} />
+  <Route path='/flight/search' component={FlightSearch} />
+  <Route path='/flight/result/:route' component={FlightResult} />
+  <Route path='/fetchdata/:startDateIndex?' component={FetchData} />
 </Layout>;

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using TravelConnect.Models.Responses;
-using TravelConnect.Services.Models;
+﻿using System.Threading.Tasks;
+using TravelConnect.Interfaces.Models;
 
 namespace TravelConnect.Interfaces
 {
     public interface IFlightService
     {
-        Task<AirLowFareSearchRS> AirLowFareSearch(SearchRQ request);
+        Task<SearchRS> AirLowFareSearch(SearchRQ request);
     }
 }

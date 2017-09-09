@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -20,7 +19,7 @@ namespace TravelConnect.Sabre
             string request = "grant_type=client_credentials";
             byte[] data = Encoding.ASCII.GetBytes(request);
 
-            var webRequest = (HttpWebRequest) WebRequest.Create(endPoint + "/v2/auth/token");
+            var webRequest = (HttpWebRequest)WebRequest.Create(endPoint + "/v2/auth/token");
             webRequest.Method = "POST";
             webRequest.Headers[HttpRequestHeader.Authorization] = "Basic " + base64Credential;
             webRequest.ContentType = "application/x-www-form-urlencoded";
@@ -37,7 +36,6 @@ namespace TravelConnect.Sabre
                 using (Stream stream = response.GetResponseStream())
                 {
                     await stream.CopyToAsync(content);
-                    
                 }
             }
 
@@ -71,7 +69,6 @@ namespace TravelConnect.Sabre
                     Token = token.access_token,
                     ExpiryTime = DateTime.Now.AddSeconds((int)token.expires_in).AddMinutes(-15)
                 };
-
             };
 
             return accessToken;
@@ -83,7 +80,6 @@ namespace TravelConnect.Sabre
             if (_AccessToken == null)
             {
                 _AccessToken = await GetAccessTokenAsync();
-
             }
             else
             {
