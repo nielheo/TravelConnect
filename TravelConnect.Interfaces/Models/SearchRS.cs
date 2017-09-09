@@ -25,12 +25,14 @@ namespace TravelConnect.Interfaces.Models
         public string Destination { get; set; }
         public Timing Departure { get; set; }
         public Timing Arrival { get; set; }
+        public int Elapsed { get; set; }
         public FlightNumber OperatingFlight { get; set; }
         public FlightNumber MarketingFlight { get; set; }
     }
 
     public class Leg
     {
+        public int Elapsed { get; set; }
         public List<Segment> Segments { get; set; }
     }
 

@@ -2,6 +2,8 @@
 import { RouteComponentProps } from 'react-router-dom'
 import * as queryString from 'query-string'
 
+import FlightDeparture from './FlightDeparture'
+
 const CryptoJS = require('crypto-js') as any;
 
 export default class FlightSearch extends React.Component<RouteComponentProps<{ route: string }>, any> {
@@ -91,25 +93,7 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
           {
             this.state.departures
               ? this.state.departures.map((r: any) =>
-                <div className='row'>
-                  <div className='col-md-3'>
-                    {r.curr} {r.totalPrice.toFixed(2)}
-                  </div>
-                  <div className='col-md-6 clearfix row'>
-                    {r.legs.map((l: any) =>
-                      <div className='col-md-6'>{
-                        l.segments[0].origin + '-' +
-                        l.segments.map((s: any) =>
-                          s.destination
-                        ).join('-')
-                      }</div>)
-                    }
-                    {
-                      r.legs.map((l: any) =>
-                        <div className='col-md-6'>{ l.routes }</div>)
-                    }
-                  </div>
-                </div>
+                <FlightDeparture depart={r} key={r.itinNo} />
                 )
               : <h4>Loading......</h4>
           }

@@ -82,12 +82,14 @@ namespace TravelConnect.Services
                                     .OriginDestinationOption.Select(dest => {
                                         return new Leg
                                         {
+                                            Elapsed = dest.ElapsedTime,
                                             Segments = dest.FlightSegment.Select(seg =>
                                             {
                                                 return new Interfaces.Models.Segment
                                                 {
                                                      Origin = seg.DepartureAirport.LocationCode,
                                                      Destination = seg.ArrivalAirport.LocationCode,
+                                                     Elapsed = seg.ElapsedTime,
                                                      Departure = new Timing
                                                      {
                                                          Time = seg.DepartureDateTime,
