@@ -7,6 +7,7 @@ using TravelConnect.Interfaces;
 using TravelConnect.Models.Requests;
 using TravelConnect.Models.Responses;
 using TravelConnect.Sabre;
+using TravelConnect.Sabre.Models;
 
 namespace TravelConnect.Services
 {
@@ -14,7 +15,6 @@ namespace TravelConnect.Services
     {
         private ISabreConnector _SabreConnector;
         private IMemoryCache _cache;
-        
 
         public FlightService(ISabreConnector _SabreConnector, IMemoryCache memoryCache)
         {
@@ -38,7 +38,7 @@ namespace TravelConnect.Services
 
             return ConvertToSearchRS(rs);
         }
-        
+
         public async Task<FlightSearchRS> AirLowFareSearchAsync(FlightSearchRQ request)
         {
             string sRequest = JsonConvert.SerializeObject(request);
@@ -48,7 +48,7 @@ namespace TravelConnect.Services
             {
                 // Key not in cache, so get data.
                 cacheSearchRS = await GetAirLowFareSearch(request);
-                
+
                 // Set cache options.
                 var cacheEntryOptions = new MemoryCacheEntryOptions()
                     // Keep in cache for this time, reset time if accessed.
@@ -79,7 +79,8 @@ namespace TravelConnect.Services
                                 Curr = TotalFare.CurrencyCode,
                                 TotalPrice = TotalFare.Amount,
                                 Legs = a.AirItinerary.OriginDestinationOptions
-                                    .OriginDestinationOption.Select(dest => {
+                                    .OriginDestinationOption.Select(dest =>
+                                    {
                                         return new Leg
                                         {
                                             Elapsed = dest.ElapsedTime,
@@ -87,29 +88,29 @@ namespace TravelConnect.Services
                                             {
                                                 return new SegmentRS
                                                 {
-                                                     Origin = seg.DepartureAirport.LocationCode,
-                                                     Destination = seg.ArrivalAirport.LocationCode,
-                                                     Elapsed = seg.ElapsedTime,
-                                                     Departure = new Timing
-                                                     {
-                                                         Time = seg.DepartureDateTime,
-                                                         GmtOffset = seg.DepartureTimeZone.GMTOffset,
-                                                     },
-                                                     Arrival = new Timing
-                                                     {
-                                                         Time = seg.ArrivalDateTime,
-                                                         GmtOffset = seg.ArrivalTimeZone.GMTOffset
-                                                     },
-                                                     MarketingFlight = new FlightNumber
-                                                     {
-                                                         Airline = seg.MarketingAirline.Code,
-                                                         Number = seg.FlightNumber
-                                                     },
-                                                     OperatingFlight = new FlightNumber
-                                                     {
-                                                         Airline = seg.OperatingAirline.Code,
-                                                         Number = seg.OperatingAirline.FlightNumber
-                                                     }
+                                                    Origin = seg.DepartureAirport.LocationCode,
+                                                    Destination = seg.ArrivalAirport.LocationCode,
+                                                    Elapsed = seg.ElapsedTime,
+                                                    Departure = new Timing
+                                                    {
+                                                        Time = seg.DepartureDateTime,
+                                                        GmtOffset = seg.DepartureTimeZone.GMTOffset,
+                                                    },
+                                                    Arrival = new Timing
+                                                    {
+                                                        Time = seg.ArrivalDateTime,
+                                                        GmtOffset = seg.ArrivalTimeZone.GMTOffset
+                                                    },
+                                                    MarketingFlight = new FlightNumber
+                                                    {
+                                                        Airline = seg.MarketingAirline.Code,
+                                                        Number = seg.FlightNumber
+                                                    },
+                                                    OperatingFlight = new FlightNumber
+                                                    {
+                                                        Airline = seg.OperatingAirline.Code,
+                                                        Number = seg.OperatingAirline.FlightNumber
+                                                    }
                                                 };
                                             }).ToList()
                                         };
@@ -128,7 +129,6 @@ namespace TravelConnect.Services
 
         private AirLowFareSearchRQ ConvertToAirLowFareSearchRQ(FlightSearchRQ request)
         {
-
             AirLowFareSearchRQ rq = new AirLowFareSearchRQ();
             int segmentIndex = 1;
             rq.OTA_AirLowFareSearchRQ = new OTA_Airlowfaresearchrq
@@ -216,7 +216,53 @@ namespace TravelConnect.Services
             };
 
             return rq;
+        }
 
+        private async Task<Models.Responses.AirlineRS> SubmitGetAirlineAsync(string code)
+        {
+            try
+            {
+                var result = await _SabreConnector.SendRequestAsync("/v1/lists/utilities/airlines",
+                    "airlinecode=" + code, false);
+
+
+                Sabre.Models.AirlineRS rs = JsonConvert.DeserializeObject<Sabre.Models.AirlineRS>(result);
+
+                if (rs.AirlineInfo?.FirstOrDefault() == null)
+                    return null;
+
+                return new Models.Responses.AirlineRS
+                {
+                    Code = rs.AirlineInfo.FirstOrDefault().AirlineCode,
+                    Name = rs.AirlineInfo.FirstOrDefault().AirlineName
+                };
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<Models.Responses.AirlineRS> GetAirlineAsync(string code)
+        {
+            string key = "Airline_" + code;
+            Models.Responses.AirlineRS cache;
+
+            if (!_cache.TryGetValue(key, out cache))
+            {
+                // Key not in cache, so get data.
+                cache = await SubmitGetAirlineAsync(code);
+                
+                // Set cache options.
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    // Keep in cache for this time, reset time if accessed.
+                    .SetSlidingExpiration(TimeSpan.FromHours(1));
+
+                // Save data in cache.
+                _cache.Set(key, cache, cacheEntryOptions);
+            }
+
+            return cache;
         }
     }
 }

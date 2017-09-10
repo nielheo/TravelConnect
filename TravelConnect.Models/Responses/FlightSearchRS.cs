@@ -1,25 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TravelConnect.Models.Responses
 {
+    [NotMapped]
     public class FareBreakdown
     {
     }
 
+    [NotMapped]
     public class FlightNumber
     {
         public string Airline { get; set; }
         public string Number { get; set; }
     }
 
+    [NotMapped]
     public class Timing
     {
         public DateTime Time { get; set; }
         public float GmtOffset { get; set; }
     }
 
+    [NotMapped]
     public class SegmentRS
     {
         public string Origin { get; set; }
@@ -31,12 +35,14 @@ namespace TravelConnect.Models.Responses
         public FlightNumber MarketingFlight { get; set; }
     }
 
+    [NotMapped]
     public class Leg
     {
         public int Elapsed { get; set; }
         public List<SegmentRS> Segments { get; set; }
     }
 
+    [NotMapped]
     public class PricedItin
     {
         public string Curr { get; set; }
@@ -45,6 +51,7 @@ namespace TravelConnect.Models.Responses
         public List<Leg> Legs { get; set; }
     }
 
+    [NotMapped]
     public class FlightSearchRS
     {
         public List<PricedItin> PricedItins { get; set; }

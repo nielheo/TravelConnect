@@ -45,7 +45,6 @@ export default class FlightDeparture extends React.Component<{ depart: any }, an
     return stopOvers
   }
 
-
   public render() {
     const { depart } = this.props
     const firstLeg = depart.legs[0]
@@ -59,9 +58,9 @@ export default class FlightDeparture extends React.Component<{ depart: any }, an
         <Col md={9}>
           <Row>
             <Col md={4}>
-              <h4><b>{ moment(firstSegment.departure.time).format('HH:mm')
-                    + '-' + moment(lastSegment.arrival.time).format('HH:mm') } </b>
-                { (dateDiff ? ' (+' + dateDiff + ')' : '') }
+              <h4><b>{moment(firstSegment.departure.time).format('HH:mm')
+                + '-' + moment(lastSegment.arrival.time).format('HH:mm')} </b>
+                {(dateDiff ? ' (+' + dateDiff + ')' : '')}
               </h4>
             </Col>
             <Col md={4}>

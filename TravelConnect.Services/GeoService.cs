@@ -24,6 +24,28 @@ namespace TravelConnect.Services
 
         public async Task<AirportAutocompleteRS> GetAirportAutocompleteAsync(string query)
         {
+            string key = string.Format("AirportAutocomplete_{0}", query);
+            AirportAutocompleteRS cache;
+
+            if (!_cache.TryGetValue(key, out cache))
+            {
+                // Key not in cache, so get data.
+                cache = await SubmitGetAirportAutocompleteAsync(query);
+
+                // Set cache options.
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    // Keep in cache for this time, reset time if accessed.
+                    .SetSlidingExpiration(TimeSpan.FromHours(1));
+
+                // Save data in cache.
+                _cache.Set(key, cache, cacheEntryOptions);
+            }
+
+            return cache;
+        }
+
+        private async Task<AirportAutocompleteRS> SubmitGetAirportAutocompleteAsync(string query)
+        {
             var result = await _SabreConnector.SendRequestAsync("/v1/lists/utilities/geoservices/autocomplete",
                 "query=" + query + "&category=AIR&limit=30", false);
 
@@ -77,7 +99,7 @@ namespace TravelConnect.Services
             return rq;
         }
 
-        private AirportRS ConvertOtAirportRS(GeoCodeRS response)
+        private AirportRS ConvertToAirportRS(GeoCodeRS response)
         {
             var place = response.Results?.FirstOrDefault()?.GeoCodeRS?.Place?.FirstOrDefault();
 
@@ -109,9 +131,8 @@ namespace TravelConnect.Services
 
             GeoCodeRS rs = JsonConvert.DeserializeObject<GeoCodeRS>(result);
 
-            return ConvertOtAirportRS(rs);
+            return ConvertToAirportRS(rs);
         }
-
 
         public async Task<AirportRS> GetAirtportByCodeAsync(string airportCode)
         {

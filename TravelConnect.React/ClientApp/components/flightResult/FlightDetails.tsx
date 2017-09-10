@@ -80,11 +80,11 @@ export default class FlightDetails extends React.Component<{ segments: any }, an
           <Row className='bg-faded'>
             <Col md={12}>{this.props.segments.map((s: any) => <FlightDetail segment={s} />)}</Col>
           </Row>
-          
+
         </section>
         : <Row onClick={() => { this._handleShow(true) }}>
-            <Col md={12}>Show flight details</Col>
-          </Row>
+          <Col md={12}>Show flight details</Col>
+        </Row>
       }
 
     </section>

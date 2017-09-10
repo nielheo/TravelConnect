@@ -23,8 +23,8 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
     }
   }
 
-  _GenerateRoute = (result:any) => {
-    let x:number = 0
+  _GenerateRoute = (result: any) => {
+    let x: number = 0
     result.pricedItins.map((i: any) => {
       i.itinNo = x++
       i.legs.map((l: any) => {
@@ -86,16 +86,16 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
 
   public render() {
     return <Row>
-        <Col md={12}>
-          <h1>Select your flight</h1>
-          {
-            this.state.departures
-              ? this.state.departures.map((r: any) =>
-                <FlightDeparture depart={r} key={r.itinNo} />
-                )
-              : <h4>Loading......</h4>
-          }
-        </Col>
-      </Row>
+      <Col md={12}>
+        <h1>Select your flight</h1>
+        {
+          this.state.departures
+            ? this.state.departures.map((r: any) =>
+              <FlightDeparture depart={r} key={r.itinNo} />
+            )
+            : <h4>Loading......</h4>
+        }
+      </Col>
+    </Row>
   }
 }

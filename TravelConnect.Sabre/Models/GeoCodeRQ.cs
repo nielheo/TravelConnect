@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TravelConnect.Sabre.Models
+﻿namespace TravelConnect.Sabre.Models
 {
     public class GeoCodeRQ
     {
@@ -29,6 +25,4 @@ namespace TravelConnect.Sabre.Models
     {
         public string name { get; set; }
     }
-
-
 }

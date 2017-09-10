@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TravelConnect.Sabre.Models
+﻿namespace TravelConnect.Sabre.Models
 {
-    public class AutocompleteRS
+    public class AutocompleteRS : BaseRS
     {
         public Response Response { get; set; }
-        public Link[] Links { get; set; }
     }
 
     public class Response

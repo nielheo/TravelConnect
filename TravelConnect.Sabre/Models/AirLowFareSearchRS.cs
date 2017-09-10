@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace TravelConnect.Models.Responses
+namespace TravelConnect.Sabre.Models
 {
-    public class AirLowFareSearchRS
+    public class AirLowFareSearchRS : BaseRS
     {
         public OTA_Airlowfaresearchrs OTA_AirLowFareSearchRS { get; set; }
-        public Link[] Links { get; set; }
     }
 
     public class OTA_Airlowfaresearchrs
@@ -463,11 +460,4 @@ namespace TravelConnect.Models.Responses
     {
         public bool Indicator { get; set; }
     }
-
-    public class Link
-    {
-        public string rel { get; set; }
-        public string href { get; set; }
-    }
-
 }

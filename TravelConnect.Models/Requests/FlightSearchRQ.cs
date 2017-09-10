@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace TravelConnect.Models.Requests
 {
@@ -24,7 +22,5 @@ namespace TravelConnect.Models.Requests
         public List<PtcRQ> Ptcs { get; set; }
         public bool AvailableFlightsOnly { get; set; }
         public bool DirectFlightsOnly { get; set; }
-
-        
     }
 }
