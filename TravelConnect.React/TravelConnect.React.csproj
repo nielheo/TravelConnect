@@ -22,7 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\components\Commons.tsx" />
     <None Remove="ClientApp\components\flightResult\FlightDeparture.tsx" />
+    <None Remove="ClientApp\components\flightResult\FlightDetail.tsx" />
+    <None Remove="ClientApp\components\flightResult\FlightDetails.tsx" />
     <None Remove="ClientApp\components\flightSearch\SelectDate.tsx" />
     <None Remove="ClientApp\components\flightSearch\SelectPax.tsx" />
   </ItemGroup>
@@ -35,7 +38,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\components\Commons.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightResult\FlightDeparture.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\flightResult\FlightDetail.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\flightResult\FlightDetails.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightResult\Index.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightSearch\Index.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightSearch\AirportAutocomplete.tsx" />

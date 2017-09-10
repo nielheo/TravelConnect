@@ -72,10 +72,11 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
     if (parseInt(this.state.pax.split('-')[2]))
       request.ptcs.push({ code: 'INF', quantity: parseInt(this.state.pax.split('-')[2]) })
 
-    fetch('/api/flight', {
+    fetch('/api/flights', {
       method: 'post',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Accept-Encoding': 'gzip',
       },
       body: JSON.stringify(request)
     }).then(res => res.json())
@@ -84,7 +85,6 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
   }
 
   public render() {
-    console.log(this.state.departures)
     return <div className="col-md-12">
 
       <div className="row">

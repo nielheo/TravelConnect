@@ -2,7 +2,9 @@
 
 import * as moment from 'moment'
 
-export default class FlightDepart extends React.Component<{ depart: any }, any> {
+import FlightDetails from './FlightDetails'
+
+export default class FlightDeparture extends React.Component<{ depart: any }, any> {
   _dateOnly = (dateTime: any) => {
     return moment({
       year: dateTime.year(),
@@ -94,13 +96,12 @@ export default class FlightDepart extends React.Component<{ depart: any }, any> 
           </div>
         </div>
         <div className='col-md-12 clearfix'>
-          <div className='col-md-12'>
-            Show flight details
-          </div>
+          <FlightDetails segments={firstLeg.segments} />
         </div>
       </div>
       <div className='col-md-3'>
         <h3>{depart.curr} {depart.totalPrice.toFixed(2)}</h3>
+        <button className='form-control'>Select</button>
       </div>
 
     </div>

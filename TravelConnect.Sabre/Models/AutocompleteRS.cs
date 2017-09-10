@@ -58,11 +58,4 @@ namespace TravelConnect.Sabre.Models
         public string stateName { get; set; }
         public string state { get; set; }
     }
-
-    public class Link
-    {
-        public string rel { get; set; }
-        public string href { get; set; }
-    }
-
 }

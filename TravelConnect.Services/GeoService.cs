@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using TravelConnect.Interfaces;
 using TravelConnect.Models.Responses;
@@ -9,11 +12,14 @@ namespace TravelConnect.Services
 {
     public class GeoService : IGeoService
     {
-        ISabreConnector _SabreConnector;
+        private ISabreConnector _SabreConnector;
+        private IMemoryCache _cache;
 
-        public GeoService(ISabreConnector _SabreConnector)
+        public GeoService(ISabreConnector _SabreConnector,
+            IMemoryCache _cache)
         {
             this._SabreConnector = _SabreConnector;
+            this._cache = _cache;
         }
 
         public async Task<AirportAutocompleteRS> GetAirportAutocompleteAsync(string query)
@@ -44,6 +50,89 @@ namespace TravelConnect.Services
             }
 
             return autocompleteRs;
+        }
+
+        private GeoCodeRQ ConvertToGeoCodeRQ(string airportCode)
+        {
+            GeoCodeRQ rq = new GeoCodeRQ
+            {
+                Request = new Class1[]
+                {
+                    new Class1
+                    {
+                        GeoCodeRQ = new Geocoderq {
+                            PlaceById = new Placebyid
+                            {
+                                Id = airportCode,
+                                BrowseCategory = new Browsecategory
+                                {
+                                        name = "AIR"
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            return rq;
+        }
+
+        private AirportRS ConvertOtAirportRS(GeoCodeRS response)
+        {
+            var place = response.Results?.FirstOrDefault()?.GeoCodeRS?.Place?.FirstOrDefault();
+
+            if (place == null)
+                return null;
+
+            AirportRS rs = new AirportRS
+            {
+                Code = place.Id,
+                Name = place.Name,
+                Longitude = (decimal)place.longitude,
+                Latitude = (decimal)place.latitude,
+                CityName = place.City,
+                CountryCode = place.Country
+            };
+
+            return rs;
+        }
+
+        private async Task<AirportRS> SubmitAirtportByCodeAsync(string airportCode)
+        {
+            string result = await _SabreConnector.SendRequestAsync("/v1/lists/utilities/geocode/locations",
+                JsonConvert.SerializeObject(ConvertToGeoCodeRQ(airportCode).Request,
+                    Formatting.None, new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        DateFormatString = "yyyy-MM-ddTHH:mm:ss"
+                    }), true);
+
+            GeoCodeRS rs = JsonConvert.DeserializeObject<GeoCodeRS>(result);
+
+            return ConvertOtAirportRS(rs);
+        }
+
+
+        public async Task<AirportRS> GetAirtportByCodeAsync(string airportCode)
+        {
+            string key = string.Format("Airport_{0}", airportCode);
+            AirportRS cacheSearchRS;
+
+            if (!_cache.TryGetValue(key, out cacheSearchRS))
+            {
+                // Key not in cache, so get data.
+                cacheSearchRS = await SubmitAirtportByCodeAsync(airportCode);
+
+                // Set cache options.
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    // Keep in cache for this time, reset time if accessed.
+                    .SetSlidingExpiration(TimeSpan.FromHours(1));
+
+                // Save data in cache.
+                _cache.Set(key, cacheSearchRS, cacheEntryOptions);
+            }
+
+            return cacheSearchRS;
         }
     }
 }

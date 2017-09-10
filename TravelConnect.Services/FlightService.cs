@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TravelConnect.Interfaces;
-using TravelConnect.Interfaces.Models;
+using TravelConnect.Models.Requests;
 using TravelConnect.Models.Responses;
 using TravelConnect.Sabre;
 
@@ -22,11 +22,11 @@ namespace TravelConnect.Services
             this._cache = memoryCache;
         }
 
-        private async Task<SearchRS> GetAirLowFareSearch(SearchRQ request)
+        private async Task<FlightSearchRS> GetAirLowFareSearch(FlightSearchRQ request)
         {
             string result = await
             _SabreConnector.SendRequestAsync("/v3.2.0/shop/flights?mode=live&limit=200&offset=1",
-                JsonConvert.SerializeObject(request.AirLowFareSearchRQ(),
+                JsonConvert.SerializeObject(ConvertToAirLowFareSearchRQ(request),
                     Formatting.None, new JsonSerializerSettings
                     {
                         NullValueHandling = NullValueHandling.Ignore,
@@ -38,11 +38,11 @@ namespace TravelConnect.Services
 
             return ConvertToSearchRS(rs);
         }
-
-        public async Task<SearchRS> AirLowFareSearch(SearchRQ request)
+        
+        public async Task<FlightSearchRS> AirLowFareSearchAsync(FlightSearchRQ request)
         {
             string sRequest = JsonConvert.SerializeObject(request);
-            SearchRS cacheSearchRS;
+            FlightSearchRS cacheSearchRS;
 
             if (!_cache.TryGetValue(sRequest, out cacheSearchRS))
             {
@@ -61,12 +61,12 @@ namespace TravelConnect.Services
             return cacheSearchRS;
         }
 
-        private SearchRS ConvertToSearchRS(AirLowFareSearchRS airlowFare)
+        private FlightSearchRS ConvertToSearchRS(AirLowFareSearchRS airlowFare)
         {
             if (airlowFare == null)
                 return null;
 
-            SearchRS rs = new SearchRS
+            FlightSearchRS rs = new FlightSearchRS
             {
                 PricedItins = airlowFare.OTA_AirLowFareSearchRS
                     .PricedItineraries.PricedItinerary.Select(a =>
@@ -85,7 +85,7 @@ namespace TravelConnect.Services
                                             Elapsed = dest.ElapsedTime,
                                             Segments = dest.FlightSegment.Select(seg =>
                                             {
-                                                return new Interfaces.Models.Segment
+                                                return new SegmentRS
                                                 {
                                                      Origin = seg.DepartureAirport.LocationCode,
                                                      Destination = seg.ArrivalAirport.LocationCode,
@@ -124,6 +124,99 @@ namespace TravelConnect.Services
             };
 
             return rs;
+        }
+
+        private AirLowFareSearchRQ ConvertToAirLowFareSearchRQ(FlightSearchRQ request)
+        {
+
+            AirLowFareSearchRQ rq = new AirLowFareSearchRQ();
+            int segmentIndex = 1;
+            rq.OTA_AirLowFareSearchRQ = new OTA_Airlowfaresearchrq
+            {
+                AvailableFlightsOnly = request.AvailableFlightsOnly,
+                DirectFlightsOnly = request.DirectFlightsOnly,
+                Target = "Production",
+                POS = new POS
+                {
+                    Source = new Source[]
+                    {
+                            new Source
+                            {
+                                PseudoCityCode = "F9CE",
+                                RequestorID = new Requestorid
+                                {
+                                    Type = "1",
+                                    ID = "1",
+                                    CompanyName = new Companyname()
+                                }
+                            }
+                    }
+                },
+                OriginDestinationInformation = request.Segments.Select(s =>
+                    new Origindestinationinformation
+                    {
+                        RPH = (segmentIndex++).ToString(),
+                        DepartureDateTime = s.Departure,
+                        OriginLocation = new Originlocation
+                        {
+                            LocationCode = s.Origin
+                        },
+                        DestinationLocation = new Destinationlocation
+                        {
+                            LocationCode = s.Destination
+                        }
+                    }).ToArray(),
+                TravelerInfoSummary = new Travelerinfosummary
+                {
+                    SeatsRequested = new int[] { 1 },
+                    AirTravelerAvail = new Airtraveleravail[]
+                    {
+                            new Airtraveleravail
+                            {
+                                PassengerTypeQuantity = request.Ptcs.Select(p =>
+                                    new Models.Requests.Passengertypequantity
+                                    {
+                                        Code = p.Code,
+                                        Quantity = p.Quantity,
+                                        Changeable = false
+                                    }
+                                ).ToArray()
+                            }
+                    }
+                },
+                TravelPreferences = new Travelpreferences
+                {
+                    CabinPref = new Cabinpref[]
+                    {
+                            new Cabinpref
+                            {
+                                Cabin = "Y",
+                                PreferLevel = "Preferred"
+                            }
+                    },
+                    VendorPref = new Vendorpref[]
+                    {
+                            new Vendorpref
+                            {
+                                Code = "3K",
+                                PreferLevel = "Unacceptable"
+                            }
+                    }
+                },
+                TPA_Extensions = new Models.Requests.TPA_Extensions2
+                {
+                    IntelliSellTransaction = new Intelliselltransaction
+                    {
+                        RequestType = new Requesttype
+                        {
+                            Name = "200ITINS"
+                        }
+                    }
+                }
+            };
+
+            return rq;
+
         }
     }
 }
