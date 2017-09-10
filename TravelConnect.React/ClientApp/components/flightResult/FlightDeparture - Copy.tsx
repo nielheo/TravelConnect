@@ -54,43 +54,71 @@ export default class FlightDeparture extends React.Component<{ depart: any }, an
     const dateDiff = this._dateDiff(moment(firstSegment.departure.time),
       moment(lastSegment.arrival.time))
     const stopOvers: any = this._getStopOvers(firstLeg)
-    return <Panel>
-      <Row>
-        <Col md={9}>
+    return <section>
+      <Panel>
+        <Grid>
           <Row>
-            <Col md={4}>
-              <h4><b>{ moment(firstSegment.departure.time).format('HH:mm')
-                    + '-' + moment(lastSegment.arrival.time).format('HH:mm') } </b>
-                { (dateDiff ? ' (+' + dateDiff + ')' : '') }
-              </h4>
-            </Col>
-            <Col md={4}>
-              <h4><b>{this._durationFormat(firstLeg.elapsed)}</b></h4>
-
-              {firstSegment.origin + '-' +
-                firstLeg.segments.map((s: any) => s.destination).join('-')
-              }
-            </Col>
-            <Col md={4}>
-              <h4>
-                {
-                  firstLeg.segments.length === 1 ? 'Direct '
-                    : (firstLeg.segments.length - 1) + ' Stop'
-                    + (firstLeg.segments.length > 2 ? 's' : '')
-                }
-              </h4>
-              {
-                stopOvers && stopOvers.map((s: any) => <p>{s.code + ' ' + this._durationFormat(s.stopTime)}</p>)
-              }
+            <Col md={9}></Col>
+            <Col md={3}>
+              <h3>{depart.curr} {depart.totalPrice.toFixed(2)}</h3>
+              <button className='form-control'>Select</button>
             </Col>
           </Row>
+        </Grid>
+      </Panel>
+
+    <div className='row col-md-12 alert alert-primary card'>
+      <div className='col-md-9'>
+        <div className='col-md-12 clearfix'>
+          <div className='col-md-4'>
+            <h4>
+              <b>
+              {
+                moment(firstSegment.departure.time).format('HH:mm')
+                + '-' + moment(lastSegment.arrival.time).format('HH:mm')
+              }
+              </b>
+              {
+                (dateDiff ? ' (+' + dateDiff + ')' : '')
+              }
+            </h4>
+          </div>
+          <div className='col-md-4'>
+            <h4>
+              <b>
+                {
+                  this._durationFormat(firstLeg.elapsed)
+                }
+              </b>
+            </h4>
+              {firstSegment.origin + '-' +
+                firstLeg.segments.map((s:any) => s.destination).join('-')
+              }
+            
+          </div>
+          <div className='col-md-4'>
+            <h4>
+              {
+                firstLeg.segments.length === 1 ? 'Direct '
+                  : (firstLeg.segments.length - 1) + ' Stop'
+                  + (firstLeg.segments.length > 2 ? 's' : '')
+              }
+            </h4>
+            {
+              stopOvers && stopOvers.map((s: any) => <p>{s.code + ' ' + this._durationFormat(s.stopTime) }</p>)
+            }
+          </div>
+        </div>
+        <div className='col-md-12 clearfix'>
           <FlightDetails segments={firstLeg.segments} />
-        </Col>
-        <Col md={3}>
-          <h3 className='text-center'>{depart.curr} {depart.totalPrice.toFixed(2)}</h3>
-          <button className='form-control'>Select</button>
-        </Col>
-      </Row>
-    </Panel>
+        </div>
+      </div>
+      <div className='col-md-3'>
+        <h3>{depart.curr} {depart.totalPrice.toFixed(2)}</h3>
+        <button className='form-control'>Select</button>
+      </div>
+
+    </div>
+      </section>
   }
 }

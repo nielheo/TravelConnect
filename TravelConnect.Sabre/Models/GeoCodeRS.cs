@@ -33,11 +33,4 @@ namespace TravelConnect.Sabre.Models
         public string City { get; set; }
         public string Country { get; set; }
     }
-
-    public class Link
-    {
-        public string rel { get; set; }
-        public string href { get; set; }
-    }
-
 }

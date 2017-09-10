@@ -1,7 +1,7 @@
 ﻿import * as React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import * as queryString from 'query-string'
-
+import { Grid, Row, Col } from 'react-bootstrap'
 import FlightDeparture from './FlightDeparture'
 
 const CryptoJS = require('crypto-js') as any;
@@ -85,10 +85,8 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
   }
 
   public render() {
-    return <div className="col-md-12">
-
-      <div className="row">
-        <div className="col-md-12">
+    return <Row>
+        <Col md={12}>
           <h1>Select your flight</h1>
           {
             this.state.departures
@@ -97,9 +95,7 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
                 )
               : <h4>Loading......</h4>
           }
-        </div>
-      </div>
-
-    </div>
+        </Col>
+      </Row>
   }
 }

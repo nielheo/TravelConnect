@@ -1,6 +1,7 @@
 ﻿import * as React from 'react'
-
 import * as moment from 'moment'
+
+import { Row, Col } from 'react-bootstrap'
 
 import FlightDetail from './FlightDetail'
 
@@ -69,22 +70,23 @@ export default class FlightDetails extends React.Component<{ segments: any }, an
     const dateDiff = this._dateDiff(moment(firstSegment.departure.time),
       moment(lastSegment.arrival.time))
     const stopOvers: any = this._getStopOvers(firstLeg)*/
-    return <div className='row col-md-12'>
+    return <section>
       {this.state.showDetails
         ?
         <section>
-          <div>
-            {this.props.segments.map((s: any) => <FlightDetail segment={s} />)}
-          </div>
-          <div className='col-md-12' onClick={() => { this._handleShow(false) }}>
-            Hide flight details
-          </div>
+          <Row onClick={() => { this._handleShow(false) }}>
+            <Col md={12}>Hide flight details</Col>
+          </Row>
+          <Row className='bg-faded'>
+            <Col md={12}>{this.props.segments.map((s: any) => <FlightDetail segment={s} />)}</Col>
+          </Row>
+          
         </section>
-        : <div className='col-md-12' onClick={() => { this._handleShow(true) }}>
-            Show flight details
-          </div>
+        : <Row onClick={() => { this._handleShow(true) }}>
+            <Col md={12}>Show flight details</Col>
+          </Row>
       }
 
-    </div>
+    </section>
   }
 }

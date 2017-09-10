@@ -1,6 +1,6 @@
 ﻿import * as React from 'react'
-
 import * as moment from 'moment'
+import { Row, Col } from 'react-bootstrap'
 
 import * as Commons from '../Commons'
 
@@ -51,39 +51,30 @@ export default class FlightDetails extends React.Component<{ segment: any }, any
       </div>
     </div>
     {
-      originAirport && destinationAirport &&
       <section>
-        <div className='row col-md-12'>
-          <div className='col-md-3'>
+        <Row>
+          <Col md={9} mdOffset={3}>
+              {originAirport ? originAirport.cityName : segment.origin}
+              <i> to </i>
+              {destinationAirport ? destinationAirport.cityName : segment.destination }
+          </Col>
+        </Row>
+        <Row>
+          <Col md={9} mdOffset={3}>
+              {originAirport ? originAirport.name + ' (' + originAirport.code + ')' : segment.origin}
+              <i> to </i>
+              {destinationAirport ? destinationAirport.name + ' (' + destinationAirport.code + ')' : segment.destination }
+          </Col>
+        </Row>
+        <Row>
+          <Col md={9} mdOffset={3}>
+            {segment.marketingFlight.airline + ' ' + segment.marketingFlight.number}
 
-          </div>
-          <div className='col-md-9'>
-              {originAirport.cityName} to {destinationAirport.cityName}
-          </div>
-        
-        </div>
-        <div className='row col-md-12'>
-          <div className='col-md-3'>
-
-          </div>
-          <div className='col-md-9'>
-            {originAirport.name + ' (' + originAirport.code + ')'} to {destinationAirport.name + ' (' + destinationAirport.code + ')'}
-          </div>
-
-        </div>
-        <div className='row col-md-12'>
-          <div className='col-md-3'>
-
-          </div>
-          <div className='col-md-9'>
-              {segment.marketingFlight.airline + ' ' + segment.marketingFlight.number}
-
-              {segment.marketingFlight.airline !== segment.operatingFlight.airline
-                ? ' flight by ' + segment.operatingFlight.airline + ' ' + segment.operatingFlight.number
-                : ''}
-          </div>
-
-        </div>
+            {segment.marketingFlight.airline !== segment.operatingFlight.airline
+              ? ' flight by ' + segment.operatingFlight.airline + ' ' + segment.operatingFlight.number
+              : ''}
+          </Col>
+        </Row>
       </section>
     }
     </section>
