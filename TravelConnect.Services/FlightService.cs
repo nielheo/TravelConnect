@@ -182,6 +182,10 @@ namespace TravelConnect.Services
                                     }
                                 ).ToArray()
                             }
+                    },
+                    PriceRequestInformation = new Pricerequestinformation
+                    {
+                        CurrencyCode = "THB"
                     }
                 },
                 TravelPreferences = new Travelpreferences
@@ -194,14 +198,14 @@ namespace TravelConnect.Services
                                 PreferLevel = "Preferred"
                             }
                     },
-                    VendorPref = new Vendorpref[]
-                    {
-                            new Vendorpref
-                            {
-                                Code = "3K",
-                                PreferLevel = "Unacceptable"
-                            }
-                    }
+                    //VendorPref = new Vendorpref[]
+                    //{
+                    //        new Vendorpref
+                    //        {
+                    //            Code = "AF",
+                    //            PreferLevel = "Preferred"
+                    //        }
+                    //}
                 },
                 TPA_Extensions = new Models.Requests.TPA_Extensions2
                 {

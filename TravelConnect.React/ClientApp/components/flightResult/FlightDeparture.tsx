@@ -53,15 +53,22 @@ export default class FlightDeparture extends React.Component<{ depart: any }, an
     const dateDiff = this._dateDiff(moment(firstSegment.departure.time),
       moment(lastSegment.arrival.time))
     const stopOvers: any = this._getStopOvers(firstLeg)
+    const airlines = Array.from(new Set(firstLeg.segments.map((s: any) => s.marketingFlight.airline))).join(',')
     return <Panel>
       <Row>
-        <Col md={9}>
+        <Col md={1}>
+          <img width={50} src={'https://images.trvl-media.com/media/content/expus/graphics/static_content/fusion/v0.1b/images/airlines/vector/s/' + airlines + '_sq.svg'} />
+        </Col>
+        <Col md={8}>
           <Row>
             <Col md={4}>
               <h4><b>{moment(firstSegment.departure.time).format('HH:mm')
                 + '-' + moment(lastSegment.arrival.time).format('HH:mm')} </b>
                 {(dateDiff ? ' (+' + dateDiff + ')' : '')}
               </h4>
+              {
+                Array.from(new Set(firstLeg.segments.map((s: any) => s.marketingFlight.airline))).join(',')
+              }
             </Col>
             <Col md={4}>
               <h4><b>{this._durationFormat(firstLeg.elapsed)}</b></h4>

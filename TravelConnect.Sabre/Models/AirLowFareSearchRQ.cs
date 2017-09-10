@@ -82,6 +82,8 @@ namespace TravelConnect.Models.Requests
     public class Vendorpref
     {
         public string Code { get; set; }
+
+        //Valid values are: 'Only', 'Unacceptable', 'Preferred'.
         public string PreferLevel { get; set; }
     }
 
@@ -98,6 +100,7 @@ namespace TravelConnect.Models.Requests
         public bool NegotiatedFaresOnly { get; set; }
         public bool Reprice { get; set; }
         public bool ProcessThruFaresOnly { get; set; }
+        public string CurrencyCode { get; set; }
         public TPA_Extensions1 TPA_Extensions { get; set; }
     }
 
