@@ -5,6 +5,15 @@ namespace TravelConnect.Sabre.Models
     public class AirLowFareSearchRS : BaseRS
     {
         public OTA_Airlowfaresearchrs OTA_AirLowFareSearchRS { get; set; }
+        public string RequestId { get; set; }
+        public Page Page { get; set; }
+    }
+
+    public class Page
+    {
+        public int Size { get; set; }
+        public int TotalTags { get; set; }
+        public int Offset { get; set; }
     }
 
     public class OTA_Airlowfaresearchrs

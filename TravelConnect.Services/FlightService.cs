@@ -15,17 +15,17 @@ namespace TravelConnect.Services
     {
         private ISabreConnector _SabreConnector;
         private IMemoryCache _cache;
-
+        
         public FlightService(ISabreConnector _SabreConnector, IMemoryCache memoryCache)
         {
             this._SabreConnector = _SabreConnector;
             this._cache = memoryCache;
         }
 
-        private async Task<FlightSearchRS> GetAirLowFareSearch(FlightSearchRQ request)
+        private async Task<FlightSearchRS> SubmitAirLowFareSearch(FlightSearchRQ request)
         {
             string result = await
-            _SabreConnector.SendRequestAsync("/v3.2.0/shop/flights?mode=live&limit=200&offset=1",
+            _SabreConnector.SendRequestAsync("/v3.2.0/shop/flights?mode=live&limit=200&offset=1&enabletagging=true",
                 JsonConvert.SerializeObject(ConvertToAirLowFareSearchRQ(request),
                     Formatting.None, new JsonSerializerSettings
                     {
@@ -39,15 +39,27 @@ namespace TravelConnect.Services
             return ConvertToSearchRS(rs);
         }
 
+        private async Task<FlightSearchRS> SubmitNextAirLowFareSearch(string requestId, int page)
+        {
+            string result = await
+                _SabreConnector.SendRequestAsync(
+                    string.Format("/v3.2.0/shop/flights/{0}", requestId),
+                    string.Format("mode=live&limit=200&offset={0}", page), false);
+
+            AirLowFareSearchRS rs = JsonConvert.DeserializeObject<AirLowFareSearchRS>(result);
+
+            return ConvertToSearchRS(rs);
+        }
+
         public async Task<FlightSearchRS> AirLowFareSearchAsync(FlightSearchRQ request)
         {
-            string sRequest = JsonConvert.SerializeObject(request);
+            string sRequest = "AirLowFare_" + JsonConvert.SerializeObject(request);
             FlightSearchRS cacheSearchRS;
 
             if (!_cache.TryGetValue(sRequest, out cacheSearchRS))
             {
                 // Key not in cache, so get data.
-                cacheSearchRS = await GetAirLowFareSearch(request);
+                cacheSearchRS = await SubmitAirLowFareSearch(request);
 
                 // Set cache options.
                 var cacheEntryOptions = new MemoryCacheEntryOptions()
@@ -68,6 +80,13 @@ namespace TravelConnect.Services
 
             FlightSearchRS rs = new FlightSearchRS
             {
+                RequestId = airlowFare.RequestId,
+                Page = new Models.Responses.Page
+                {
+                     Size = airlowFare.Page.Size,
+                     Offset = airlowFare.Page.Offset,
+                     TotalTags = airlowFare.Page.TotalTags
+                },
                 PricedItins = airlowFare.OTA_AirLowFareSearchRS
                     .PricedItineraries.PricedItinerary.Select(a =>
                     {
@@ -267,6 +286,28 @@ namespace TravelConnect.Services
             }
 
             return cache;
+        }
+
+        public async Task<FlightSearchRS> NextAirLowFareSearchAsync(string requestId, int page)
+        {
+            string key = string.Format("NextAirLowFare_{0}_{1}", requestId, page);
+            FlightSearchRS cacheSearchRS;
+
+            if (!_cache.TryGetValue(key, out cacheSearchRS))
+            {
+                // Key not in cache, so get data.
+                cacheSearchRS = await SubmitNextAirLowFareSearch(requestId, page);
+
+                // Set cache options.
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    // Keep in cache for this time, reset time if accessed.
+                    .SetSlidingExpiration(TimeSpan.FromHours(1));
+
+                // Save data in cache.
+                _cache.Set(key, cacheSearchRS, cacheEntryOptions);
+            }
+
+            return cacheSearchRS;
         }
     }
 }

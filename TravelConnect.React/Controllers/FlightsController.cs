@@ -7,7 +7,6 @@ using TravelConnect.Models.Responses;
 namespace TravelConnect.React.Controllers
 {
     [Produces("application/json")]
-    [Route("api/flights")]
     public class FlightsController : Controller
     {
         private IFlightService _FlightService;
@@ -18,9 +17,17 @@ namespace TravelConnect.React.Controllers
         }
 
         [HttpPost]
+        [Route("api/flights")]
         public async Task<FlightSearchRS> Post([FromBody]FlightSearchRQ request)
         {
             return await _FlightService.AirLowFareSearchAsync(request);
+        }
+
+        [HttpGet]
+        [Route("api/flights/{id}")]
+        public async Task<FlightSearchRS> Get(string id, int page)
+        {
+            return await _FlightService.NextAirLowFareSearchAsync(id, page);
         }
     }
 }

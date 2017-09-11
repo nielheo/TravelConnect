@@ -55,5 +55,15 @@ namespace TravelConnect.Models.Responses
     public class FlightSearchRS
     {
         public List<PricedItin> PricedItins { get; set; }
+        public string RequestId { get; set; }
+        public Page Page { get; set; }
+    }
+
+    [NotMapped]
+    public class Page
+    {
+        public int Size { get; set; }
+        public int TotalTags { get; set; }
+        public int Offset { get; set; }
     }
 }

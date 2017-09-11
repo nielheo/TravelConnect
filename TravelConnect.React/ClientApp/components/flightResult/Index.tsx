@@ -19,24 +19,30 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
 
     this.state = {
       ...data,
-      result: null
+      result: null,
+      totalPage: 0,
+      fetchPage: 0,
+      requestId: ''
     }
   }
 
   _GenerateRoute = (result: any) => {
     let x: number = 0
-    result.pricedItins.map((i: any) => {
-      i.itinNo = x++
-      i.legs.map((l: any) => {
-        l.routes = l.segments.map((s: any) => {
-          return s.marketingFlight.airline + s.marketingFlight.number
-        }).join('-') + ':' + i.curr + i.totalPrice.toFixed(2)
+    if (result) {
+      result.pricedItins.map((i: any) => {
+        i.itinNo = x++
+        i.legs.map((l: any) => {
+          l.routes = l.segments.map((s: any) => {
+            return s.marketingFlight.airline + s.marketingFlight.number
+          }).join('-') + ':' + i.curr + i.totalPrice.toFixed(2)
+        })
       })
-    })
+    }
     return result
   }
 
   _GetDepartures = () => {
+    console.log(this.state.result)
     let departs: any[] = []
     this.state.result.pricedItins.map((r: any) => {
       if (!departs.filter(d => d.legs[0].routes === r.legs[0].routes).length)
@@ -44,6 +50,36 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
     })
 
     return departs
+  }
+
+  _loadNext = (requestId: string, page: number) => {
+    console.log(requestId)
+    fetch('/api/flights/' + requestId + '?page=' + page, {
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept-Encoding': 'gzip',
+      },
+    }).then(res => res.json())
+      .then(res => {
+        //console.log(res)
+        let result = this._GenerateRoute(res)
+        //console.log(result)
+        let currResult = this.state.result
+        result.pricedItins.map((itin: any) => {
+          currResult.pricedItins.push(itin)
+        })
+        //console.log(currResult)
+        this.setState({
+          result: currResult,
+          totalPage: res.page.totalTags, fetchPage: 1, requestId: res.requestId
+        })
+      })
+      .then(() => this.setState({ departures: this._GetDepartures() }))
+      .then(res => {
+        this.setState({ result: this._GenerateRoute(res), fetchPage: page })
+      })
+  //    .then(() => this.setState({ departures: this._GetDepartures() }))
   }
 
   componentDidMount() {
@@ -80,19 +116,26 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
       },
       body: JSON.stringify(request)
     }).then(res => res.json())
-      .then(res => this.setState({ result: this._GenerateRoute(res) }))
+      .then(res => {
+        this.setState({ result: this._GenerateRoute(res), totalPage: res.page.totalTags, fetchPage: 1, requestId: res.requestId })
+      })
       .then(() => this.setState({ departures: this._GetDepartures() }))
+      .then(() => this._loadNext(this.state.requestId, 2))
   }
 
   public render() {
     return <Row>
       <Col md={12}>
         <h1>Select your flight</h1>
+        
         {
           this.state.departures
-            ? this.state.departures.map((r: any) =>
-              <FlightDeparture depart={r} key={r.itinNo} />
-            )
+            ? <section>
+              <h3>Select from {this.state.departures.length} Departures Flight</h3>
+              <h3>Fetch {this.state.fetchPage} from {this.state.totalPage}</h3>
+              {
+                this.state.departures.map((r: any) =>
+                  <FlightDeparture depart={r} key={r.itinNo} />)} </section>
             : <h4>Loading......</h4>
         }
       </Col>

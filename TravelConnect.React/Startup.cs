@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -24,6 +25,9 @@ namespace TravelConnect_React
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            services.Configure<GzipCompressionProviderOptions>(options => options.Level = System.IO.Compression.CompressionLevel.Optimal);
+            services.AddResponseCompression();
 
             var connection =
                     "Data Source=(local);" +
@@ -54,6 +58,8 @@ namespace TravelConnect_React
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseResponseCompression();
 
             app.UseStaticFiles();
 
