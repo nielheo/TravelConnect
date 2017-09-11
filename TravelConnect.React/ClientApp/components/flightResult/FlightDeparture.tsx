@@ -67,7 +67,7 @@ export default class FlightDeparture extends React.Component<{ depart: any }, an
                 {(dateDiff ? ' (+' + dateDiff + ')' : '')}
               </h4>
               {
-                Array.from(new Set(firstLeg.segments.map((s: any) => s.marketingFlight.airline))).join(',')
+                //Array.from(new Set(firstLeg.segments.map((s: any) => s.marketingFlight.airline))).join(',')
               }
             </Col>
             <Col md={4}>

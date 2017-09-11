@@ -57,6 +57,7 @@ namespace TravelConnect.Models.Responses
         public List<PricedItin> PricedItins { get; set; }
         public string RequestId { get; set; }
         public Page Page { get; set; }
+        public List<string> Airlines { get; set; }
     }
 
     [NotMapped]

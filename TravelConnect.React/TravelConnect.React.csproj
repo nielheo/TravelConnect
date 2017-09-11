@@ -39,7 +39,6 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\components\Commons.tsx" />
-    <TypeScriptCompile Include="ClientApp\components\flightResult\FlightDeparture - Copy.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightResult\FlightDeparture.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightResult\FlightDetail.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightResult\FlightDetails.tsx" />

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TravelConnect.Interfaces;
@@ -51,7 +52,7 @@ namespace TravelConnect.Services
             return ConvertToSearchRS(rs);
         }
 
-        public async Task<FlightSearchRS> AirLowFareSearchAsync(FlightSearchRQ request)
+        private async Task<FlightSearchRS> RetrieveAirLowFareSearch(FlightSearchRQ request)
         {
             string sRequest = "AirLowFare_" + JsonConvert.SerializeObject(request);
             FlightSearchRS cacheSearchRS;
@@ -62,20 +63,52 @@ namespace TravelConnect.Services
                 cacheSearchRS = await SubmitAirLowFareSearch(request);
 
                 // Set cache options.
-                var cacheEntryOptions = new MemoryCacheEntryOptions()
-                    // Keep in cache for this time, reset time if accessed.
-                    .SetSlidingExpiration(TimeSpan.FromHours(1));
 
-                // Save data in cache.
-                _cache.Set(sRequest, cacheSearchRS, cacheEntryOptions);
+                if (cacheSearchRS != null)
+                {
+                    var cacheEntryOptions = new MemoryCacheEntryOptions()
+                        // Keep in cache for this time, reset time if accessed.
+                        .SetSlidingExpiration(TimeSpan.FromHours(1));
+                    
+                    // Save data in cache.
+                    _cache.Set(sRequest, cacheSearchRS, cacheEntryOptions);
+                }
             }
 
             return cacheSearchRS;
         }
 
+        private List<string> GetAirlines(FlightSearchRS rs)
+        {
+            if (rs == null)
+                return new List<string>();
+            return rs.PricedItins.SelectMany(p => p.Legs.SelectMany(l => l.Segments.Select(s=>s.MarketingFlight.Airline)))
+                .Distinct().ToList();
+        }
+
+        public async Task<FlightSearchRS> AirLowFareSearchAsync(FlightSearchRQ request)
+        {
+            FlightSearchRS rs = await RetrieveAirLowFareSearch(request);
+
+            if (request.Segments.Count == 1 || (request.Airlines?.Count ?? 0) > 0)
+            {
+                rs.Airlines = GetAirlines(rs);
+            } else
+            {
+                request.Segments = new List<SegmentRQ>
+                {
+                    request.Segments.First()
+                };
+                FlightSearchRS ow = await RetrieveAirLowFareSearch(request);
+                rs.Airlines = GetAirlines(ow);
+            }
+
+            return rs;
+        }
+
         private FlightSearchRS ConvertToSearchRS(AirLowFareSearchRS airlowFare)
         {
-            if (airlowFare == null)
+            if (airlowFare?.Page == null)
                 return null;
 
             FlightSearchRS rs = new FlightSearchRS
@@ -148,6 +181,8 @@ namespace TravelConnect.Services
 
         private AirLowFareSearchRQ ConvertToAirLowFareSearchRQ(FlightSearchRQ request)
         {
+            if (request.Airlines == null)
+                request.Airlines = new List<string>();
             AirLowFareSearchRQ rq = new AirLowFareSearchRQ();
             int segmentIndex = 1;
             rq.OTA_AirLowFareSearchRQ = new OTA_Airlowfaresearchrq
@@ -217,6 +252,11 @@ namespace TravelConnect.Services
                                 PreferLevel = "Preferred"
                             }
                     },
+                    VendorPref = request.Airlines.Select(air => new Vendorpref
+                    {
+                        Code = air.ToUpper(),
+                        PreferLevel = "Only"
+                    }).ToArray()
                     //VendorPref = new Vendorpref[]
                     //{
                     //        new Vendorpref
@@ -232,7 +272,7 @@ namespace TravelConnect.Services
                     {
                         RequestType = new Requesttype
                         {
-                            Name = "200ITINS"
+                            Name = "2000ITINS"
                         }
                     }
                 }

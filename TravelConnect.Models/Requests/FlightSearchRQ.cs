@@ -22,5 +22,6 @@ namespace TravelConnect.Models.Requests
         public List<PtcRQ> Ptcs { get; set; }
         public bool AvailableFlightsOnly { get; set; }
         public bool DirectFlightsOnly { get; set; }
+        public List<string> Airlines { get; set; }
     }
 }
