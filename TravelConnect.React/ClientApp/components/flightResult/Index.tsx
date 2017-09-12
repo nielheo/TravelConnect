@@ -3,6 +3,9 @@ import { RouteComponentProps } from 'react-router-dom'
 import * as queryString from 'query-string'
 import { Grid, Row, Col, Pagination } from 'react-bootstrap'
 import FlightDeparture from './FlightDeparture'
+import FilterAirline from './FilterAirline'
+
+import * as Commons from '../Commons'
 
 import * as moment from 'moment'
 
@@ -52,18 +55,23 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
           }).join('-') + ':' + i.curr + i.totalPrice.toFixed(2)
           l.airlines = l.segments.map((s: any) => {
             return s.marketingFlight.airline
-          }).join(',')
+          })
         })
       })
 
       result.pricedItins.map((i: any) => {
         i.routes = i.legs.map((l: any) => l.routes).join('|')
-        //i.airlines = i.legs.map((l: any) => l.airlines).join(',')
+        i.airlines = [] 
+        i.legs.map((l: any) => l.airlines.map((l2: any) => i.airlines.push(l2)))
+        i.uniqueAirline = Array.from(new Set(i.airlines)).join(',')
+        if (i.uniqueAirline.indexOf(',') > -1)
+          i.uniqueAirline = 'Multi'
       })
     }
     return result
   }
 
+  
   _GetDepartures = () => {
     if (this.state.result) {
 
@@ -162,10 +170,13 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
         this.setState({ result: this._GenerateRoute(res), requestId: res.requestId })
       })
       .then(() => this.setState({ departures: this._GetDepartures() }))
+      .then(() => this.setState({ airlines: this._setAirlineList(this.state.departures) }))
       .then(() => this.state.result.airlines.map((airline: any) => {
         let req = this._generateRequest(airline)
         this._sendRequest(req).then(res => this._GenerateRoute(res))
           .then(res => {
+            if (airline === 'PR')
+              console.log(res)
             if (res) {
               let result = this.state.result
               res.pricedItins.map((i: any) => {
@@ -179,6 +190,18 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
             }
             //console.log(result)
           }).then(() => this.setState({ departures: this._GetDepartures() }))
+          .then(() => {
+            let airlines1 = this.state.airlines.filter((d: any) => d.code !== airline)
+            //console.log(airline)
+            //console.log(airlines1)
+            airlines1.push({
+              code: airline,
+              loaded: true,
+              count: this.state.departures.filter((d: any) => d.uniqueAirline === airline).length
+            })
+
+            this.setState({ airlines: airlines1.sort(this._compareAirlineList)})
+          })
       }))
   }
 
@@ -190,6 +213,32 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
     }
   }
 
+  _compareAirlineList = (a: any, b: any) => {
+    if (a.code < b.code)
+      return -1
+    if (a.code > b.code)
+      return 1
+
+    return 0
+  }
+
+  _setAirlineList = (departures: any) => {
+    if (!departures)
+      return {}
+
+    let airlines = Array.from(new Set(departures.map((d: any) => d.uniqueAirline)))
+
+    let a = airlines.map((airline: any) => {
+      return {
+        code: airline,
+        count: departures.filter((d: any) => d.uniqueAirline === airline).length,
+        loaded: airline === 'Multi' ? true : false,
+      }
+    })
+
+    return a.sort(this._compareAirlineList)
+  }
+
   public render() {
     
     let _totalItems = this.state.departures ? this.state.departures.length : 0
@@ -197,9 +246,12 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
     let _page = this.state.page > _totalPages ? _totalPages : this.state.page
     let _startIndex = (_page - 1) * this.state.itemsPerPage
     let _endIndex = _page * this.state.itemsPerPage
+    //console.log(this.state.airlines)
+    //this._setUniqueAirline(this.state.departures)
     return <Row>
       <Col md={3}>
         <h4>Filter Results:</h4>
+        <FilterAirline airlines={this.state.airlines} />
       </Col>
       <Col md={9}>
         <h1>Select your flight</h1>
@@ -207,8 +259,8 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
         {
           this.state.departures
             ? <section>
-              <h4>Select from {this.state.departures.length} Departures Flight</h4>
-              <h4>{this.state.result ? this.state.result.pricedItins.length : 0} Routes available</h4>
+              <h4>Select from {Commons.FormatNum(this.state.departures.length)} Departures Flight</h4>
+              <h4>{this.state.result ? Commons.FormatNum(this.state.result.pricedItins.length) : 0} Routes available</h4>
               <Row className="text-right">
                 <Col md={12}>
                   <Pagination

@@ -30,7 +30,6 @@ export default class FlightDetails extends React.Component<{ segment: any }, any
   }
 
   componentDidMount() {
-    console.log('FlightDetail-DidMount')
     const { segment } = this.props
     Commons._GetAirport(segment.origin).then((res: any) => { this.setState({ originAirport: res }) })
     Commons._GetAirport(segment.destination).then((res: any) => { this.setState({ destinationAirport: res }) })
