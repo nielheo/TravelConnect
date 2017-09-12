@@ -115,7 +115,9 @@ namespace TravelConnect.Services
                     request.Segments.First()
                 };
                 FlightSearchRS ow = await RetrieveAirLowFareSearch(request);
-                rs.Airlines = GetAirlines(ow);
+                rs.Airlines = ((ow?.PricedItins?.Count ?? 0) > 0) 
+                    ? GetAirlines(ow)
+                    : GetAirlines(rs);
             }
 
             return rs;

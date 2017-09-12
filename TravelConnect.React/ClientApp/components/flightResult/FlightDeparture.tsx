@@ -88,7 +88,7 @@ export default class FlightDeparture extends React.Component<{ depart: any }, an
                 }
               </h4>
               {
-                stopOvers && stopOvers.map((s: any) => <p>{s.code + ' ' + this._durationFormat(s.stopTime)}</p>)
+                stopOvers && stopOvers.map((s: any) => <p key={s.code}>{s.code + ' ' + this._durationFormat(s.stopTime)}</p>)
               }
             </Col>
           </Row>
