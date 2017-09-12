@@ -25,19 +25,26 @@ namespace TravelConnect.Services
 
         private async Task<FlightSearchRS> SubmitAirLowFareSearch(FlightSearchRQ request)
         {
-            string result = await
-            _SabreConnector.SendRequestAsync("/v3.2.0/shop/flights?mode=live&limit=200&offset=1&enabletagging=true",
-                JsonConvert.SerializeObject(ConvertToAirLowFareSearchRQ(request),
-                    Formatting.None, new JsonSerializerSettings
-                    {
-                        NullValueHandling = NullValueHandling.Ignore,
-                        DateFormatString = "yyyy-MM-ddTHH:mm:ss"
-                    }), true);
+            try
+            {
+                string result = await
+                _SabreConnector.SendRequestAsync("/v3.2.0/shop/flights?mode=live&limit=200&offset=1&enabletagging=true",
+                    JsonConvert.SerializeObject(ConvertToAirLowFareSearchRQ(request),
+                        Formatting.None, new JsonSerializerSettings
+                        {
+                            NullValueHandling = NullValueHandling.Ignore,
+                            DateFormatString = "yyyy-MM-ddTHH:mm:ss"
+                        }), true);
 
-            AirLowFareSearchRS rs =
-            JsonConvert.DeserializeObject<AirLowFareSearchRS>(result);
+                AirLowFareSearchRS rs =
+                JsonConvert.DeserializeObject<AirLowFareSearchRS>(result);
 
-            return ConvertToSearchRS(rs);
+                return ConvertToSearchRS(rs);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         private async Task<FlightSearchRS> SubmitNextAirLowFareSearch(string requestId, int page)
@@ -61,6 +68,14 @@ namespace TravelConnect.Services
             {
                 // Key not in cache, so get data.
                 cacheSearchRS = await SubmitAirLowFareSearch(request);
+
+                if (cacheSearchRS == null)
+                {
+                    cacheSearchRS = new FlightSearchRS
+                    {
+                        PricedItins = new List<PricedItin>()
+                    };
+                }
 
                 // Set cache options.
 
@@ -255,7 +270,7 @@ namespace TravelConnect.Services
                     VendorPref = request.Airlines.Select(air => new Vendorpref
                     {
                         Code = air.ToUpper(),
-                        PreferLevel = "Only"
+                        PreferLevel = "Preferred"
                     }).ToArray()
                     //VendorPref = new Vendorpref[]
                     //{
@@ -272,7 +287,7 @@ namespace TravelConnect.Services
                     {
                         RequestType = new Requesttype
                         {
-                            Name = "2000ITINS"
+                            Name = "200ITINS"
                         }
                     }
                 }

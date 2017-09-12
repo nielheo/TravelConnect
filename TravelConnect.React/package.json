@@ -5,6 +5,7 @@
   "dependencies": {
     "@types/crypto-js": "^3.1.35",
     "@types/history": "4.6.0",
+    "@types/material-ui": "^0.18.0",
     "@types/memory-cache": "0.0.31",
     "@types/query-string": "^5.0.0",
     "@types/react": "15.0.35",
@@ -35,6 +36,7 @@
     "history": "4.6.3",
     "jquery": "3.2.1",
     "json-loader": "0.5.4",
+    "material-ui": "^0.19.1",
     "memory-cache": "^0.2.0",
     "moment": "^2.18.1",
     "node-noop": "1.0.0",
