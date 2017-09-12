@@ -45,6 +45,13 @@ export default class FlightDeparture extends React.Component<{ depart: any }, an
     return stopOvers
   }
 
+  _format = (num: Number) => {
+    var n = num.toString(), p = n.indexOf('.');
+    return n.replace(/\d(?=(?:\d{3})+(?:\.|$))/g, function ($0, i) {
+      return p < 0 || i < p ? ($0 + ',') : $0;
+    });
+  }
+
   public render() {
     const { depart } = this.props
     const firstLeg = depart.legs[0]
@@ -93,7 +100,7 @@ export default class FlightDeparture extends React.Component<{ depart: any }, an
           <FlightDetails segments={firstLeg.segments} />
         </Col>
         <Col md={3}>
-          <h3 className='text-center'>{depart.curr} {depart.totalPrice.toFixed(2)}</h3>
+          <h3 className='text-center'>{depart.curr} {this._format(depart.totalPrice.toFixed(0))}</h3>
           <button className='form-control'>Select</button>
         </Col>
       </Row>

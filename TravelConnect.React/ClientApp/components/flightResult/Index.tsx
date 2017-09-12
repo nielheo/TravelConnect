@@ -22,6 +22,7 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
       page: 1,
       itemsPerPage: 20,
       requestId: '',
+      airlines: []
     }
   }
 
@@ -49,11 +50,15 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
           l.routes = l.segments.map((s: any) => {
             return s.marketingFlight.airline + s.marketingFlight.number
           }).join('-') + ':' + i.curr + i.totalPrice.toFixed(2)
+          l.airlines = l.segments.map((s: any) => {
+            return s.marketingFlight.airline
+          }).join(',')
         })
       })
 
       result.pricedItins.map((i: any) => {
         i.routes = i.legs.map((l: any) => l.routes).join('|')
+        //i.airlines = i.legs.map((l: any) => l.airlines).join(',')
       })
     }
     return result
@@ -149,7 +154,7 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
       }).catch(err => { })
     //.then(res => console.log(res))
   }
-
+  
   componentDidMount() {
     let request = this._generateRequest(null)
     return this._sendRequest(request)
@@ -193,7 +198,10 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
     let _startIndex = (_page - 1) * this.state.itemsPerPage
     let _endIndex = _page * this.state.itemsPerPage
     return <Row>
-      <Col md={12}>
+      <Col md={3}>
+        <h4>Filter Results:</h4>
+      </Col>
+      <Col md={9}>
         <h1>Select your flight</h1>
         
         {
@@ -218,7 +226,24 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
               </Row>
               {
                 this.state.departures.slice(_startIndex, _endIndex).map((r: any) =>
-                  <FlightDeparture depart={r} />)} </section>
+                  <FlightDeparture depart={r} />)}
+              <Row className="text-right">
+                <Col md={12}>
+                  <Pagination
+                    prev
+                    next
+                    first
+                    last
+                    ellipsis
+                    boundaryLinks
+                    items={_totalPages}
+                    maxButtons={5}
+                    activePage={_page}
+                    onSelect={this._handlePageChange} />
+                </Col>
+              </Row>
+
+            </section>
             : <h4>Loading......</h4>
         }
       </Col>

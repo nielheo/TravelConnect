@@ -20,7 +20,7 @@ export default class FlightDetails extends React.Component<{ segments: any }, an
       })
     }
   }
-  
+
   public render() {
     return <section>
       {this.state.showDetails
