@@ -73,6 +73,8 @@ namespace TravelConnect_React
                     name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
             });
+            
+            
         }
     }
 }

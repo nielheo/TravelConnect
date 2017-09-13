@@ -3,6 +3,7 @@ using System.Diagnostics;
 
 namespace TravelConnect_React.Controllers
 {
+    [RequestSizeLimit(100000000)]
     public class HomeController : Controller
     {
         public IActionResult Index()

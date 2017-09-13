@@ -10,6 +10,7 @@ namespace TravelConnect.React.Controllers
 {
     [Produces("application/json")]
     [Route("api/airlines/{id}")]
+    [RequestSizeLimit(100000000)]
     public class AirlinesController : Controller
     {
         private IFlightService _FlightService;

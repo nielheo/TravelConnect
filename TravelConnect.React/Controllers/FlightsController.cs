@@ -7,6 +7,7 @@ using TravelConnect.Models.Responses;
 namespace TravelConnect.React.Controllers
 {
     [Produces("application/json")]
+    [RequestSizeLimit(100000000)]
     public class FlightsController : Controller
     {
         private IFlightService _FlightService;

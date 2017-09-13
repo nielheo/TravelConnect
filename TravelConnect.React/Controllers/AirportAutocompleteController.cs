@@ -7,6 +7,7 @@ namespace TravelConnect.React.Controllers
 {
     [Produces("application/json")]
     [Route("api/airportautocomplete")]
+    [RequestSizeLimit(100000000)]
     public class AirportAutocompleteController : Controller
     {
         private IGeoService _GeoService;

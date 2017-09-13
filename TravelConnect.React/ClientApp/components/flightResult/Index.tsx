@@ -31,6 +31,7 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
     }
   }
 
+  //Compares
   _compareDepart = (a: any, b: any) => {
     if (a.totalPrice < b.totalPrice)
       return -1;
@@ -44,6 +45,15 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
       return 1
 
     return 0;
+  }
+
+  _compareAirlineList = (a: any, b: any) => {
+    if (a.code < b.code)
+      return -1
+    if (a.code > b.code)
+      return 1
+
+    return 0
   }
 
   _GenerateRoute = (result: any) => {
@@ -70,6 +80,10 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
         i.uniqueAirline = Array.from(new Set(i.airlines)).join(',')
         if (i.uniqueAirline.indexOf(',') > -1)
           i.uniqueAirline = 'Multi'
+
+        i.departUniqueAirline = Array.from(new Set(i.legs[0].airlines)).join(',')
+        if (i.departUniqueAirline.indexOf(',') > -1)
+          i.departUniqueAirline = 'Multi'
       })
     }
     return result
@@ -171,11 +185,12 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
     let request = this._generateRequest(null)
     return this._sendRequest(request)
       .then(res => {
+        //console.log(res)
         this.setState({ result: this._GenerateRoute(res), requestId: res.requestId })
         //console.log(this.state.result.airlines)
       })
       .then(() => this.setState({ departures: this._GetDepartures() }))
-      .then(() => this.setState({ airlines: this._setAirlineList(this.state.departures) }))
+      .then(() => this.setState({ airlines: this._setAirlineList(this.state.departures, this.state.result.airlines) }))
       .then(() => this.state.result.airlines.map((airline: any) => {
         //console.log(airline)
         let req = this._generateRequest(airline)
@@ -225,14 +240,7 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
     }
   }
 
-  _compareAirlineList = (a: any, b: any) => {
-    if (a.code < b.code)
-      return -1
-    if (a.code > b.code)
-      return 1
-
-    return 0
-  }
+  
 
   _setStopList = (departures: any) => {
     let stops = Array.from(new Set(departures.map((d: any) => d.departStop)))
@@ -247,16 +255,17 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
     return s
   }
 
-  _setAirlineList = (departures: any) => {
+  _setAirlineList = (departures: any, airlines: any[]) => {
+    //console.log(departures)
     if (!departures)
-      return {}
-
-    let airlines = Array.from(new Set(departures.map((d: any) => d.uniqueAirline)))
+      return []
+    
+    //let airlines = Array.from(new Set(departures.map((d: any) => d.departUniqueAirline)))
     
     let a = airlines.map((airline: any) => {
       return {
         code: airline,
-        count: departures.filter((d: any) => d.uniqueAirline === airline).length,
+        count: departures.filter((d: any) => d.departUniqueAirline === airline).length,
         loaded: airline === 'Multi' ? true : false,
         selected: false,
       }
@@ -264,6 +273,8 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
 
     return a.sort(this._compareAirlineList)
   }
+
+
 
   _setStopFilter = (a: any, b: any) => {
     let stops1 = this.state.stops.filter((stop: any) => stop.stop !== b.stop)
@@ -293,18 +304,58 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
     })
   }
 
-  public render() {
-    let selectedStop = this.state.stops.filter((stop: any) => stop.selected).map((s: any) => s.stop)
-    let selectedAirlines = this.state.airlines.filter((airline: any) => airline.selected).map((s: any) => s.code)
+  _filterByStop = (itins: any[], stops: any[]) => {
+    let selectedStop = stops.filter((stop: any) => stop.selected).map((s: any) => s.stop)
 
+    let filtered = (stops.length === selectedStop.length || selectedStop.length === 0)
+      ? itins
+      : itins.filter((d: any) => selectedStop.indexOf(d.departStop) > -1)
+
+    return filtered
+  }
+
+  _filterAirlinesFilter = (filteredItins: any[]) => {
+    if (!filteredItins)
+      return this.state.airlines
     
-    let filtered = ((this.state.stops.length === selectedStop.length || selectedStop.length === 0)
-      && (this.state.airlines.length === selectedAirlines.length || selectedAirlines.length === 0))
-      ? this.state.departures
-      : this.state.departures.filter((d: any) => (selectedStop.length === 0 || selectedStop.indexOf(d.departStop) > -1)
-        && (selectedAirlines.length === 0 || selectedAirlines.indexOf(d.uniqueAirline) > -1))
+    let uniques = Array.from(new Set(filteredItins.map((s: any) => s.departUniqueAirline)))
+
+    let filtered = this.state.airlines
+      .filter((airline: any) => uniques.indexOf(airline.code) > -1)
+      .map((f: any) => {
+        return {
+          ...f,
+          count: filteredItins.filter((i: any) => i.departUniqueAirline === f.code).length
+        }
+      })
+
+    return filtered
+  }
+
+  public render() {
+    //let selectedStop = this.state.stops.filter((stop: any) => stop.selected).map((s: any) => s.stop)
+    
+    let filtered = this._filterByStop(this.state.departures, this.state.stops)
+    //console.log(filtered)
+    let _filterAirlines = this._filterAirlinesFilter(filtered)
+    //console.log(_filterAirlines)
+
+    let selectedAirlines = _filterAirlines.filter((airline: any) => airline.selected).map((s: any) => s.code)
+    //console.log(selectedAirlines)
+    //console.log(this.state.airlines)
+    
+    
+    //let filtered = ((this.state.stops.length === selectedStop.length || selectedStop.length === 0)
+    //  && (this.state.airlines.length === selectedAirlines.length || selectedAirlines.length === 0))
+    //  ? this.state.departures
+    //  : this.state.departures.filter((d: any) => (selectedStop.length === 0 || selectedStop.indexOf(d.departStop) > -1)
+    //    && (selectedAirlines.length === 0 || selectedAirlines.indexOf(d.uniqueAirline) > -1))
 
     //console.log(filtered)
+
+    filtered = (_filterAirlines.length === selectedAirlines.length || selectedAirlines.length === 0)
+      ? filtered
+      : filtered.filter((d: any) => selectedAirlines.indexOf(d.departUniqueAirline) > -1)
 
     let _totalItems = filtered ? filtered.length : 0
     let _totalPages = _totalItems ? Math.ceil(_totalItems / this.state.itemsPerPage) : 0
@@ -319,7 +370,7 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
       <Col md={3}>
         <h4>Filter Results:</h4>
         <FilterStop stops={this.state.stops} onSetFilter={this._setStopFilter} />
-        <FilterAirline airlines={this.state.airlines} onSetFilter={this._setAirlineFilter} />
+        <FilterAirline airlines={_filterAirlines} onSetFilter={this._setAirlineFilter} />
       </Col>
       <Col md={9}>
         <h1>Select your flight</h1>
