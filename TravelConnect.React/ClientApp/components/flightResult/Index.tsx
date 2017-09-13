@@ -279,22 +279,39 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
     })
   }
 
+  _setAirlineFilter = (a: any, b: any) => {
+    let airlines1 = this.state.airlines.filter((airline: any) => airline.code !== b.code)
+    let airlines2 = this.state.airlines.filter((airline: any) => airline.code === b.code)
+
+    airlines1.push({
+      ...airlines2[0],
+      selected: a.target.checked
+    })
+
+    this.setState({
+      airlines: airlines1
+    })
+  }
+
   public render() {
     let selectedStop = this.state.stops.filter((stop: any) => stop.selected).map((s: any) => s.stop)
+    let selectedAirlines = this.state.airlines.filter((airline: any) => airline.selected).map((s: any) => s.code)
+
     
-    let filtered = this.state.stops.length === selectedStop.length || selectedStop.length === 0
+    let filtered = ((this.state.stops.length === selectedStop.length || selectedStop.length === 0)
+      && (this.state.airlines.length === selectedAirlines.length || selectedAirlines.length === 0))
       ? this.state.departures
-      : this.state.departures.filter((d: any) => selectedStop.indexOf(d.departStop) > -1)
+      : this.state.departures.filter((d: any) => (selectedStop.length === 0 || selectedStop.indexOf(d.departStop) > -1)
+        && (selectedAirlines.length === 0 || selectedAirlines.indexOf(d.uniqueAirline) > -1))
+
+    //console.log(filtered)
 
     let _totalItems = filtered ? filtered.length : 0
     let _totalPages = _totalItems ? Math.ceil(_totalItems / this.state.itemsPerPage) : 0
     let _page = this.state.page > _totalPages ? _totalPages : this.state.page
     let _startIndex = (_page - 1) * this.state.itemsPerPage
     let _endIndex = _page * this.state.itemsPerPage
-
     
-    
-
     //console.log(selectedStop)
     //console.log(this.state.airlines)
     //this._setUniqueAirline(this.state.departures)
@@ -302,7 +319,7 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
       <Col md={3}>
         <h4>Filter Results:</h4>
         <FilterStop stops={this.state.stops} onSetFilter={this._setStopFilter} />
-        <FilterAirline airlines={this.state.airlines} />
+        <FilterAirline airlines={this.state.airlines} onSetFilter={this._setAirlineFilter} />
       </Col>
       <Col md={9}>
         <h1>Select your flight</h1>

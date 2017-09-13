@@ -254,9 +254,11 @@ namespace TravelConnect.Services
                                 ).ToArray()
                             }
                     },
+                     
                     PriceRequestInformation = new Pricerequestinformation
                     {
-                        CurrencyCode = "THB"
+                        CurrencyCode = "THB",
+                    //    NegotiatedFaresOnly = true,
                     }
                 },
                 TravelPreferences = new Travelpreferences

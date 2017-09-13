@@ -3,7 +3,7 @@ import { Row, Col } from 'react-bootstrap'
 
 import * as Commons from '../Commons'
 
-export default class FilterAirlineItem extends React.Component<{ airline: any }, any> {
+export default class FilterAirlineItem extends React.Component<{ airline: any, onSetFilter: any }, any> {
   constructor(props: any) {
     super(props)
     this.state = {
@@ -21,7 +21,9 @@ export default class FilterAirlineItem extends React.Component<{ airline: any },
     //console.log(this.state.airlineFullname)
     const { airline } = this.props
     return <Row>
-      <Col md={12}><input type='checkbox' checked={airline.selected} /> {this.state.airlineFullname ? this.state.airlineFullname + ' (' + airline.code + ')' : airline.code} - {airline.count} {airline.loaded ? '' : 'loading'}</Col>
+      <Col md={12}><input type='checkbox' checked={airline.selected} onChange={(e) => this.props.onSetFilter(e, airline)}/>
+        {this.state.airlineFullname ? this.state.airlineFullname + ' (' + airline.code + ')' : airline.code} - {airline.count} {airline.loaded ? '' : 'loading'}
+      </Col>
     </Row>
   }
 }
