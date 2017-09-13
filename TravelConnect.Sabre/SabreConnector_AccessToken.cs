@@ -44,10 +44,13 @@ namespace TravelConnect.Sabre
 
         private async Task<SabreCredential> GetSabreCredentialAsync()
         {
-            var sabreCredential = await _context.SabreCredentials
-               .SingleOrDefaultAsync(s => s.IsActive);
+            //var sabreCredential = await _context.SabreCredentials
+            //   .SingleOrDefaultAsync(s => s.IsActive);
 
-            return sabreCredential;
+            return new SabreCredential {
+                ClientId = "VjE6OW5vY3U5dzJ1c3QybzZ4ZzpERVZDRU5URVI6RVhU",
+                ClientSecret = "ZkFBcDZsNkk=",
+            };
         }
 
         private async Task<AccessToken> GetAccessTokenAsync()
