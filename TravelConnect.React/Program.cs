@@ -13,6 +13,10 @@ namespace TravelConnect_React
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .UseKestrel(options =>
+                {
+                    options.Limits.MaxConcurrentConnections = 100;
+                })
                 .Build();
     }
 }
