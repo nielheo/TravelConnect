@@ -1,12 +1,13 @@
 ﻿import { Action, Reducer } from 'redux';
+import { AppThunkAction } from './';
 
 // -----------------
 // STATE - This defines the type of data maintained in the Redux store.
 
 
 export interface FlightState {
-  search: any;
-  result: any[];
+  searchRequest: any;
+  searchResult: any[];
   isReturnFlight: boolean;
   selectedDeparture: any;
 }
@@ -16,10 +17,10 @@ export interface FlightState {
 // They do not themselves have any side-effects; they just describe something that is going to happen.
 // Use @typeName and isActionType for type detection that works even after serialization/deserialization.
 
-interface SetSearchAction { type: 'SET_SEARCH' }
-interface SetResultAction { type: 'SET_RESULT' }
+interface SetSearchAction { type: 'SET_SEARCH', searchRequest: any }
+interface SetResultAction { type: 'SET_RESULT', searchResult: any }
 interface SetIsReturnFlightAction { type: 'SET_IS_RETURN_FLIGHT' }
-interface SetSelectedDepartureAction { type: 'SET_SELECTED_DEPARTURE' }
+interface SetSelectedDepartureAction { type: 'SET_SELECTED_DEPARTURE', selectedDeparture: any }
 
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
@@ -30,11 +31,17 @@ type KnownAction = SetSearchAction | SetResultAction | SetIsReturnFlightAction |
 // They don't directly mutate state, but they can have external side-effects (such as loading data).
 
 export const actionCreators = {
-  setSearch: () => <SetSearchAction>{ type: 'SET_SEARCH' },
-  setResult: () => <SetResultAction>{ type: 'SET_RESULT' },
+  setSearch: (searchRequest: any): AppThunkAction<KnownAction> => (dispatch, getState) => {
+    dispatch({ type: 'SET_SEARCH', searchRequest: searchRequest })
+  },
+  setResult: (searchResult: any[]): AppThunkAction<KnownAction> => (dispatch, getState) => {
+    dispatch({ type: 'SET_RESULT', searchResult: searchResult })
+  },
   setIsReturnFlight: () => <SetIsReturnFlightAction>{ type: 'SET_IS_RETURN_FLIGHT' },
-  setSelectedDeparture: () => <SetSelectedDepartureAction>{ type: 'SET_SELECTED_DEPARTURE' },
-};
+  setSelectedDeparture: (selectedDeparture: any): AppThunkAction<KnownAction> => (dispatch, getState) => {
+    dispatch({ type: 'SET_SELECTED_DEPARTURE', selectedDeparture: selectedDeparture })
+  },
+}
 
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
@@ -42,9 +49,9 @@ export const actionCreators = {
 export const reducer: Reducer<FlightState> = (state: FlightState, action: KnownAction) => {
   switch (action.type) {
     case 'SET_SEARCH':
-      return { ...state, search: state.search };
+      return { ...state, searchRequest: action.searchRequest };
     case 'SET_RESULT':
-      return { ...state, result: state.result };
+      return { ...state, searchResult: state.searchResult };
     case 'SET_IS_RETURN_FLIGHT':
       return { ...state, isReturnFlight: state.isReturnFlight };
     case 'SET_SELECTED_DEPARTURE':

@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <None Remove="ClientApp\components\Commons.tsx" />
+    <None Remove="ClientApp\components\flightResult\Filter.tsx" />
     <None Remove="ClientApp\components\flightResult\FilterAirline.tsx" />
     <None Remove="ClientApp\components\flightResult\FilterAirlineItem.tsx" />
     <None Remove="ClientApp\components\flightResult\FilterStop.tsx" />
@@ -44,6 +45,7 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\components\Commons.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\flightResult\Filter.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightResult\FilterAirline.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightResult\FilterAirlineItem.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightResult\FilterStop.tsx" />

@@ -1,5 +1,9 @@
 ﻿import * as React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { ApplicationState } from '../../store'
+import * as FlightStore from '../../store/Flight'
+
 import * as moment from 'moment'
 import * as queryString from 'query-string'
 //import CryptoJS from 'crypto-js'
@@ -9,7 +13,12 @@ import AirportAutocomplete from './AirportAutocomplete'
 import SelectDate from './SelectDate'
 import SelectPax from './SelectPax'
 
-export default class FlightSearch extends React.Component<RouteComponentProps<{}>, any> {
+type FlightProps =
+  FlightStore.FlightState
+  & typeof FlightStore.actionCreators
+  & RouteComponentProps<{}>;
+
+class FlightSearch_Index extends React.Component<FlightProps, any> {
   constructor() {
     super();
     //let now = moment()
@@ -84,6 +93,7 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{}
       console.log(plaintext)
       */
       let qs = queryString.stringify(request)
+      this.props.setSearch(request)
       //console.log(qs)
       this.props.history.push('/flight/result/' + qs)//encodeURIComponent(enc))
     }
@@ -111,20 +121,15 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{}
     this.setState({
       totalCnn: e.target.value
     })
-    console.log(e.target.value)
   }
 
   _handleInfantChange = (e: any) => {
     this.setState({
       totalInf: e.target.value
     })
-    console.log(e.target.value)
   }
 
   public render() {
-    //console.log(this.state)
-    //console.log(this.state.clicked && !this.state.origin)
-
     return <div className="col-md-12">
 
       <div className="row">
@@ -216,3 +221,9 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{}
     </div>
   }
 }
+
+// Wire up the React component to the Redux store
+export default connect(
+  (state: ApplicationState) => state.flight, // Selects which state properties are merged into the component's props
+  FlightStore.actionCreators                 // Selects which action creators are merged into the component's props
+)(FlightSearch_Index) as typeof FlightSearch_Index

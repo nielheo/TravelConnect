@@ -23,7 +23,10 @@ export default class FilterStopItem extends React.Component<{ stop: any, onSetFi
     const { stop } = this.props
     const that = this
     return <Row>
-      <Col md={12}><input type='checkbox' checked={stop.selected} onChange={(e) => this.props.onSetFilter(e, stop)} /> {stop.stop ? stop.stop + ' Stop' + (stop.stop > 1 ? 's' : '') : 'Direct'} - {stop.count} </Col>
+      <Col md={12}><input type='checkbox' checked={stop.selected}
+        onChange={(e) => this.props.onSetFilter(e.target.checked, stop.stop)} />
+        {stop.stop ? stop.stop + ' Stop' + (stop.stop > 1 ? 's' : '') : 'Direct'} - {stop.count}
+      </Col>
     </Row>
   }
 }

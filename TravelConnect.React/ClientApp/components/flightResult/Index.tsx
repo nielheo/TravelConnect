@@ -1,10 +1,13 @@
 ﻿import * as React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { ApplicationState } from '../../store'
+import * as FlightStore from '../../store/Flight'
+
 import * as queryString from 'query-string'
 import { Grid, Row, Col, Pagination } from 'react-bootstrap'
 import FlightDeparture from './FlightDeparture'
-import FilterAirline from './FilterAirline'
-import FilterStop from './FilterStop'
+import Filter from './Filter'
 
 import * as Commons from '../Commons'
 
@@ -12,7 +15,12 @@ import * as moment from 'moment'
 
 const CryptoJS = require('crypto-js') as any;
 
-export default class FlightSearch extends React.Component<RouteComponentProps<{ route: string }>, any> {
+type FlightProps =
+  FlightStore.FlightState
+  & typeof FlightStore.actionCreators
+  & RouteComponentProps<{ route: string }>;
+
+class FlightResult_Index extends React.Component<FlightProps, any> {
   constructor(props: any) {
     super(props);
 
@@ -21,7 +29,7 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
     let data = queryString.parse(route)
     
     this.state = {
-      ...data,
+      request: data,
       result: null,
       page: 1,
       itemsPerPage: 20,
@@ -180,6 +188,22 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
       }).catch(err => { })
     //.then(res => console.log(res))
   }
+
+  _updateAirlineStateLoaded = (airline: string) => {
+    let airlines1 = this.state.airlines.filter((d: any) => d.code !== airline)
+    let airlines = this.state.airlines.filter((d: any) => d.code === airline)
+
+    if (airlines.length) {
+      airlines1.push({
+        ...airlines[0],
+        loaded: true,
+        count: this.state.departures.filter((d: any) => d.uniqueAirline === airline).length
+      })
+    }
+
+    this.setState({ airlines: airlines1.sort(this._compareAirlineList) })
+    this.setState({ stops: this._setStopList(this.state.departures) })
+  }
   
   componentDidMount() {
     let request = this._generateRequest(null)
@@ -210,25 +234,7 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
             }
             //console.log(result)
           }).then(() => this.setState({ departures: this._GetDepartures() }))
-          .then(() => {
-            //console.log(airline)
-            //console.log(this.state.airlines)
-            let airlines1 = this.state.airlines.filter((d: any) => d.code !== airline)
-            let airlines = this.state.airlines.filter((d: any) => d.code === airline)
-            //console.log(airline)
-            //console.log(airlines1)
-            //console.log(airline)
-            if (airlines.length) {
-              airlines1.push({
-                ...airlines[0],
-                loaded: true,
-                count: this.state.departures.filter((d: any) => d.uniqueAirline === airline).length
-              })
-            }
-
-            this.setState({ airlines: airlines1.sort(this._compareAirlineList) })
-            this.setState({ stops: this._setStopList(this.state.departures) })
-          })
+          .then(() => this._updateAirlineStateLoaded(airline))
       }))
   }
 
@@ -239,9 +245,7 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
       })
     }
   }
-
   
-
   _setStopList = (departures: any) => {
     let stops = Array.from(new Set(departures.map((d: any) => d.departStop)))
     let s = stops.map((stop: any) => {
@@ -274,15 +278,13 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
     return a.sort(this._compareAirlineList)
   }
 
-
-
-  _setStopFilter = (a: any, b: any) => {
-    let stops1 = this.state.stops.filter((stop: any) => stop.stop !== b.stop)
-    let stops2 = this.state.stops.filter((stop: any) => stop.stop === b.stop)
+  _setStopFilter = (value: boolean, stop: number) => {
+    let stops1 = this.state.stops.filter((s: any) => s.stop !== stop)
+    let stops2 = this.state.stops.filter((s: any) => s.stop === stop)
 
     stops1.push({
       ...stops2[0],
-      selected: a.target.checked
+      selected: value
     })
 
     this.setState({
@@ -333,25 +335,10 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
   }
 
   public render() {
-    //let selectedStop = this.state.stops.filter((stop: any) => stop.selected).map((s: any) => s.stop)
-    
     let filtered = this._filterByStop(this.state.departures, this.state.stops)
-    //console.log(filtered)
     let _filterAirlines = this._filterAirlinesFilter(filtered)
-    //console.log(_filterAirlines)
 
     let selectedAirlines = _filterAirlines.filter((airline: any) => airline.selected).map((s: any) => s.code)
-    //console.log(selectedAirlines)
-    //console.log(this.state.airlines)
-    
-    
-    //let filtered = ((this.state.stops.length === selectedStop.length || selectedStop.length === 0)
-    //  && (this.state.airlines.length === selectedAirlines.length || selectedAirlines.length === 0))
-    //  ? this.state.departures
-    //  : this.state.departures.filter((d: any) => (selectedStop.length === 0 || selectedStop.indexOf(d.departStop) > -1)
-    //    && (selectedAirlines.length === 0 || selectedAirlines.indexOf(d.uniqueAirline) > -1))
-
-    //console.log(filtered)
 
     filtered = (_filterAirlines.length === selectedAirlines.length || selectedAirlines.length === 0)
       ? filtered
@@ -363,14 +350,10 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
     let _startIndex = (_page - 1) * this.state.itemsPerPage
     let _endIndex = _page * this.state.itemsPerPage
     
-    //console.log(selectedStop)
-    //console.log(this.state.airlines)
-    //this._setUniqueAirline(this.state.departures)
     return <Row>
       <Col md={3}>
-        <h4>Filter Results:</h4>
-        <FilterStop stops={this.state.stops} onSetFilter={this._setStopFilter} />
-        <FilterAirline airlines={_filterAirlines} onSetFilter={this._setAirlineFilter} />
+        <Filter stops={this.state.stops} onSetStopFilter={this._setStopFilter}
+          airlines={_filterAirlines} onSetAirlineFilter={this._setAirlineFilter} />
       </Col>
       <Col md={9}>
         <h1>Select your flight</h1>
@@ -421,3 +404,9 @@ export default class FlightSearch extends React.Component<RouteComponentProps<{ 
     </Row>
   }
 }
+
+// Wire up the React component to the Redux store
+export default connect(
+  (state: ApplicationState) => state.flight, // Selects which state properties are merged into the component's props
+  FlightStore.actionCreators                 // Selects which action creators are merged into the component's props
+)(FlightResult_Index) as typeof FlightResult_Index
