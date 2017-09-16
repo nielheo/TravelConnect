@@ -37,7 +37,9 @@ export const actionCreators = {
   setResult: (searchResult: any[]): AppThunkAction<KnownAction> => (dispatch, getState) => {
     dispatch({ type: 'SET_RESULT', searchResult: searchResult })
   },
-  setIsReturnFlight: () => <SetIsReturnFlightAction>{ type: 'SET_IS_RETURN_FLIGHT' },
+  setIsReturnFlight: (isReturnFlight: boolean): AppThunkAction<KnownAction> => (dispatch, getState) => {
+    dispatch({ type: 'SET_IS_RETURN_FLIGHT' })
+  },
   setSelectedDeparture: (selectedDeparture: any): AppThunkAction<KnownAction> => (dispatch, getState) => {
     dispatch({ type: 'SET_SELECTED_DEPARTURE', selectedDeparture: selectedDeparture })
   },
@@ -51,11 +53,11 @@ export const reducer: Reducer<FlightState> = (state: FlightState, action: KnownA
     case 'SET_SEARCH':
       return { ...state, searchRequest: action.searchRequest };
     case 'SET_RESULT':
-      return { ...state, searchResult: state.searchResult };
+      return { ...state, searchResult: action.searchResult };
     case 'SET_IS_RETURN_FLIGHT':
-      return { ...state, isReturnFlight: state.isReturnFlight };
+      return { ...state, isReturnFlight: true };
     case 'SET_SELECTED_DEPARTURE':
-      return { ...state, selectedDeparture: state.selectedDeparture };
+      return { ...state, selectedDeparture: action.selectedDeparture };
     default:
       // The following line guarantees that every action in the KnownAction union has been covered by a case above
       const exhaustiveCheck: never = action;
