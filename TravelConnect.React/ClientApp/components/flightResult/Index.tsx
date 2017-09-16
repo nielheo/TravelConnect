@@ -215,25 +215,8 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
     }).then(res => {
       if(res) return res.json()
       }).catch(err => { })
-    //.then(res => console.log(res))
   }
-
-  /*_updateAirlineStateLoaded = (airline: string) => {
-    let airlines1 = this.state.airlines.filter((d: any) => d.code !== airline)
-    let airlines = this.state.airlines.filter((d: any) => d.code === airline)
-
-    if (airlines.length) {
-      airlines1.push({
-        ...airlines[0],
-        loaded: true,
-        count: this.state.departures.filter((d: any) => d.uniqueAirline === airline).length
-      })
-    }
-
-    this.setState({ airlines: airlines1.sort(this._compareAirlineList) })
-    this.setState({ stops: this._setStopList(this.state.departures) })
-  }*/
-
+  
   _appendResult = (newResults: any[]) => {
     let result = this.state.result
     newResults.map((i: any) => {
@@ -400,10 +383,15 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
     //  : filtered.filter((d: any) => selectedAirlines.indexOf(d.departUniqueAirline) > -1)
 
     //filter by stops
-    let filtered =
+    let filteredByStops =
       this.state.filteredStops.length > 0
         ? this.state.departures.filter(d => this.state.filteredStops.indexOf(d.departStop) > -1)
         : this.state.departures
+    
+    let filtered =
+      this.state.filteredAirlines.length > 0
+        ? filteredByStops.filter(f => this.state.filteredAirlines.indexOf(f.departUniqueAirline) > -1)
+        : filteredByStops
 
     let _totalItems = filtered ? filtered.length : 0
     let _totalPages = _totalItems ? Math.ceil(_totalItems / this.state.itemsPerPage) : 0

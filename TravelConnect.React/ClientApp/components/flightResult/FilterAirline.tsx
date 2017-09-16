@@ -4,7 +4,11 @@ import { Row, Col } from 'react-bootstrap'
 
 import FilterAirlineItem from './FilterAirlineItem'
 
-export default class FilterAirline extends React.Component<{ airlines: any[], onChangeFilter: any }, any> {
+import { FilterAirlineType } from '../Classes'
+
+export default class FilterAirline extends React.Component<{
+  airlines: FilterAirlineType[], 
+  onChangeFilter: any }, any> {
   _compareAirlineList = (a: any, b: any) => {
     if (a.code < b.code)
       return -1

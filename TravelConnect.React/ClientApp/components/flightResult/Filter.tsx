@@ -48,11 +48,28 @@ export default class Filter extends React.Component<{
         selected: this.props.filteredStops.indexOf(s) > -1,
       } as FilterStopType
     }).sort(this._compareFilterSop)
+
+    let filteredByStops = this.props.filteredStops.length
+      ? this.props.itins.filter(i => this.props.filteredStops.indexOf(i.departStop) > -1)
+      : this.props.itins
+
+    let airlines = Array.from(new Set(filteredByStops.map(i => i.departUniqueAirline)))
+
+    let filterAirlines = airlines.map((a: string) => {
+      return {
+        code: a,
+        selected: this.props.filteredAirlines.indexOf(a) > -1,
+        count: filteredByStops.filter(f => f.departUniqueAirline === a).length,
+        loaded: this.props.loadedAirlines.indexOf(a) > -1
+      } as FilterAirlineType
+    })
+
+    //console.log(filterAirlines)
     
     return <Row>
       <h4>Filter Results:</h4>
       <FilterStop stops={filterStops} onChangeFilter={this.props.onChangeFilterShop} />
-      <FilterAirline airlines={this.state.airlines} onChangeFilter={this.props.onChangeFilterAirline} />
+      <FilterAirline airlines={filterAirlines} onChangeFilter={this.props.onChangeFilterAirline} />
     </Row>
   }
 }

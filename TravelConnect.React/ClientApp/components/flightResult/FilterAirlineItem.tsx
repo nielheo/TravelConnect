@@ -14,14 +14,15 @@ export default class FilterAirlineItem extends React.Component<{ airline: any, o
   componentDidMount() {
     const { code } = this.props.airline
     //console.log(this.props.airline.code)
-    Commons._GetAirline(code).then((res: any) => { this.setState({ airlineFullname: res.name }) })
+    if (code.length === 2)
+      Commons._GetAirline(code).then((res: any) => { this.setState({ airlineFullname: res.name }) })
   }
   
   public render() {
     //console.log(this.state.airlineFullname)
     const { airline } = this.props
     return <Row>
-      <Col md={12}><input type='checkbox' checked={airline.selected} onChange={(e) => this.props.onSetFilter(e, airline)}/>
+      <Col md={12}><input type='checkbox' checked={airline.selected} onChange={(e) => this.props.onSetFilter(airline.code, e.target.checked)}/>
         {this.state.airlineFullname ? this.state.airlineFullname + ' (' + airline.code + ')' : airline.code} - {airline.count} {airline.loaded ? '' : 'loading'}
       </Col>
     </Row>
