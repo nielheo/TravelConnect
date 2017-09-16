@@ -7,7 +7,7 @@ import * as Commons from '../Commons'
 
 import FlightDetails from './FlightDetails'
 
-export default class FlightDeparture extends React.Component<{ depart: any }, any> {
+export default class FlightDeparture extends React.Component<{ depart: any, onSelectDepart: any }, any> {
   _dateOnly = (dateTime: any) => {
     return moment({
       year: dateTime.year(),
@@ -97,7 +97,7 @@ export default class FlightDeparture extends React.Component<{ depart: any }, an
         <Col md={3}>
           <h3 className='text-center'>{depart.curr} {Commons.FormatNum(depart.baseFare.toFixed(0))}</h3>
           <div className='text-center'>Class: {depart.legs && depart.legs[0].brds}</div>
-          <button className='form-control'>Select</button>
+          <button className='form-control' onClick={() => this.props.onSelectDepart(depart)}>Select</button>
         </Col>
       </Row>
     </Panel>

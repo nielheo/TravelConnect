@@ -57,6 +57,7 @@ export const reducer: Reducer<FlightState> = (state: FlightState, action: KnownA
     case 'SET_IS_RETURN_FLIGHT':
       return { ...state, isReturnFlight: true };
     case 'SET_SELECTED_DEPARTURE':
+      console.log(action.selectedDeparture)
       return { ...state, selectedDeparture: action.selectedDeparture };
     default:
       // The following line guarantees that every action in the KnownAction union has been covered by a case above

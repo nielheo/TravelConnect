@@ -109,7 +109,7 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
 
       result.pricedItins.map((i: any) => {
         i.departStop = i.legs[0].segments.length - 1
-        i.routes = i.legs[0].routes
+        i.routes = i.legs.map((l: any) => l.routes)
 
         //i.routes = i.legs.map((l: any) => l.routes).join('|')
         i.airlines = [] 
@@ -287,6 +287,11 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
       this.setState({ filteredStops: stops })
     }
   } 
+
+  _selectDeparture = (departure: any) => {
+    this.props.setSelectedDeparture(departure)
+    this.props.history.push('/flight/return')
+  }
   
   public render() {
     let filteredByStops =
@@ -322,7 +327,7 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
         <h1>Select your flight</h1>
         
         {
-          this.state.departures
+          this.state.departures.length
             ? <section>
               <h4>Select from {Commons.FormatNum(filtered.length)} Departures Flight</h4>
               <h4>{this.props.searchResult
@@ -337,7 +342,7 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
               </Row>
               {
                 filtered.slice(_startIndex, _endIndex).map((r: any) =>
-                  <FlightDeparture depart={r} key={r.routes} />)}
+                  <FlightDeparture depart={r} key={r.routes} onSelectDepart={this._selectDeparture} />)}
               <Row className="text-right">
                 <Col md={12}>
                   <Pagination prev next first last ellipsis boundaryLinks
