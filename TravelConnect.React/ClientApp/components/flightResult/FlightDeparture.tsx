@@ -92,10 +92,11 @@ export default class FlightDeparture extends React.Component<{ depart: any }, an
               }
             </Col>
           </Row>
-          <FlightDetails segments={firstLeg.segments} />
+          <FlightDetails segments={firstLeg.segments} leg={firstLeg} key={firstLeg.routes} />
         </Col>
         <Col md={3}>
-          <h3 className='text-center'>{depart.curr} {Commons.FormatNum(depart.totalPrice.toFixed(0))}</h3>
+          <h3 className='text-center'>{depart.curr} {Commons.FormatNum(depart.baseFare.toFixed(0))}</h3>
+          <div className='text-center'>Class: {depart.legs && depart.legs[0].brds}</div>
           <button className='form-control'>Select</button>
         </Col>
       </Row>

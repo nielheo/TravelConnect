@@ -33,6 +33,7 @@ namespace TravelConnect.Models.Responses
         public int Elapsed { get; set; }
         public FlightNumber OperatingFlight { get; set; }
         public FlightNumber MarketingFlight { get; set; }
+        public string BRD { get; set; }
     }
 
     [NotMapped]
@@ -46,9 +47,12 @@ namespace TravelConnect.Models.Responses
     public class PricedItin
     {
         public string Curr { get; set; }
-        public float TotalPrice { get; set; }
+        //public float TotalPrice { get; set; }
+        public float BaseFare { get; set; }
+        public float TotalTax { get; set; }
         public List<FareBreakdown> FareBreakdowns { get; set; }
         public List<Leg> Legs { get; set; }
+        public DateTime? LastTicketDate { get; set; }
     }
 
     [NotMapped]

@@ -4,8 +4,13 @@ import { Row, Col } from 'react-bootstrap'
 
 import FilterStopItem from './FilterStopItem'
 
+import { FilterStopType } from '../Classes'
 
-export default class FilterStop extends React.Component<{ stops: any, onSetFilter: any }, any> {
+
+export default class FilterStop extends React.Component<{
+  stops: FilterStopType[],
+  onChangeFilter: Function
+}, any> {
   constructor(props: any) {
     super(props)
   }
@@ -25,7 +30,7 @@ export default class FilterStop extends React.Component<{ stops: any, onSetFilte
       {
         this.props.stops &&
         this.props.stops.sort(this._compareStop).map((stop: any) =>
-          <FilterStopItem stop={stop} key={'stopFilter_' + stop.stop} onSetFilter={this.props.onSetFilter} />
+          <FilterStopItem stop={stop} key={'stopFilter_' + stop.stop} onChangeFilter={this.props.onChangeFilter} />
         )
       }
     </section>

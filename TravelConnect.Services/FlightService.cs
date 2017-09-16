@@ -140,13 +140,17 @@ namespace TravelConnect.Services
                 PricedItins = airlowFare.OTA_AirLowFareSearchRS
                     .PricedItineraries.PricedItinerary.Select(a =>
                     {
+                        var ItinTotalFare = a.AirItineraryPricingInfo.Select(pi => pi.ItinTotalFare).FirstOrDefault();
                         var TotalFare = a.AirItineraryPricingInfo.Select(pi => pi.ItinTotalFare.TotalFare).FirstOrDefault();
+                        
                         if (TotalFare != null)
                         {
                             return new PricedItin
                             {
                                 Curr = TotalFare.CurrencyCode,
-                                TotalPrice = TotalFare.Amount,
+                                BaseFare = ItinTotalFare?.BaseFare?.Amount ?? 0,
+                                TotalTax = ItinTotalFare?.Taxes?.Tax?.FirstOrDefault().Amount ?? 0,
+                                LastTicketDate = a.AirItineraryPricingInfo.FirstOrDefault()?.LastTicketDate,
                                 Legs = a.AirItinerary.OriginDestinationOptions
                                     .OriginDestinationOption.Select(dest =>
                                     {
@@ -179,7 +183,8 @@ namespace TravelConnect.Services
                                                     {
                                                         Airline = seg.OperatingAirline.Code,
                                                         Number = seg.OperatingAirline.FlightNumber
-                                                    }
+                                                    },
+                                                    BRD = seg.ResBookDesigCode
                                                 };
                                             }).ToList()
                                         };
@@ -255,11 +260,11 @@ namespace TravelConnect.Services
                             }
                     },
                      
-                    PriceRequestInformation = new Pricerequestinformation
-                    {
-                        CurrencyCode = "THB",
-                    //    NegotiatedFaresOnly = true,
-                    }
+                    //PriceRequestInformation = new Pricerequestinformation
+                    //{
+                    //    CurrencyCode = "THB",
+                    ////    NegotiatedFaresOnly = true,
+                    //}
                 },
                 TravelPreferences = new Travelpreferences
                 {

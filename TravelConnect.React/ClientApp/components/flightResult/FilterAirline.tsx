@@ -4,7 +4,7 @@ import { Row, Col } from 'react-bootstrap'
 
 import FilterAirlineItem from './FilterAirlineItem'
 
-export default class FilterAirline extends React.Component<{ airlines: any, onSetFilter: any }, any> {
+export default class FilterAirline extends React.Component<{ airlines: any[], onChangeFilter: any }, any> {
   _compareAirlineList = (a: any, b: any) => {
     if (a.code < b.code)
       return -1
@@ -20,7 +20,7 @@ export default class FilterAirline extends React.Component<{ airlines: any, onSe
       {
         this.props.airlines &&
         this.props.airlines.sort(this._compareAirlineList).filter((airline: any) => airline.count).map((airline: any) =>
-          <FilterAirlineItem airline={airline} key={'airlineFilter_' + airline.code} onSetFilter={this.props.onSetFilter} />
+          <FilterAirlineItem airline={airline} key={'airlineFilter_' + airline.code} onSetFilter={this.props.onChangeFilter} />
 
         )
       }

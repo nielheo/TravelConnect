@@ -173,6 +173,7 @@ namespace TravelConnect.Sabre.Models
         public string PricingSource { get; set; }
         public string PricingSubSource { get; set; }
         public bool FareReturned { get; set; }
+        public DateTime LastTicketDate { get; set; }
         public Itintotalfare ItinTotalFare { get; set; }
         public PTC_Farebreakdowns PTC_FareBreakdowns { get; set; }
         public Fareinfos1 FareInfos { get; set; }

@@ -5,7 +5,7 @@ import { Row, Col } from 'react-bootstrap'
 
 import FlightDetail from './FlightDetail'
 
-export default class FlightDetails extends React.Component<{ segments: any }, any> {
+export default class FlightDetails extends React.Component<{ segments: any, leg: any }, any> {
   constructor(props: any) {
     super(props)
     this.state = {
@@ -22,6 +22,9 @@ export default class FlightDetails extends React.Component<{ segments: any }, an
   }
   
   public render() {
+    let lastTicketDate = moment(this.props.leg.itin.lastTicketDate).isValid()
+      ? moment(this.props.leg.itin.lastTicketDate)
+      : moment('20010101')
     return <section>
       {this.state.showDetails
         ?
@@ -30,9 +33,13 @@ export default class FlightDetails extends React.Component<{ segments: any }, an
             <Col md={12}>Hide flight details</Col>
           </Row>
           <Row className='bg-faded'>
-            <Col md={12}>{this.props.segments.map((s: any) => <FlightDetail segment={s} />)}</Col>
+            <Col md={12}>{this.props.segments.map((s: any) => <FlightDetail segment={s} leg={this.props.leg} key={s.routes} />)}</Col>
           </Row>
-
+          <Row>
+            <Col md={12}>
+              {'Last Ticket Date: ' + (moment('01-01-01').isSameOrAfter(lastTicketDate) ? '-' : lastTicketDate.format('LL'))}
+            </Col>
+          </Row>
         </section>
         : <Row onClick={() => { this._handleShow(true) }}>
           <Col md={12}>Show flight details</Col>

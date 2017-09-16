@@ -4,7 +4,7 @@ import { Row, Col } from 'react-bootstrap'
 
 import * as Commons from '../Commons'
 
-export default class FlightDetails extends React.Component<{ segment: any }, any> {
+export default class FlightDetails extends React.Component<{ segment: any, leg: any }, any> {
   constructor(props: any) {
     super(props)
     this.state = {
@@ -40,18 +40,21 @@ export default class FlightDetails extends React.Component<{ segment: any }, any
   public render() {
     const { segment } = this.props
     const { originAirport, destinationAirport } = this.state
+    //let lastTicketDate = moment(this.props.leg.itin.lastTicketDate).isValid()
+    //  ? moment(this.props.leg.itin.lastTicketDate)
+    //  : moment('20010101')
     return <section>
-      <div className='row col-md-12'>
-        <div className='col-md-3'>
+      <Row>
+        <Col md={3}>
           <h4> {moment(segment.departure.time).format('HH:mm')}</h4>
-        </div>
-        <div className='col-md-3'>
+        </Col>
+        <Col md={3}>
           <h4> {moment(segment.arrival.time).format('HH:mm')}</h4>
-        </div>
-        <div className='col-md-3'>
+        </Col>
+        <Col md={3}>
           <h4> {this._durationFormat(segment.elapsed)}</h4>
-        </div>
-      </div>
+        </Col>
+      </Row>
       {
         <section>
           <Row>
@@ -79,8 +82,14 @@ export default class FlightDetails extends React.Component<{ segment: any }, any
                 : ''}
             </Col>
           </Row>
+          <Row>
+            <Col md={9} mdOffset={3}>
+              Booking Class: {segment.brd}
+            </Col>
+          </Row>
         </section>
       }
+      
     </section>
   }
 }
