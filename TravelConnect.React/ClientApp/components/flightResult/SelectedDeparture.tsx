@@ -9,7 +9,7 @@ export default class SelectedDeparture extends React.Component<{ departure: any,
   }
   
   public render() {
-    const leg = this.props.departure.legs[0]
+    const leg = this.props.departure
     let i = 0
     return <Panel>
       <Row>
@@ -20,6 +20,18 @@ export default class SelectedDeparture extends React.Component<{ departure: any,
 
       </Row>
       {leg.segments.map((s: any) => <section key={'selectedDeparture_' + i++}>
+        
+        <Row>
+          <Col md={12}>{s.marketingFlight.airline} {s.marketingFlight.number} - Class: {s.brd}</Col>
+        </Row>
+        {
+          s.operatingFlight.airline !== s.marketingFlight.airline &&
+          <Row>
+            <Col md={12}>operated by {s.operatingFlight.airline} {s.operatingFlight.number}</Col>
+
+          </Row>
+        }
+
         <Row>
           <Col md={6}><b>{s.origin}</b></Col>
           <Col md={6}><b>{s.destination}</b></Col>

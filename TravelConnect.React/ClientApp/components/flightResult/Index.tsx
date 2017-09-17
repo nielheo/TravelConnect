@@ -59,9 +59,9 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
 
   //Compares
   _compareLeg = (a: any, b: any, leg:number) => {
-    if (a.baseFare < b.baseFare)
+    if (a.totalFare < b.totalFare)
       return -1;
-    if (a.baseFare > b.baseFare)
+    if (a.totalFare > b.totalFare)
       return 1;
     
     let aMoment = moment(a.legs[leg].segments[0].departure.time)
@@ -107,6 +107,7 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
     if (result) {
       result.pricedItins.map((i: any) => {
         i.itinNo = x++
+        i.totalFare = i.baseFare + i.totalTax
         i.legs.map((l: any) => {
           l.itin = i,
           l.brds = l.segments.map((s: any) => s.brd).join(',')
@@ -143,7 +144,7 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
       let departs: any[] = []
       this.props.searchResult.map((r: any) => {
         if (!departs.filter(d => d.legs[0].routes === r.legs[0].routes
-          && d.baseFare === r.baseFare
+          && d.totalFare === r.totalFare
         ).length)
           departs.push(r)
       })
@@ -302,6 +303,12 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
     this.props.setSelectedDeparture(departure)
   //  this.props.history.push('/flight/return')
   }
+
+  _selectReturn = (returnLeg: any) => {
+    this.props.setSelectedReturn(returnLeg)
+    this.props.history.push('/flight/pax')
+  }
+
   
   public render() {
     let filteredByStops =
@@ -321,7 +328,7 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
 
     let _returnItins: any[] = (this.props.selectedDeparture && this.state.departures)
       ? this.props.searchResult.filter(r =>
-          r.legs[0].routes === this.props.selectedDeparture.legs[0].routes)
+          r.legs[0].routes === this.props.selectedDeparture.routes)
         .sort(this._compareReturn)
       : []
 
@@ -347,10 +354,9 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
         {
           this.state.departures.length
             ? this.props.selectedDeparture
-              ?
-                <FlightReturnList
+              ? <FlightReturnList
                   itins={_returnItins}
-                  onSelect= { this._selectDeparture }
+                  onSelect={this._selectReturn }
                 />
               : <FlightDepartureList 
                 departures={filtered}

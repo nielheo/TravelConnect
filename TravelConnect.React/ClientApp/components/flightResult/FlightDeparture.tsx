@@ -58,6 +58,8 @@ export default class FlightDeparture extends React.Component<{
     const dateDiff = this._dateDiff(moment(firstSegment.departure.time),
       moment(lastSegment.arrival.time))
     const stopOvers: any = this._getStopOvers(leg)
+
+    //console.log(itin)
     const airlines = Array.from(new Set(leg.segments.map((s: any) => s.marketingFlight.airline))).join(',')
     return <Panel>
       <Row>
@@ -69,7 +71,7 @@ export default class FlightDeparture extends React.Component<{
             <Col md={4}>
               <h4><b>{moment(firstSegment.departure.time).format('HH:mm')
                 + '-' + moment(lastSegment.arrival.time).format('HH:mm')} </b>
-                {(dateDiff ? ' (+' + dateDiff + ')' : '')}
+                {(dateDiff ? <small>{' (+' + dateDiff + ')'}</small> : '')}
               </h4>
               {
                 //Array.from(new Set(firstLeg.segments.map((s: any) => s.marketingFlight.airline))).join(',')
@@ -98,9 +100,9 @@ export default class FlightDeparture extends React.Component<{
           <FlightDetails segments={leg.segments} leg={leg} key={leg.routes} />
         </Col>
         <Col md={3}>
-          <h3 className='text-center'>{itin.curr} {Commons.FormatNum(itin.baseFare.toFixed(0))}</h3>
-          <div className='text-center'>Class: {itin.legs && itin.legs[0].brds}</div>
-          <button className='form-control' onClick={() => this.props.onSelectDepart(itin)}>Select</button>
+          <h3 className='text-center'>{itin.curr} {Commons.FormatNum(itin.totalFare.toFixed(2))}</h3>
+          <div className='text-center'>Class: {itin.legs && leg.brds}</div>
+          <button className='form-control' onClick={() => this.props.onSelectDepart(leg)}>Select</button>
         </Col>
       </Row>
     </Panel>

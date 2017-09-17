@@ -28,18 +28,25 @@ export default class FlightReturnList extends React.Component<{
 
   public render() {
     const { itins, onSelect } = this.props
+
+    let returnItins: any[] = []
+
+    itins.map((i: any) => {
+      if (!returnItins.filter((r: any) => r.legs[1].routes === i.legs[1].routes
+        && i.totalFare === r.totalFare).length)
+        returnItins.push(i)
+    })
+
     const itemsPerPage = 20
     const { page } = this.state
-    let _totalPages = itins.length ? Math.ceil(itins.length / itemsPerPage) : 0
+    let _totalPages = returnItins.length ? Math.ceil(returnItins.length / itemsPerPage) : 0
     let _page = page > _totalPages ? _totalPages : page
     let _startIndex = (_page - 1) * itemsPerPage
     let _endIndex = _page * itemsPerPage
-
-    console.log(itins)
-
+    
     return <section>
       <h2>Select your return flight</h2>
-      <h4>Select from {Commons.FormatNum(itins.length)} Return{itins.length ? 's' : ''} Flight</h4>
+      <h4>Select from {Commons.FormatNum(returnItins.length)} Return{returnItins.length ? 's' : ''} Flight</h4>
       <Row className="text-right">
         <Col md={12}>
           <Pagination prev next first last ellipsis boundaryLinks
@@ -48,8 +55,9 @@ export default class FlightReturnList extends React.Component<{
         </Col>
       </Row>
       {
-        itins.slice(_startIndex, _endIndex).map((r: any) =>
-          <FlightDeparture itin={r} leg={r.legs[1]} key={r.legs[1].routes} onSelectDepart={onSelect} />)
+        returnItins.slice(_startIndex, _endIndex).map((r: any) => {
+          return <FlightDeparture itin={r} leg={r.legs[1]} key={r.legs[1].routes} onSelectDepart={onSelect} />
+        })
       }
       <Row className="text-right">
         <Col md={12}>

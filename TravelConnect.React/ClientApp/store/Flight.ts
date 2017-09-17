@@ -10,6 +10,7 @@ export interface FlightState {
   searchResult: any[];
   isReturnFlight: boolean;
   selectedDeparture: any;
+  selectedReturn: any;
 }
 
 // -----------------
@@ -21,10 +22,12 @@ interface SetSearchAction { type: 'SET_SEARCH', searchRequest: any }
 interface SetResultAction { type: 'SET_RESULT', searchResult: any }
 interface SetIsReturnFlightAction { type: 'SET_IS_RETURN_FLIGHT' }
 interface SetSelectedDepartureAction { type: 'SET_SELECTED_DEPARTURE', selectedDeparture: any }
+interface SetSelectedReturnAction { type: 'SET_SELECTED_RETURN', selectedReturn: any }
 
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SetSearchAction | SetResultAction | SetIsReturnFlightAction | SetSelectedDepartureAction
+type KnownAction = SetSearchAction | SetResultAction | SetIsReturnFlightAction
+  | SetSelectedDepartureAction | SetSelectedReturnAction
 
 // ----------------
 // ACTION CREATORS - These are functions exposed to UI components that will trigger a state transition.
@@ -43,6 +46,9 @@ export const actionCreators = {
   setSelectedDeparture: (selectedDeparture: any): AppThunkAction<KnownAction> => (dispatch, getState) => {
     dispatch({ type: 'SET_SELECTED_DEPARTURE', selectedDeparture: selectedDeparture })
   },
+  setSelectedReturn: (selectedReturn: any): AppThunkAction<KnownAction> => (dispatch, getState) => {
+    dispatch({ type: 'SET_SELECTED_RETURN', selectedReturn: selectedReturn })
+  },
 }
 
 // ----------------
@@ -58,6 +64,8 @@ export const reducer: Reducer<FlightState> = (state: FlightState, action: KnownA
       return { ...state, isReturnFlight: true };
     case 'SET_SELECTED_DEPARTURE':
       return { ...state, selectedDeparture: action.selectedDeparture };
+    case 'SET_SELECTED_RETURN':
+      return { ...state, selectedReturn: action.selectedReturn };
     default:
       // The following line guarantees that every action in the KnownAction union has been covered by a case above
       const exhaustiveCheck: never = action;
@@ -65,5 +73,5 @@ export const reducer: Reducer<FlightState> = (state: FlightState, action: KnownA
 
   // For unrecognized actions (or in cases where actions have no effect), must return the existing state
   //  (or default initial state if none was supplied)
-  return state || { search: null, result: null, returnFlight: false, selectedDepart: null };
+  return state || { search: null, result: null, returnFlight: false, selectedDepart: null, selectedReturn: null };
 };
