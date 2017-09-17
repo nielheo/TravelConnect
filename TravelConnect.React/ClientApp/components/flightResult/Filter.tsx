@@ -60,7 +60,7 @@ export default class Filter extends React.Component<{
         code: a,
         selected: this.props.filteredAirlines.indexOf(a) > -1,
         count: filteredByStops.filter(f => f.departUniqueAirline === a).length,
-        loaded: this.props.loadedAirlines.indexOf(a) > -1
+        loaded: a === 'Multi' ? true : this.props.loadedAirlines.indexOf(a) > -1
       } as FilterAirlineType
     })
 

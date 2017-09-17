@@ -44,12 +44,19 @@ namespace TravelConnect.Models.Responses
     }
 
     [NotMapped]
-    public class PricedItin
+    public class Fare
     {
         public string Curr { get; set; }
-        //public float TotalPrice { get; set; }
-        public float BaseFare { get; set; }
-        public float TotalTax { get; set; }
+        public float Amount { get; set; }
+    }
+
+    [NotMapped]
+    public class PricedItin
+    {
+        public Fare BaseFare { get; set; }
+        public Fare Taxes { get; set; }
+        public Fare TotalFare { get; set; }
+
         public List<FareBreakdown> FareBreakdowns { get; set; }
         public List<Leg> Legs { get; set; }
         public DateTime? LastTicketDate { get; set; }

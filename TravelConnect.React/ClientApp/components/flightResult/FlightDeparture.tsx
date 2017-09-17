@@ -100,7 +100,7 @@ export default class FlightDeparture extends React.Component<{
           <FlightDetails segments={leg.segments} leg={leg} key={leg.routes} />
         </Col>
         <Col md={3}>
-          <h3 className='text-center'>{itin.curr} {Commons.FormatNum(itin.totalFare.toFixed(2))}</h3>
+          <h3 className='text-center'>{itin.totalFare.curr} {Commons.FormatNum(itin.totalFare.amount.toFixed(2))}</h3>
           <div className='text-center'>Class: {itin.legs && leg.brds}</div>
           <button className='form-control' onClick={() => this.props.onSelectDepart(leg)}>Select</button>
         </Col>

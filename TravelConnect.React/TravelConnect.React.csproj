@@ -35,7 +35,7 @@
     <None Remove="ClientApp\components\flightResult\FlightDetails.tsx" />
     <None Remove="ClientApp\components\flightResult\FlightReturnList.tsx" />
     <None Remove="ClientApp\components\flightResult\SelectedDeparture.tsx" />
-    <None Remove="ClientApp\components\flightReturn\Index.tsx" />
+    <None Remove="ClientApp\components\flightPax\Index.tsx" />
     <None Remove="ClientApp\components\flightSearch\SelectDate.tsx" />
     <None Remove="ClientApp\components\flightSearch\SelectPax.tsx" />
     <None Remove="ClientApp\store\Flight.ts" />
@@ -63,7 +63,7 @@
     <TypeScriptCompile Include="ClientApp\components\flightResult\FlightReturnList.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightResult\Index.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightResult\SelectedDeparture.tsx" />
-    <TypeScriptCompile Include="ClientApp\components\flightReturn\Index.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\flightPax\Index.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightSearch\Index.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightSearch\AirportAutocomplete.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightSearch\SelectDate.tsx" />

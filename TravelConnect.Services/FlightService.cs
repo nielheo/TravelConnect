@@ -27,14 +27,21 @@ namespace TravelConnect.Services
         {
             try
             {
-                string result = await
-                _SabreConnector.SendRequestAsync("/v3.2.0/shop/flights?mode=live&limit=200&offset=1&enabletagging=true",
-                    JsonConvert.SerializeObject(ConvertToAirLowFareSearchRQ(request),
+                string r = JsonConvert.SerializeObject(ConvertToAirLowFareSearchRQ(request),
                         Formatting.None, new JsonSerializerSettings
                         {
                             NullValueHandling = NullValueHandling.Ignore,
                             DateFormatString = "yyyy-MM-ddTHH:mm:ss"
-                        }), true);
+                        });
+
+                string result = await
+                    _SabreConnector.SendRequestAsync("/v3.2.0/shop/flights?mode=live&limit=200&offset=1&enabletagging=true",
+                        JsonConvert.SerializeObject(ConvertToAirLowFareSearchRQ(request),
+                            Formatting.None, new JsonSerializerSettings
+                            {
+                                NullValueHandling = NullValueHandling.Ignore,
+                                DateFormatString = "yyyy-MM-ddTHH:mm:ss"
+                            }), true);
 
                 AirLowFareSearchRS rs =
                 JsonConvert.DeserializeObject<AirLowFareSearchRS>(result);
@@ -142,14 +149,29 @@ namespace TravelConnect.Services
                     {
                         var ItinTotalFare = a.AirItineraryPricingInfo.Select(pi => pi.ItinTotalFare).FirstOrDefault();
                         var TotalFare = a.AirItineraryPricingInfo.Select(pi => pi.ItinTotalFare.TotalFare).FirstOrDefault();
-                        
+                        var BaseFare = a.AirItineraryPricingInfo.Select(pi => pi.ItinTotalFare.BaseFare).FirstOrDefault();
+                        var Taxes = a.AirItineraryPricingInfo.Select(pi => pi.ItinTotalFare.Taxes).FirstOrDefault();
+
+
                         if (TotalFare != null)
                         {
                             return new PricedItin
                             {
-                                Curr = TotalFare.CurrencyCode,
-                                BaseFare = ItinTotalFare?.BaseFare?.Amount ?? 0,
-                                TotalTax = ItinTotalFare?.Taxes?.Tax?.FirstOrDefault().Amount ?? 0,
+                                TotalFare = new Fare
+                                {
+                                    Curr = TotalFare.CurrencyCode,
+                                    Amount = TotalFare.Amount
+                                },
+                                BaseFare = new Fare
+                                {
+                                    Curr = BaseFare.CurrencyCode,
+                                    Amount = BaseFare.Amount
+                                },
+                                Taxes = new Fare
+                                {
+                                    Curr = Taxes.Tax[0].CurrencyCode,
+                                    Amount = Taxes.Tax[0].Amount
+                                },
                                 LastTicketDate = a.AirItineraryPricingInfo.FirstOrDefault()?.LastTicketDate,
                                 Legs = a.AirItinerary.OriginDestinationOptions
                                     .OriginDestinationOption.Select(dest =>

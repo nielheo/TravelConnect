@@ -59,9 +59,9 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
 
   //Compares
   _compareLeg = (a: any, b: any, leg:number) => {
-    if (a.totalFare < b.totalFare)
+    if (a.totalFare.amount < b.totalFare.amount)
       return -1;
-    if (a.totalFare > b.totalFare)
+    if (a.totalFare.amount > b.totalFare.amount)
       return 1;
     
     let aMoment = moment(a.legs[leg].segments[0].departure.time)
@@ -107,13 +107,13 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
     if (result) {
       result.pricedItins.map((i: any) => {
         i.itinNo = x++
-        i.totalFare = i.baseFare + i.totalTax
+        i.totalFare
         i.legs.map((l: any) => {
           l.itin = i,
           l.brds = l.segments.map((s: any) => s.brd).join(',')
           l.routes = l.segments.map((s: any) => {
-            return s.marketingFlight.airline + s.marketingFlight.number
-          }).join('-') + ':' + l.segments.map((s: any) => s.brd).join(',')
+            return s.marketingFlight.airline + s.marketingFlight.number + s.brd
+          }).join('-') + ':' + i.totalFare.curr + i.totalFare.amount
           l.airlines = l.segments.map((s: any) => {
             return s.marketingFlight.airline
           })
@@ -144,7 +144,7 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
       let departs: any[] = []
       this.props.searchResult.map((r: any) => {
         if (!departs.filter(d => d.legs[0].routes === r.legs[0].routes
-          && d.totalFare === r.totalFare
+            && d.totalFare.amount === r.totalFare.amount
         ).length)
           departs.push(r)
       })
@@ -169,8 +169,13 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
         let result = this._GenerateRoute(res)
         //console.log(result)
         let currResult = this.props.searchResult
+
         result.pricedItins.map((itin: any) => {
-          currResult.push(itin)
+          if (!currResult.filter(r => r.routes.join('|') === itin.routes.join('|')
+            && r.totalFare.amount === itin.totalFare.amount
+          ).length)
+            currResult.push(itin)
+        //  currResult.push(itin)
         })
         //console.log(currResult)
         this.props.setResult(currResult)
@@ -211,7 +216,7 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
 
     if (airline)
       request.airlines = [airline]
-
+    
     return request
   }
 
@@ -233,7 +238,7 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
     if (newResults) {
       let result = this.props.searchResult
       newResults.map((i: any) => {
-        if (!result.filter((r: any) => r.routes === i.routes).length)
+        if (!result.filter((r: any) => r.routes.join('|') === i.routes.join('|')).length)
           result.push(i)
       })
       //result.pricedItins.sort(this._compare)

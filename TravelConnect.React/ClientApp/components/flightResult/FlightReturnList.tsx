@@ -56,7 +56,7 @@ export default class FlightReturnList extends React.Component<{
       </Row>
       {
         returnItins.slice(_startIndex, _endIndex).map((r: any) => {
-          return <FlightDeparture itin={r} leg={r.legs[1]} key={r.legs[1].routes} onSelectDepart={onSelect} />
+          return <FlightDeparture itin={r} leg={r.legs[1]} key={'return_' + r.legs[1].routes} onSelectDepart={onSelect} />
         })
       }
       <Row className="text-right">

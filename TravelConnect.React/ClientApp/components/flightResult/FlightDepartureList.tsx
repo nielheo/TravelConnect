@@ -36,9 +36,9 @@ export default class FlightDepartureList extends React.Component<{
 
   _compareLeg = (a: any, b: any, leg: number) => {
     if (this.state.sortType === 1) {
-      if (a.totalFare < b.totalFare)
+      if (a.totalFare.amount < b.totalFare.amount)
         return -1;
-      if (a.totalFare > b.totalFare)
+      if (a.totalFare.amount > b.totalFare.amount)
         return 1;
     }
 
@@ -61,9 +61,9 @@ export default class FlightDepartureList extends React.Component<{
       return 1
 
     if (this.state.sortType === 2) {
-      if (a.totalFare < b.totalFare)
+      if (a.totalFare.amount < b.totalFare.amount)
         return -1;
-      if (a.totalFare > b.totalFare)
+      if (a.totalFare.amount > b.totalFare.amount)
         return 1;
     }
 
