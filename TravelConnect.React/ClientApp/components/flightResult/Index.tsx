@@ -6,8 +6,12 @@ import * as FlightStore from '../../store/Flight'
 
 import * as queryString from 'query-string'
 import { Grid, Row, Col, Pagination } from 'react-bootstrap'
-import FlightDeparture from './FlightDeparture'
+
+import FlightDepartureList from './FlightDepartureList'
+import FlightReturnList from './FlightReturnList'
+
 import Filter from './Filter'
+import SelectedDeparture from './SelectedDeparture'
 
 import * as Commons from '../Commons'
 
@@ -18,7 +22,7 @@ const CryptoJS = require('crypto-js') as any;
 type FlightProps =
   FlightStore.FlightState
   & typeof FlightStore.actionCreators
-  & RouteComponentProps<{ route: string }>;
+  & RouteComponentProps<{ route: string }>
 
 interface FlightResultState {
   request: any
@@ -54,14 +58,14 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
   }
 
   //Compares
-  _compareDepart = (a: any, b: any) => {
+  _compareLeg = (a: any, b: any, leg:number) => {
     if (a.baseFare < b.baseFare)
       return -1;
     if (a.baseFare > b.baseFare)
       return 1;
     
-    let aMoment = moment(a.legs[0].segments[0].departure.time)
-    let bMoment = moment(b.legs[0].segments[0].departure.time)
+    let aMoment = moment(a.legs[leg].segments[0].departure.time)
+    let bMoment = moment(b.legs[leg].segments[0].departure.time)
     
     if (aMoment.isBefore(bMoment))
       return -1
@@ -69,8 +73,8 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
     if (aMoment.isAfter(bMoment))
       return 1
 
-    let aArrival = moment(a.legs[0].segments[0].arrival.time)
-    let bArrival = moment(b.legs[0].segments[0].arrival.time)
+    let aArrival = moment(a.legs[leg].segments[a.legs[leg].segments.length - 1].arrival.time)
+    let bArrival = moment(b.legs[leg].segments[b.legs[leg].segments.length - 1].arrival.time)
 
     if (aArrival.isBefore(bArrival))
       return -1
@@ -79,6 +83,14 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
       return 1
 
     return 0;
+  }
+
+  _compareDepart = (a: any, b: any) => {
+    return this._compareLeg(a, b, 0)
+  }
+
+  _compareReturn = (a: any, b: any) => {
+    return this._compareLeg(a, b, 1)
   }
 
   _compareAirlineList = (a: any, b: any) => {
@@ -130,7 +142,9 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
     if (this.props.searchResult) {
       let departs: any[] = []
       this.props.searchResult.map((r: any) => {
-        if (!departs.filter(d => d.legs[0].routes === r.legs[0].routes).length)
+        if (!departs.filter(d => d.legs[0].routes === r.legs[0].routes
+          && d.baseFare === r.baseFare
+        ).length)
           departs.push(r)
       })
       departs = departs.sort(this._compareDepart)
@@ -225,6 +239,10 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
       this.props.setResult(result)
     }
   }
+
+  _resetDeparture = () => {
+    this.props.setSelectedDeparture(null)
+  }
   
   componentDidMount() {
     let request = this._generateRequest(null)
@@ -252,14 +270,6 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
             this.setState({ loadedAirlines: loaded })
           })
       }))
-  }
-
-  _handlePageChange = (a: any) => {
-    if (a !== this.state.page) {
-      this.setState({
-        page: a
-      })
-    }
   }
   
   _setFilteredAirline = (code: string, selected: boolean) => {
@@ -290,7 +300,7 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
 
   _selectDeparture = (departure: any) => {
     this.props.setSelectedDeparture(departure)
-    this.props.history.push('/flight/return')
+  //  this.props.history.push('/flight/return')
   }
   
   public render() {
@@ -307,51 +317,45 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
         : filteredByStops
 
     let _totalItems = filtered ? filtered.length : 0
-    let _totalPages = _totalItems ? Math.ceil(_totalItems / this.state.itemsPerPage) : 0
-    let _page = this.state.page > _totalPages ? _totalPages : this.state.page
-    let _startIndex = (_page - 1) * this.state.itemsPerPage
-    let _endIndex = _page * this.state.itemsPerPage
+    let _page = this.state.page
+
+    let _returnItins: any[] = (this.props.selectedDeparture && this.state.departures)
+      ? this.props.searchResult.filter(r =>
+          r.legs[0].routes === this.props.selectedDeparture.legs[0].routes)
+        .sort(this._compareReturn)
+      : []
+
+    //console.log(this.props.searchResult) 
+
+    //console.log(this.props.selectedDeparture.legs[0])
 
     return <Row>
       <Col md={3}>
-        <Filter
-          filteredAirlines={this.state.filteredAirlines}
-          filteredStops={this.state.filteredStops}
-          loadedAirlines={this.state.loadedAirlines}
-          onChangeFilterAirline={this._setFilteredAirline}
-          onChangeFilterShop={this._setFilteredStop}
-          itins={this.state.departures}
-        />
+        {this.props.selectedDeparture
+          ? <SelectedDeparture departure={this.props.selectedDeparture} onReset={this._resetDeparture} />
+          : <Filter
+            filteredAirlines={this.state.filteredAirlines}
+            filteredStops={this.state.filteredStops}
+            loadedAirlines={this.state.loadedAirlines}
+            onChangeFilterAirline={this._setFilteredAirline}
+            onChangeFilterShop={this._setFilteredStop}
+            itins={this.state.departures}
+          />
+        }
       </Col>
       <Col md={9}>
-        <h1>Select your flight</h1>
-        
         {
           this.state.departures.length
-            ? <section>
-              <h4>Select from {Commons.FormatNum(filtered.length)} Departures Flight</h4>
-              <h4>{this.props.searchResult
-                ? Commons.FormatNum(this.props.searchResult.length)
-                : 0} Routes available</h4>
-              <Row className="text-right">
-                <Col md={12}>
-                  <Pagination prev next first last ellipsis boundaryLinks
-                    items={_totalPages} maxButtons={5} activePage={_page}
-                    onSelect={this._handlePageChange} />
-                </Col>
-              </Row>
-              {
-                filtered.slice(_startIndex, _endIndex).map((r: any) =>
-                  <FlightDeparture depart={r} key={r.routes} onSelectDepart={this._selectDeparture} />)}
-              <Row className="text-right">
-                <Col md={12}>
-                  <Pagination prev next first last ellipsis boundaryLinks
-                    items={_totalPages} maxButtons={5} activePage={_page}
-                    onSelect={this._handlePageChange} />
-                </Col>
-              </Row>
-
-            </section>
+            ? this.props.selectedDeparture
+              ?
+                <FlightReturnList
+                  itins={_returnItins}
+                  onSelect= { this._selectDeparture }
+                />
+              : <FlightDepartureList 
+                departures={filtered}
+                onSelectDeparture={this._selectDeparture}
+              />
             : <h4>Loading......</h4>
         }
       </Col>

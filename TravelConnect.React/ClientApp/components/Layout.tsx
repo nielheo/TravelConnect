@@ -6,7 +6,11 @@ import { NavMenu } from './NavMenu';
 export class Layout extends React.Component<{}, {}> {
   public render() {
     return <Grid >
-      {this.props.children}
+      <Row>
+        <Col md={12}>
+          {this.props.children}
+        </Col>
+      </Row>
     </Grid>;
   }
 }

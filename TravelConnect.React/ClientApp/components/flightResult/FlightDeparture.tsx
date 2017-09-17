@@ -7,7 +7,11 @@ import * as Commons from '../Commons'
 
 import FlightDetails from './FlightDetails'
 
-export default class FlightDeparture extends React.Component<{ depart: any, onSelectDepart: any }, any> {
+export default class FlightDeparture extends React.Component<{
+  itin: any,
+  leg: any,
+  onSelectDepart: any
+}, any> {
   _dateOnly = (dateTime: any) => {
     return moment({
       year: dateTime.year(),
@@ -48,14 +52,13 @@ export default class FlightDeparture extends React.Component<{ depart: any, onSe
   }
 
   public render() {
-    const { depart } = this.props
-    const firstLeg = depart.legs[0]
-    const firstSegment = firstLeg.segments[0]
-    const lastSegment = firstLeg.segments[firstLeg.segments.length - 1]
+    const { leg, itin } = this.props
+    const firstSegment = leg.segments[0]
+    const lastSegment = leg.segments[leg.segments.length - 1]
     const dateDiff = this._dateDiff(moment(firstSegment.departure.time),
       moment(lastSegment.arrival.time))
-    const stopOvers: any = this._getStopOvers(firstLeg)
-    const airlines = Array.from(new Set(firstLeg.segments.map((s: any) => s.marketingFlight.airline))).join(',')
+    const stopOvers: any = this._getStopOvers(leg)
+    const airlines = Array.from(new Set(leg.segments.map((s: any) => s.marketingFlight.airline))).join(',')
     return <Panel>
       <Row>
         <Col md={1}>
@@ -73,18 +76,18 @@ export default class FlightDeparture extends React.Component<{ depart: any, onSe
               }
             </Col>
             <Col md={4}>
-              <h4><b>{this._durationFormat(firstLeg.elapsed)}</b></h4>
+              <h4><b>{this._durationFormat(leg.elapsed)}</b></h4>
 
               {firstSegment.origin + '-' +
-                firstLeg.segments.map((s: any) => s.destination).join('-')
+                leg.segments.map((s: any) => s.destination).join('-')
               }
             </Col>
             <Col md={4}>
               <h4>
                 {
-                  firstLeg.segments.length === 1 ? 'Direct '
-                    : (firstLeg.segments.length - 1) + ' Stop'
-                    + (firstLeg.segments.length > 2 ? 's' : '')
+                  leg.segments.length === 1 ? 'Direct '
+                    : (leg.segments.length - 1) + ' Stop'
+                    + (leg.segments.length > 2 ? 's' : '')
                 }
               </h4>
               {
@@ -92,12 +95,12 @@ export default class FlightDeparture extends React.Component<{ depart: any, onSe
               }
             </Col>
           </Row>
-          <FlightDetails segments={firstLeg.segments} leg={firstLeg} key={firstLeg.routes} />
+          <FlightDetails segments={leg.segments} leg={leg} key={leg.routes} />
         </Col>
         <Col md={3}>
-          <h3 className='text-center'>{depart.curr} {Commons.FormatNum(depart.baseFare.toFixed(0))}</h3>
-          <div className='text-center'>Class: {depart.legs && depart.legs[0].brds}</div>
-          <button className='form-control' onClick={() => this.props.onSelectDepart(depart)}>Select</button>
+          <h3 className='text-center'>{itin.curr} {Commons.FormatNum(itin.baseFare.toFixed(0))}</h3>
+          <div className='text-center'>Class: {itin.legs && itin.legs[0].brds}</div>
+          <button className='form-control' onClick={() => this.props.onSelectDepart(itin)}>Select</button>
         </Col>
       </Row>
     </Panel>

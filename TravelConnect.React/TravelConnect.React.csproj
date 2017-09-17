@@ -30,8 +30,11 @@
     <None Remove="ClientApp\components\flightResult\FilterStop.tsx" />
     <None Remove="ClientApp\components\flightResult\FilterStopItem.tsx" />
     <None Remove="ClientApp\components\flightResult\FlightDeparture.tsx" />
+    <None Remove="ClientApp\components\flightResult\FlightDepartureList.tsx" />
     <None Remove="ClientApp\components\flightResult\FlightDetail.tsx" />
     <None Remove="ClientApp\components\flightResult\FlightDetails.tsx" />
+    <None Remove="ClientApp\components\flightResult\FlightReturnList.tsx" />
+    <None Remove="ClientApp\components\flightResult\SelectedDeparture.tsx" />
     <None Remove="ClientApp\components\flightReturn\Index.tsx" />
     <None Remove="ClientApp\components\flightSearch\SelectDate.tsx" />
     <None Remove="ClientApp\components\flightSearch\SelectPax.tsx" />
@@ -54,9 +57,12 @@
     <TypeScriptCompile Include="ClientApp\components\flightResult\FilterStop.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightResult\FilterStopItem.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightResult\FlightDeparture.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\flightResult\FlightDepartureList.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightResult\FlightDetail.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightResult\FlightDetails.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\flightResult\FlightReturnList.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightResult\Index.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\flightResult\SelectedDeparture.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightReturn\Index.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightSearch\Index.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightSearch\AirportAutocomplete.tsx" />
