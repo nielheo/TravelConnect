@@ -34,6 +34,7 @@ namespace TravelConnect.Models.Responses
         public FlightNumber OperatingFlight { get; set; }
         public FlightNumber MarketingFlight { get; set; }
         public string BRD { get; set; }
+        public string MarriageGrp { get; set; }
     }
 
     [NotMapped]

@@ -27,12 +27,12 @@ namespace TravelConnect.Services
         {
             try
             {
-                string r = JsonConvert.SerializeObject(ConvertToAirLowFareSearchRQ(request),
-                        Formatting.None, new JsonSerializerSettings
-                        {
-                            NullValueHandling = NullValueHandling.Ignore,
-                            DateFormatString = "yyyy-MM-ddTHH:mm:ss"
-                        });
+                //string r = JsonConvert.SerializeObject(ConvertToAirLowFareSearchRQ(request),
+                //        Formatting.None, new JsonSerializerSettings
+                //        {
+                //            NullValueHandling = NullValueHandling.Ignore,
+                //            DateFormatString = "yyyy-MM-ddTHH:mm:ss"
+                //        });
 
                 string result = await
                     _SabreConnector.SendRequestAsync("/v3.2.0/shop/flights?mode=live&limit=200&offset=1&enabletagging=true",
@@ -206,7 +206,8 @@ namespace TravelConnect.Services
                                                         Airline = seg.OperatingAirline.Code,
                                                         Number = seg.OperatingAirline.FlightNumber
                                                     },
-                                                    BRD = seg.ResBookDesigCode
+                                                    BRD = seg.ResBookDesigCode,
+                                                    MarriageGrp = seg.MarriageGrp
                                                 };
                                             }).ToList()
                                         };

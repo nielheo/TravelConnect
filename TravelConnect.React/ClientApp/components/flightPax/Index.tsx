@@ -26,6 +26,12 @@ class FlightPax_Index extends React.Component<FlightProps, any> {
     console.log(filteredReturn)
     return <Row>
       <Col md={3}>
+        <Row>
+          <Col md={12}>
+            <h4>
+            </h4>
+          </Col>
+        </Row>
         <Panel>
           <Row>
             <Col md={12}>
@@ -34,7 +40,7 @@ class FlightPax_Index extends React.Component<FlightProps, any> {
           </Row>
           {
             filteredReturn[0].legs[0].segments.map((s: any) =>
-              <Segment key={s.routes} segment={s} />
+              <Segment key={s.marketingFlight.airline + s.marketingFlight.number} segment={s} />
               )
           }
           <Row>
@@ -44,7 +50,7 @@ class FlightPax_Index extends React.Component<FlightProps, any> {
           </Row>
           {
             filteredReturn[0].legs[1].segments.map((s: any) => 
-              <Segment key={s.routes} segment={s} />
+              <Segment key={s.marketingFlight.airline + s.marketingFlight.number} segment={s} />
             )
           }
           <Row>
