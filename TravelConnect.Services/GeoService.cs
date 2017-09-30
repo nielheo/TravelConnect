@@ -24,7 +24,8 @@ namespace TravelConnect.Services
 
         public async Task<AirportAutocompleteRS> GetAirportAutocompleteAsync(string query)
         {
-            string key = string.Format("AirportAutocomplete_{0}", query);
+            query = query.ToLower();
+            string key = string.Format("airportAutocomplete_{0}", query);
             AirportAutocompleteRS cache;
 
             if (!_cache.TryGetValue(key, out cache))
@@ -136,7 +137,8 @@ namespace TravelConnect.Services
 
         public async Task<AirportRS> GetAirtportByCodeAsync(string airportCode)
         {
-            string key = string.Format("Airport_{0}", airportCode);
+            airportCode = airportCode.ToLower();
+            string key = string.Format("airport_{0}", airportCode);
             AirportRS cacheSearchRS;
 
             if (!_cache.TryGetValue(key, out cacheSearchRS))

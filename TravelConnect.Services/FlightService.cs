@@ -1,10 +1,13 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TravelConnect.Interfaces;
+using TravelConnect.Models;
 using TravelConnect.Models.Requests;
 using TravelConnect.Models.Responses;
 using TravelConnect.Sabre;
@@ -16,11 +19,14 @@ namespace TravelConnect.Services
     {
         private ISabreConnector _SabreConnector;
         private IMemoryCache _cache;
-        
-        public FlightService(ISabreConnector _SabreConnector, IMemoryCache memoryCache)
+        private readonly TCContext _context;
+
+        public FlightService(ISabreConnector _SabreConnector, 
+            IMemoryCache memoryCache, TCContext _context)
         {
             this._SabreConnector = _SabreConnector;
             this._cache = memoryCache;
+            this._context = _context;
         }
 
         private async Task<FlightSearchRS> SubmitAirLowFareSearch(FlightSearchRQ request)
@@ -353,23 +359,73 @@ namespace TravelConnect.Services
             }
         }
 
+        private async Task<Models.Responses.AirlineRS> RetrieveAirlineFromDbAsync(string code)
+        {
+            var airline = await _context.Airlines
+                .SingleOrDefaultAsync(a => a.Id == code);
+
+            if (airline == null)
+                return null;
+
+            return new Models.Responses.AirlineRS
+            {
+                Code = airline.Id,
+                Name = airline.Name
+            };
+        }
+
+        private async Task<Models.Responses.AirlineRS> SaveAirlineToDbAsync(string id, string name)
+        {
+            _context.Airlines.Add(new Airline
+            {
+                Id = id,
+                Name = name
+            });
+
+            int x = await _context.SaveChangesAsync();
+            
+            return new Models.Responses.AirlineRS
+            {
+                Code = id,
+                Name = name
+            };
+        }
+
+
         public async Task<Models.Responses.AirlineRS> GetAirlineAsync(string code)
         {
-            string key = "Airline_" + code;
+            code = code.ToLower();
+            string key = "airline_" + code;
             Models.Responses.AirlineRS cache;
 
             if (!_cache.TryGetValue(key, out cache))
             {
-                // Key not in cache, so get data.
-                cache = await SubmitGetAirlineAsync(code);
-                
-                // Set cache options.
-                var cacheEntryOptions = new MemoryCacheEntryOptions()
-                    // Keep in cache for this time, reset time if accessed.
-                    .SetSlidingExpiration(TimeSpan.FromHours(1));
+                // Key not in cache, so get from database.
+                cache = await RetrieveAirlineFromDbAsync(code);
 
-                // Save data in cache.
-                _cache.Set(key, cache, cacheEntryOptions);
+                //Key not in database, so get from Sabre.
+                if (cache == null)
+                {
+                    cache = await SubmitGetAirlineAsync(code);
+
+                    //If get value, save into database
+                    if (cache != null)
+                    {
+                        await SaveAirlineToDbAsync(cache.Code, cache.Name);
+                    }
+                }
+
+                //Key has value, store in cache
+                if (cache != null)
+                {
+                    // Set cache options.
+                    var cacheEntryOptions = new MemoryCacheEntryOptions()
+                        // Keep in cache for this time, reset time if accessed.
+                        .SetSlidingExpiration(TimeSpan.FromHours(1));
+
+                    // Save data in cache.
+                    _cache.Set(key, cache, cacheEntryOptions);
+                }
             }
 
             return cache;
@@ -377,7 +433,7 @@ namespace TravelConnect.Services
 
         public async Task<FlightSearchRS> NextAirLowFareSearchAsync(string requestId, int page)
         {
-            string key = string.Format("NextAirLowFare_{0}_{1}", requestId, page);
+            string key = string.Format("nextAirLowFare_{0}_{1}", requestId, page);
             FlightSearchRS cacheSearchRS;
 
             if (!_cache.TryGetValue(key, out cacheSearchRS))

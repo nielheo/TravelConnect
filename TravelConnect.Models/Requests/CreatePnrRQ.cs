@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace TravelConnect.Models.CreatePnr
 {
+    [NotMapped]
     public class CreatePnrRQ
     {
         public List<AirSegment> AirSegments { get; set; }
         public List<Passenger> Passengers { get; set; }
     }
 
+    [NotMapped]
     public class AirSegment
     {
         public DateTime Departure { get; set; }

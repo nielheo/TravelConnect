@@ -11,9 +11,10 @@ using TravelConnect.Models;
 namespace TravelConnect.Web.Migrations
 {
     [DbContext(typeof(TCContext))]
-    partial class TCContextModelSnapshot : ModelSnapshot
+    [Migration("20170928064448_AddAirlineAirport")]
+    partial class AddAirlineAirport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

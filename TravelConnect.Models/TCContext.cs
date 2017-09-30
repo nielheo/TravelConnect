@@ -8,7 +8,9 @@ namespace TravelConnect.Models
             : base(options)
         { }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<Airline> Airlines { get; set; }
+        public DbSet<Airport> Airports { get; set; }
         public DbSet<SabreCredential> SabreCredentials { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }
