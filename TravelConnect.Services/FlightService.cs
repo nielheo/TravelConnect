@@ -374,21 +374,19 @@ namespace TravelConnect.Services
             };
         }
 
-        private async Task<Models.Responses.AirlineRS> SaveAirlineToDbAsync(string id, string name)
+        private async Task<bool> SaveAirlineToDbAsync(string id, string name)
         {
             _context.Airlines.Add(new Airline
             {
                 Id = id,
-                Name = name
+                Name = name,
+                CreatedTime = DateTime.Now,
+                UpdatedTime = DateTime.Now,
             });
 
             int x = await _context.SaveChangesAsync();
-            
-            return new Models.Responses.AirlineRS
-            {
-                Code = id,
-                Name = name
-            };
+
+            return x > 0;
         }
 
 

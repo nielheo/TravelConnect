@@ -13,7 +13,11 @@ namespace TravelConnect.Models
         public string Id { get; set; }
 
         [Required]
-        [StringLength(30)]
+        [StringLength(100)]
         public string Name { get; set; }
+
+        public DateTime CreatedTime { get; set; }
+
+        public DateTime UpdatedTime { get; set; }
     }
 }

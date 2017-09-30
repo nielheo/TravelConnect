@@ -1,9 +1,11 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TravelConnect.Interfaces;
+using TravelConnect.Models;
 using TravelConnect.Models.Responses;
 using TravelConnect.Sabre;
 using TravelConnect.Sabre.Models;
@@ -14,12 +16,15 @@ namespace TravelConnect.Services
     {
         private ISabreConnector _SabreConnector;
         private IMemoryCache _cache;
+        private readonly TCContext _context;
 
         public GeoService(ISabreConnector _SabreConnector,
-            IMemoryCache _cache)
+            IMemoryCache _cache,
+            TCContext _context)
         {
             this._SabreConnector = _SabreConnector;
             this._cache = _cache;
+            this._context = _context;
         }
 
         public async Task<AirportAutocompleteRS> GetAirportAutocompleteAsync(string query)
@@ -137,25 +142,79 @@ namespace TravelConnect.Services
 
         public async Task<AirportRS> GetAirtportByCodeAsync(string airportCode)
         {
-            airportCode = airportCode.ToLower();
+            airportCode = airportCode.ToUpper();
             string key = string.Format("airport_{0}", airportCode);
             AirportRS cacheSearchRS;
 
             if (!_cache.TryGetValue(key, out cacheSearchRS))
             {
-                // Key not in cache, so get data.
-                cacheSearchRS = await SubmitAirtportByCodeAsync(airportCode);
+                // Key not in cache, so get from database.
+                cacheSearchRS = await RetrieveAirportFromDbAsync(airportCode);
 
-                // Set cache options.
-                var cacheEntryOptions = new MemoryCacheEntryOptions()
-                    // Keep in cache for this time, reset time if accessed.
-                    .SetSlidingExpiration(TimeSpan.FromHours(1));
+                //Key not in database, so get from Sabre.
+                if (cacheSearchRS == null)
+                {
+                    cacheSearchRS = await SubmitAirtportByCodeAsync(airportCode);
 
-                // Save data in cache.
-                _cache.Set(key, cacheSearchRS, cacheEntryOptions);
+                    //If get value, save into database
+                    if (cacheSearchRS != null)
+                    {
+                        await SaveAirportToDbAsync(cacheSearchRS);
+                    }
+                }
+
+                //Key has value, store in cache
+                if (cacheSearchRS != null)
+                {
+                    // Set cache options.
+                    var cacheEntryOptions = new MemoryCacheEntryOptions()
+                        // Keep in cache for this time, reset time if accessed.
+                        .SetSlidingExpiration(TimeSpan.FromHours(1));
+
+                    // Save data in cache.
+                    _cache.Set(key, cacheSearchRS, cacheEntryOptions);
+                }
             }
 
             return cacheSearchRS;
+        }
+
+        private async Task<AirportRS> RetrieveAirportFromDbAsync(string code)
+        {
+            var airport = await _context.Airports
+                .SingleOrDefaultAsync(a => a.Id == code);
+
+            if (airport == null)
+                return null;
+
+            return new AirportRS
+            {
+                Code = airport.Id,
+                Name = airport.Name,
+                CityName = airport.CityName,
+                CountryCode = airport.CountryCode,
+                Longitude = (decimal)airport.Longitude,
+                Latitude = (decimal)airport.Latitude
+            };
+        }
+
+        private async Task<bool> SaveAirportToDbAsync(AirportRS airportRs)
+        {
+            _context.Airports.Add(new Airport
+            {
+                Id = airportRs.Code,
+                Name = airportRs.Name,
+                Longitude = (float)airportRs.Longitude,
+                Latitude = (float)airportRs.Latitude,
+                CountryCode = airportRs.CountryCode,
+                CityName = airportRs.CityName,
+                CreatedTime = DateTime.Now,
+                UpdatedTime = DateTime.Now,
+            });
+
+            int x = await _context.SaveChangesAsync();
+
+            return x > 0;
         }
     }
 }

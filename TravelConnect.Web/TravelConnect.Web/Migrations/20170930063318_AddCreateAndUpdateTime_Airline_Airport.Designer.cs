@@ -11,9 +11,10 @@ using TravelConnect.Models;
 namespace TravelConnect.Web.Migrations
 {
     [DbContext(typeof(TCContext))]
-    partial class TCContextModelSnapshot : ModelSnapshot
+    [Migration("20170930063318_AddCreateAndUpdateTime_Airline_Airport")]
+    partial class AddCreateAndUpdateTime_Airline_Airport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,7 +31,7 @@ namespace TravelConnect.Web.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100);
+                        .HasMaxLength(30);
 
                     b.Property<DateTime>("UpdatedTime");
 
@@ -43,7 +44,7 @@ namespace TravelConnect.Web.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(3);
+                        .HasMaxLength(2);
 
                     b.Property<string>("CityName")
                         .IsRequired()
@@ -55,13 +56,9 @@ namespace TravelConnect.Web.Migrations
 
                     b.Property<DateTime>("CreatedTime");
 
-                    b.Property<float>("Latitude");
-
-                    b.Property<float>("Longitude");
-
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100);
+                        .HasMaxLength(50);
 
                     b.Property<DateTime>("UpdatedTime");
 

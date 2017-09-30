@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelConnect.Interfaces", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelConnect.React", "TravelConnect.React\TravelConnect.React.csproj", "{B124DD94-87EE-492F-B213-B52CD5E4EE1F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelConnect.Web", "TravelConnect.Web\TravelConnect.Web\TravelConnect.Web.csproj", "{6E92D0EE-4E61-4FC6-8CF3-8BAC1FD26F01}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{B124DD94-87EE-492F-B213-B52CD5E4EE1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B124DD94-87EE-492F-B213-B52CD5E4EE1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B124DD94-87EE-492F-B213-B52CD5E4EE1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E92D0EE-4E61-4FC6-8CF3-8BAC1FD26F01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E92D0EE-4E61-4FC6-8CF3-8BAC1FD26F01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E92D0EE-4E61-4FC6-8CF3-8BAC1FD26F01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E92D0EE-4E61-4FC6-8CF3-8BAC1FD26F01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

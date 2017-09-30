@@ -11,9 +11,10 @@ using TravelConnect.Models;
 namespace TravelConnect.Web.Migrations
 {
     [DbContext(typeof(TCContext))]
-    partial class TCContextModelSnapshot : ModelSnapshot
+    [Migration("20170930065853_Add_Latitude_Longitude_Airport")]
+    partial class Add_Latitude_Longitude_Airport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,7 +44,7 @@ namespace TravelConnect.Web.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(3);
+                        .HasMaxLength(2);
 
                     b.Property<string>("CityName")
                         .IsRequired()
