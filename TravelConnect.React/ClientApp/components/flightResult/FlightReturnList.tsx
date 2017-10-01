@@ -25,7 +25,6 @@ export default class FlightReturnList extends React.Component<{
     }
   }
 
-
   public render() {
     const { itins, onSelect } = this.props
 
@@ -43,7 +42,7 @@ export default class FlightReturnList extends React.Component<{
     let _page = page > _totalPages ? _totalPages : page
     let _startIndex = (_page - 1) * itemsPerPage
     let _endIndex = _page * itemsPerPage
-    
+
     return <section>
       <h2>Select your return flight</h2>
       <h4>Select from {Commons.FormatNum(returnItins.length)} Return{returnItins.length ? 's' : ''} Flight</h4>

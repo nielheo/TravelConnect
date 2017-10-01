@@ -4,7 +4,6 @@ import { AppThunkAction } from './';
 // -----------------
 // STATE - This defines the type of data maintained in the Redux store.
 
-
 export interface FlightState {
   searchRequest: any;
   searchResult: any[];

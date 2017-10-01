@@ -47,7 +47,6 @@ namespace TravelConnect_React
             services.AddTransient<IAirService, AirService>();
             services.AddTransient<IUtilityService, UtilityService>();
             services.AddTransient<ILogService, LogService>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -81,8 +80,6 @@ namespace TravelConnect_React
                     name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
             });
-            
-            
         }
     }
 }

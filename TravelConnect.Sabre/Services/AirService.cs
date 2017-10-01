@@ -1,8 +1,6 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TravelConnect.Models.Requests;
 using TravelConnect.Models.Responses;
@@ -13,7 +11,8 @@ namespace TravelConnect.Sabre.Services
 {
     public class AirService : IAirService
     {
-        ISabreConnector _SabreConnector;
+        private ISabreConnector _SabreConnector;
+
         public AirService(ISabreConnector _SabreConnector)
         {
             this._SabreConnector = _SabreConnector;
@@ -40,6 +39,11 @@ namespace TravelConnect.Sabre.Services
             {
                 return null;
             }
+        }
+
+        public Task<List<string>> GetTopDestinationsAsync(string airportCode)
+        {
+            throw new System.NotImplementedException();
         }
 
         private AirLowFareSearchRQ ConvertToAirLowFareSearchRQ(FlightSearchRQ request)
@@ -168,7 +172,6 @@ namespace TravelConnect.Sabre.Services
                         var BaseFare = a.AirItineraryPricingInfo.Select(pi => pi.ItinTotalFare.BaseFare).FirstOrDefault();
                         var Taxes = a.AirItineraryPricingInfo.Select(pi => pi.ItinTotalFare.Taxes).FirstOrDefault();
 
-
                         if (TotalFare != null)
                         {
                             return new PricedItin
@@ -239,6 +242,5 @@ namespace TravelConnect.Sabre.Services
 
             return rs;
         }
-
     }
 }

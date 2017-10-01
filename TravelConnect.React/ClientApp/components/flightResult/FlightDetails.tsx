@@ -20,7 +20,7 @@ export default class FlightDetails extends React.Component<{ segments: any, leg:
       })
     }
   }
-  
+
   public render() {
     let lastTicketDate = moment(this.props.leg.itin.lastTicketDate).isValid()
       ? moment(this.props.leg.itin.lastTicketDate)

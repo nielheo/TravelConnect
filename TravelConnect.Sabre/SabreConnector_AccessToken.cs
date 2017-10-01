@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Net;
@@ -47,7 +46,8 @@ namespace TravelConnect.Sabre
             //var sabreCredential = await _context.SabreCredentials
             //   .SingleOrDefaultAsync(s => s.IsActive);
 
-            return new SabreCredential {
+            return new SabreCredential
+            {
                 ClientId = "VjE6OW5vY3U5dzJ1c3QybzZ4ZzpERVZDRU5URVI6RVhU",
                 ClientSecret = "ZkFBcDZsNkk=",
             };

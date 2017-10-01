@@ -8,7 +8,6 @@ import * as Commons from '../Commons'
 
 import { FilterStopType, FilterAirlineType } from '../Classes'
 
-
 interface FlightFilterState {
   stops: FilterStopType[],
   airlines: FilterAirlineType[],
@@ -38,11 +37,11 @@ export default class Filter extends React.Component<{
 
     return 0
   }
-    
+
   public render() {
     let stops = Array.from(new Set(this.props.itins.map(i => i.departStop)))
     let filterStops = stops.map((s: number) => {
-      return  {
+      return {
         stop: s,
         count: this.props.itins.filter(i => i.departStop === s).length,
         selected: this.props.filteredStops.indexOf(s) > -1,
@@ -65,7 +64,7 @@ export default class Filter extends React.Component<{
     })
 
     //console.log(filterAirlines)
-    
+
     return <Row>
       <h4>Filter Results:</h4>
       <FilterStop stops={filterStops} onChangeFilter={this.props.onChangeFilterShop} />

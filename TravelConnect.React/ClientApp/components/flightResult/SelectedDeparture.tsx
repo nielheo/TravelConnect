@@ -3,11 +3,11 @@ import { Panel, Row, Col } from 'react-bootstrap'
 
 import * as moment from 'moment'
 
-export default class SelectedDeparture extends React.Component<{ departure: any, onReset: any}, any> {
+export default class SelectedDeparture extends React.Component<{ departure: any, onReset: any }, any> {
   constructor(props: any) {
     super(props)
   }
-  
+
   public render() {
     const leg = this.props.departure
     let i = 0
@@ -20,7 +20,7 @@ export default class SelectedDeparture extends React.Component<{ departure: any,
 
       </Row>
       {leg.segments.map((s: any) => <section key={'selectedDeparture_' + i++}>
-        
+
         <Row>
           <Col md={12}>{s.marketingFlight.airline} {s.marketingFlight.number} - Class: {s.brd}</Col>
         </Row>
@@ -46,9 +46,8 @@ export default class SelectedDeparture extends React.Component<{ departure: any,
           <Col md={6}>{moment(s.arrival.time).format('HH:MM')}
             <small> (gmt{s.arrival.gmtOffset >= 0 ? '+' : ''}{s.arrival.gmtOffset})</small></Col>
         </Row>
-        </section>
-        )
-
+      </section>
+      )
       }
     </Panel>
   }

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 using System.Text;
-using System.Threading.Tasks;
 
 public class HttpHeaderMessageInspector : IClientMessageInspector
 {
@@ -15,7 +13,6 @@ public class HttpHeaderMessageInspector : IClientMessageInspector
 
     public HttpHeaderMessageInspector()
     {
-
     }
 
     public HttpHeaderMessageInspector(Dictionary<string, string> httpHeaders)
@@ -23,7 +20,9 @@ public class HttpHeaderMessageInspector : IClientMessageInspector
         this._httpHeaders = httpHeaders;
     }
 
-    public void AfterReceiveReply(ref Message reply, object correlationState) { }
+    public void AfterReceiveReply(ref Message reply, object correlationState)
+    {
+    }
 
     public object BeforeSendRequest(ref Message request, IClientChannel channel)
     {
@@ -74,7 +73,10 @@ internal class HttpHeadersEndpointBehavior : IEndpointBehavior
     {
         this._httpHeaders = httpHeaders;
     }
-    public void AddBindingParameters(ServiceEndpoint endpoint, BindingParameterCollection bindingParameters) { }
+
+    public void AddBindingParameters(ServiceEndpoint endpoint, BindingParameterCollection bindingParameters)
+    {
+    }
 
     public void ApplyClientBehavior(ServiceEndpoint endpoint, ClientRuntime clientRuntime)
     {
@@ -83,6 +85,11 @@ internal class HttpHeadersEndpointBehavior : IEndpointBehavior
         clientRuntime.ClientMessageInspectors.Add(inspector);
     }
 
-    public void ApplyDispatchBehavior(ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher) { }
-    public void Validate(ServiceEndpoint endpoint) { }
+    public void ApplyDispatchBehavior(ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher)
+    {
+    }
+
+    public void Validate(ServiceEndpoint endpoint)
+    {
+    }
 }

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using TravelConnect.Models.Responses;
-using TravelConnect.Models.CreatePnr;
 using TravelConnect.Interfaces;
+using TravelConnect.Models.CreatePnr;
+using TravelConnect.Models.Responses;
 
 namespace TravelConnect.React.Controllers
 {
@@ -14,7 +10,7 @@ namespace TravelConnect.React.Controllers
     [Route("api/Pnr")]
     public class PnrController : Controller
     {
-        IPnrService _PnrService;
+        private IPnrService _PnrService;
 
         public PnrController(IPnrService _PnrService)
         {
@@ -25,7 +21,7 @@ namespace TravelConnect.React.Controllers
         public async Task<CreatePnrRS> PostAsync([FromBody]CreatePnrRQ request)
         {
             Task<CreatePnrRS> response = _PnrService.CreatePnrAsync(request);
-            
+
             return await response;
         }
     }

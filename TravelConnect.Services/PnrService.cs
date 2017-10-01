@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TravelConnect.Interfaces;
@@ -14,7 +13,7 @@ namespace TravelConnect.Services
     public class PnrService : IPnrService
     {
         private ISabreConnector _SabreConnector;
-        
+
         public PnrService(ISabreConnector _SabreConnector)
         {
             this._SabreConnector = _SabreConnector;
@@ -33,8 +32,8 @@ namespace TravelConnect.Services
 
                 string result = await
                     _SabreConnector.SendRequestAsync("/v2.0.0/passenger/records?mode=create", r, true);
-                
-                CreatePassNameRecordRS rs = 
+
+                CreatePassNameRecordRS rs =
                     JsonConvert.DeserializeObject<CreatePassNameRecordRS>(result);
 
                 return ConvertToCreatePnrRS(rs);
@@ -101,7 +100,7 @@ namespace TravelConnect.Services
                                 new Passengertype
                                 {
                                     Code = p,
-                                    Quantity = request.Passengers.Where(ps=>ps.Type == p).Count()
+                                    Quantity = request.Passengers.Where(ps => ps.Type == p).Count()
                                 }
                             ).ToArray()
                         }

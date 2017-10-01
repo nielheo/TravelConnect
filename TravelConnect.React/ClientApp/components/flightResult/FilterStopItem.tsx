@@ -18,7 +18,7 @@ export default class FilterStopItem extends React.Component<{
   //  //console.log(this.props.airline.code)
   //  Commons._GetAirline(code).then((res: any) => { this.setState({ airlineFullname: res.name }) })
   //}
-  
+
   public render() {
     //console.log(this.state.airlineFullname)
     const { stop } = this.props

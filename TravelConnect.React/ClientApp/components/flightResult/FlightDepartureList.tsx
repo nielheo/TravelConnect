@@ -5,8 +5,6 @@ import FlightDeparture from './FlightDeparture'
 
 import { Panel, Grid, Row, Col, Pagination, ButtonToolbar, ToggleButtonGroup, ToggleButton } from 'react-bootstrap'
 
-
-
 import * as Commons from '../Commons'
 
 export default class FlightDepartureList extends React.Component<{
@@ -97,7 +95,7 @@ export default class FlightDepartureList extends React.Component<{
               items={_totalPages} maxButtons={5} activePage={_page}
               onSelect={this._onPageChange} />
           </ButtonToolbar>
-          
+
         </Col>
       </Row>
       {

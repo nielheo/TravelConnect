@@ -29,7 +29,7 @@ interface FlightResultState {
   departures: any[]
   page: number
   itemsPerPage: number
-  requestId: string 
+  requestId: string
   airlines: string[]
   filteredAirlines: string[]
   filteredStops: number[]
@@ -43,7 +43,7 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
     let route = props.match.params.route
 
     let data = queryString.parse(route)
-    
+
     this.state = {
       request: data,
       departures: [],
@@ -58,15 +58,15 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
   }
 
   //Compares
-  _compareLeg = (a: any, b: any, leg:number) => {
+  _compareLeg = (a: any, b: any, leg: number) => {
     if (a.totalFare.amount < b.totalFare.amount)
       return -1;
     if (a.totalFare.amount > b.totalFare.amount)
       return 1;
-    
+
     let aMoment = moment(a.legs[leg].segments[0].departure.time)
     let bMoment = moment(b.legs[leg].segments[0].departure.time)
-    
+
     if (aMoment.isBefore(bMoment))
       return -1
 
@@ -110,7 +110,7 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
         i.totalFare
         i.legs.map((l: any) => {
           l.itin = i,
-          l.brds = l.segments.map((s: any) => s.brd).join(',')
+            l.brds = l.segments.map((s: any) => s.brd).join(',')
           l.routes = l.segments.map((s: any) => {
             return s.marketingFlight.airline + s.marketingFlight.number + s.brd
           }).join('-') + ':' + i.totalFare.curr + i.totalFare.amount
@@ -125,7 +125,7 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
         i.routes = i.legs.map((l: any) => l.routes)
 
         //i.routes = i.legs.map((l: any) => l.routes).join('|')
-        i.airlines = [] 
+        i.airlines = []
         i.legs.map((l: any) => l.airlines.map((l2: any) => i.airlines.push(l2)))
         i.uniqueAirline = Array.from(new Set(i.airlines)).join(',')
         if (i.uniqueAirline.indexOf(',') > -1)
@@ -139,12 +139,12 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
     return result.pricedItins
   }
 
-  _GetDepartures = () : any[] => {
+  _GetDepartures = (): any[] => {
     if (this.props.searchResult) {
       let departs: any[] = []
       this.props.searchResult.map((r: any) => {
         if (!departs.filter(d => d.legs[0].routes === r.legs[0].routes
-            && d.totalFare.amount === r.totalFare.amount
+          && d.totalFare.amount === r.totalFare.amount
         ).length)
           departs.push(r)
       })
@@ -175,17 +175,16 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
             && r.totalFare.amount === itin.totalFare.amount
           ).length)
             currResult.push(itin)
-        //  currResult.push(itin)
+          //  currResult.push(itin)
         })
         //console.log(currResult)
         this.props.setResult(currResult)
       })
       .then(() => this.setState({ departures: this._GetDepartures() }))
-      //.then(res => {
-
-        //this.setState({ result: this._GenerateRoute(res) })
-      //})
-  //    .then(() => this.setState({ departures: this._GetDepartures() }))
+    //.then(res => {
+    //this.setState({ result: this._GenerateRoute(res) })
+    //})
+    //    .then(() => this.setState({ departures: this._GetDepartures() }))
   }
 
   _generateRequest = (airline: any) => {
@@ -216,7 +215,7 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
 
     if (airline)
       request.airlines = [airline]
-    
+
     return request
   }
 
@@ -230,10 +229,10 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
       },
       body: JSON.stringify(request)
     }).then(res => {
-      if(res) return res.json()
-      }).catch(err => { })
+      if (res) return res.json()
+    }).catch(err => { })
   }
-  
+
   _appendResult = (newResults: any[]) => {
     if (newResults) {
       let result = this.props.searchResult
@@ -249,7 +248,7 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
   _resetDeparture = () => {
     this.props.setSelectedDeparture(null)
   }
-  
+
   componentDidMount() {
     let request = this._generateRequest(null)
     return this._sendRequest(request)
@@ -277,19 +276,19 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
           })
       }))
   }
-  
+
   _setFilteredAirline = (code: string, selected: boolean) => {
     if (selected) {
       if (!this.state.filteredAirlines.filter(a => a === code).length) {
         let airlines = this.state.filteredAirlines
         airlines.push(code)
-        this.setState({ filteredAirlines: airlines})
+        this.setState({ filteredAirlines: airlines })
       }
     } else {
       let airlines = this.state.filteredAirlines.filter(a => a !== code)
       this.setState({ filteredAirlines: airlines })
     }
-  } 
+  }
 
   _setFilteredStop = (stop: number, selected: boolean) => {
     if (selected) {
@@ -302,11 +301,11 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
       let stops = this.state.filteredStops.filter(a => a !== stop)
       this.setState({ filteredStops: stops })
     }
-  } 
+  }
 
   _selectDeparture = (departure: any) => {
     this.props.setSelectedDeparture(departure)
-  //  this.props.history.push('/flight/return')
+    //  this.props.history.push('/flight/return')
   }
 
   _selectReturn = (returnLeg: any) => {
@@ -314,7 +313,6 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
     this.props.history.push('/flight/pax')
   }
 
-  
   public render() {
     let filteredByStops =
       this.state.filteredStops.length > 0
@@ -333,11 +331,11 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
 
     let _returnItins: any[] = (this.props.selectedDeparture && this.state.departures)
       ? this.props.searchResult.filter(r =>
-          r.legs[0].routes === this.props.selectedDeparture.routes)
+        r.legs[0].routes === this.props.selectedDeparture.routes)
         .sort(this._compareReturn)
       : []
 
-    //console.log(this.props.searchResult) 
+    //console.log(this.props.searchResult)
 
     //console.log(this.props.selectedDeparture.legs[0])
 
@@ -360,10 +358,10 @@ class FlightResult_Index extends React.Component<FlightProps, FlightResultState>
           this.state.departures.length
             ? this.props.selectedDeparture
               ? <FlightReturnList
-                  itins={_returnItins}
-                  onSelect={this._selectReturn }
-                />
-              : <FlightDepartureList 
+                itins={_returnItins}
+                onSelect={this._selectReturn}
+              />
+              : <FlightDepartureList
                 departures={filtered}
                 onSelectDeparture={this._selectDeparture}
               />

@@ -34,7 +34,7 @@ export default class Segment extends React.Component<{
       </Row>
       <Row>
         <Col md={6}>
-          {moment(s.departure.time).format('HH:MM')} 
+          {moment(s.departure.time).format('HH:MM')}
           <small> (gmt {s.departure.gmtOffset >= 0 ? '+' : ''}{s.departure.gmtOffset})</small>
         </Col>
         <Col md={6}>
@@ -42,6 +42,6 @@ export default class Segment extends React.Component<{
           <small> (gmt {s.arrival.gmtOffset >= 0 ? '+' : ''}{s.arrival.gmtOffset})</small>
         </Col>
       </Row>
-      </section>
+    </section>
   }
 }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using System;
@@ -11,9 +10,7 @@ using TravelConnect.Interfaces;
 using TravelConnect.Models;
 using TravelConnect.Models.Requests;
 using TravelConnect.Models.Responses;
-using TravelConnect.Sabre;
 using TravelConnect.Sabre.Interfaces;
-using TravelConnect.Sabre.Models;
 
 namespace TravelConnect.Services
 {
@@ -29,7 +26,7 @@ namespace TravelConnect.Services
         public FlightService(IAirService _AirService,
             IUtilityService _UtilityService,
             ILogService _LogService,
-            IMemoryCache memoryCache, 
+            IMemoryCache memoryCache,
             TCContext _context)
         {
             this._cache = memoryCache;
@@ -64,12 +61,12 @@ namespace TravelConnect.Services
                         PricedItins = new List<PricedItin>()
                     };
                 }
-                else 
+                else
                 {
                     var cacheEntryOptions = new MemoryCacheEntryOptions()
                         // Keep in cache for this time, reset time if accessed.
                         .SetAbsoluteExpiration(TimeSpan.FromHours(1));
-                    
+
                     // Save data in cache.
                     _cache.Set(sRequest, cacheSearchRS, cacheEntryOptions);
                 }
@@ -77,7 +74,7 @@ namespace TravelConnect.Services
 
             return cacheSearchRS;
         }
-        
+
         public async Task<FlightSearchRS> AirLowFareSearchAsync(FlightSearchRQ request)
         {
             Task<FlightSearchRS> rs = RetrieveAirLowFareSearch(request);
@@ -91,7 +88,7 @@ namespace TravelConnect.Services
                 };
                 ow = RetrieveAirLowFareSearch(request);
             }
-            
+
             FlightSearchRS response = await rs;
 
             if (request.Segments.Count == 1 || (request.Airlines?.Count ?? 0) > 0)
@@ -108,7 +105,7 @@ namespace TravelConnect.Services
 
             return response;
         }
-        
+
         private async Task<Models.Responses.AirlineRS> RetrieveAirlineFromDbAsync(string code)
         {
             var airline = await _context.Airlines
@@ -150,7 +147,7 @@ namespace TravelConnect.Services
                 return false;
             }
         }
-        
+
         public async Task<Models.Responses.AirlineRS> AirlineByCodeAsync(string code)
         {
             code = code.ToLower();

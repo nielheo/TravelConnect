@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace TravelConnect.Sabre.Models.Pnr
 {
@@ -274,5 +272,4 @@ namespace TravelConnect.Sabre.Models.Pnr
     {
         public string ReceivedFrom { get; set; }
     }
-
 }

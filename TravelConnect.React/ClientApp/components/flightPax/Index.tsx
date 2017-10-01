@@ -18,7 +18,7 @@ type FlightProps =
 
 class FlightPax_Index extends React.Component<FlightProps, any> {
   //console.log(Commons._GetAirport('BKK'))
-  
+
   public render() {
     const { searchResult, selectedDeparture, selectedReturn } = this.props
     let filteredDeparture = searchResult.filter(res => res.legs[0].routes === selectedDeparture.routes)
@@ -41,15 +41,15 @@ class FlightPax_Index extends React.Component<FlightProps, any> {
           {
             filteredReturn[0].legs[0].segments.map((s: any) =>
               <Segment key={s.marketingFlight.airline + s.marketingFlight.number} segment={s} />
-              )
+            )
           }
           <Row>
             <Col md={12}>
-              <br/><h4>Return</h4>
+              <br /><h4>Return</h4>
             </Col>
           </Row>
           {
-            filteredReturn[0].legs[1].segments.map((s: any) => 
+            filteredReturn[0].legs[1].segments.map((s: any) =>
               <Segment key={s.marketingFlight.airline + s.marketingFlight.number} segment={s} />
             )
           }
@@ -63,7 +63,7 @@ class FlightPax_Index extends React.Component<FlightProps, any> {
           </Row>
           <Row>
             <Col md={6}>
-              Base Fare: 
+              Base Fare:
             </Col>
             <Col md={6} className='text-right'>
               {filteredReturn[0].baseFare.curr} {Commons.FormatNum(filteredReturn[0].baseFare.amount.toFixed(2))}
@@ -71,7 +71,7 @@ class FlightPax_Index extends React.Component<FlightProps, any> {
           </Row>
           <Row>
             <Col md={6}>
-              Total Taxes: 
+              Total Taxes:
             </Col>
             <Col md={6} className='text-right'>
               {filteredReturn[0].taxes.curr} {Commons.FormatNum(filteredReturn[0].taxes.amount.toFixed(2))}

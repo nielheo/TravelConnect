@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace TravelConnect.Models.Requests
 {
@@ -181,5 +179,4 @@ namespace TravelConnect.Models.Requests
     {
         public string LocationCode { get; set; }
     }
-
 }

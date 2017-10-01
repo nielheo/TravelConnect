@@ -26,13 +26,15 @@ namespace TravelConnect.Models
         public float Longitude { get; set; }
 
         public float Latitude { get; set; }
-        
+
         public DateTime CreatedTime { get; set; }
 
         public DateTime UpdatedTime { get; set; }
 
+        [StringLength(300)]
+        public string TopDestinations { get; set; }
+
         [ForeignKey("CountryCode")]
         public Country Country { get; set; }
-
     }
 }

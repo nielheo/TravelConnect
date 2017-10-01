@@ -6,7 +6,6 @@ import FilterStopItem from './FilterStopItem'
 
 import { FilterStopType } from '../Classes'
 
-
 export default class FilterStop extends React.Component<{
   stops: FilterStopType[],
   onChangeFilter: Function
@@ -16,7 +15,6 @@ export default class FilterStop extends React.Component<{
   }
 
   _compareStop = (a: any, b: any) => {
-    
     if (a.stop < b.stop)
       return -1
     if (a.stop > b.stop)

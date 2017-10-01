@@ -46,11 +46,11 @@ export default class FlightDetails extends React.Component<{ segment: any, leg: 
     return <section>
       <Row>
         <Col md={3}>
-          <big> {moment(segment.departure.time).format('HH:mm')}</big><br/>
+          <big> {moment(segment.departure.time).format('HH:mm')}</big><br />
           <small>{moment(segment.departure.time).format('LL')}</small>
         </Col>
         <Col md={3}>
-          <big> {moment(segment.arrival.time).format('HH:mm')}</big><br/>
+          <big> {moment(segment.arrival.time).format('HH:mm')}</big><br />
           <small>{moment(segment.arrival.time).format('LL')}</small>
         </Col>
         <Col md={3}>
@@ -91,7 +91,7 @@ export default class FlightDetails extends React.Component<{ segment: any, leg: 
           </Row>
         </section>
       }
-      
+
     </section>
   }
 }

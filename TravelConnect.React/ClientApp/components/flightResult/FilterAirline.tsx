@@ -7,8 +7,9 @@ import FilterAirlineItem from './FilterAirlineItem'
 import { FilterAirlineType } from '../Classes'
 
 export default class FilterAirline extends React.Component<{
-  airlines: FilterAirlineType[], 
-  onChangeFilter: any }, any> {
+  airlines: FilterAirlineType[],
+  onChangeFilter: any
+}, any> {
   _compareAirlineList = (a: any, b: any) => {
     if (a.code < b.code)
       return -1
