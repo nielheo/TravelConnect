@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TravelConnect.CommonServices;
@@ -202,17 +203,36 @@ namespace TravelConnect.Services
             };
         }
 
+        private async Task<Country> GetCountry(string code)
+        {
+            var country = await _context.Countries.SingleOrDefaultAsync(c => c.Id == code);
+            if (country == null)
+            {
+                country = _context.Countries.Add(new Country
+                {
+                    Id = code,
+                    Name = code,
+                    CreatedTime = DateTime.Now,
+                    UpdatedTime = DateTime.Now
+                }).Entity;
+            }
+
+            return country;
+        }
+
         private async Task<bool> SaveAirportToDbAsync(AirportRS airportRs)
         {
             try
             {
-                _context.Airports.Add(new Airport
+                Country country = await GetCountry(airportRs.CountryCode);
+                country.Airports = new List<Airport>();
+                country.Airports.Add(new Airport
                 {
                     Id = airportRs.Code,
                     Name = airportRs.Name,
                     Longitude = (float)airportRs.Longitude,
                     Latitude = (float)airportRs.Latitude,
-                    CountryCode = airportRs.CountryCode,
+                    //CountryCode = airportRs.CountryCode,
                     CityName = airportRs.CityName,
                     CreatedTime = DateTime.Now,
                     UpdatedTime = DateTime.Now,
@@ -224,7 +244,11 @@ namespace TravelConnect.Services
             }
             catch (Exception ex)
             {
-                _LogService.LogException(ex);
+                var currentMethod = System.Reflection.MethodBase.GetCurrentMethod();
+                var fullMethodName = currentMethod.DeclaringType.FullName + "." + currentMethod.Name;
+
+                _LogService.LogException(ex, fullMethodName);
+
                 return false;
             }
         }

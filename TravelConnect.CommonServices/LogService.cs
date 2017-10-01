@@ -12,7 +12,7 @@ namespace TravelConnect.CommonServices
     public interface ILogService
     {
         string LogInfo(string message, string threadId = "");
-        string LogException(Exception ex, string threadId = "");
+        string LogException(Exception ex, string methodName, string threadId = "");
     }
 
     public class LogService : ILogService
@@ -46,16 +46,18 @@ namespace TravelConnect.CommonServices
             XmlConfigurator.Configure(repo, log4netConfig["log4net"]);
         }
 
-        public string LogException(Exception ex, string threadId = "")
+        public string LogException(Exception ex, string methodName, string threadId = "")
         {
             string thread = !string.IsNullOrEmpty(threadId) ? threadId : ThreadId;
-
-            log.Error(string.Format("[{0}] Exception.Message: {1}", thread, ex.Message));
-            log.Error(string.Format("[{0}] Exception.Stack Trace: {1}", thread, ex.StackTrace));
+            
+            log.Error(string.Format("[{0}] [{1}] Exception.Message: {2}", 
+                thread, methodName, ex.Message));
+            log.Error(string.Format("[{0}] [{1}] Exception.Stack Trace: {2}", 
+                thread, methodName, ex.StackTrace));
 
             if (ex.InnerException != null)
             {
-                LogException(ex.InnerException, thread);
+                LogException(ex.InnerException, methodName, thread);
             }
 
             return thread;

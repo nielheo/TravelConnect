@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TravelConnect.CommonServices;
 using TravelConnect.Interfaces;
 using TravelConnect.Models;
 using TravelConnect.Models.Requests;
@@ -21,17 +22,20 @@ namespace TravelConnect.Services
         private IMemoryCache _cache;
         private IAirService _AirService;
         private IUtilityService _UtilityService;
+        private ILogService _LogService;
 
         private readonly TCContext _context;
 
         public FlightService(IAirService _AirService,
             IUtilityService _UtilityService,
+            ILogService _LogService,
             IMemoryCache memoryCache, 
             TCContext _context)
         {
             this._cache = memoryCache;
             this._AirService = _AirService;
             this._UtilityService = _UtilityService;
+            this._LogService = _LogService;
             this._context = _context;
         }
 
@@ -122,17 +126,29 @@ namespace TravelConnect.Services
 
         private async Task<bool> SaveAirlineToDbAsync(string id, string name)
         {
-            _context.Airlines.Add(new Airline
+            try
             {
-                Id = id,
-                Name = name,
-                CreatedTime = DateTime.Now,
-                UpdatedTime = DateTime.Now,
-            });
+                _context.Airlines.Add(new Airline
+                {
+                    Id = id,
+                    Name = name,
+                    CreatedTime = DateTime.Now,
+                    UpdatedTime = DateTime.Now,
+                });
 
-            int x = await _context.SaveChangesAsync();
+                int x = await _context.SaveChangesAsync();
 
-            return x > 0;
+                return x > 0;
+            }
+            catch (Exception ex)
+            {
+                var currentMethod = System.Reflection.MethodBase.GetCurrentMethod();
+                var fullMethodName = currentMethod.DeclaringType.FullName + "." + currentMethod.Name;
+
+                _LogService.LogException(ex, fullMethodName);
+
+                return false;
+            }
         }
         
         public async Task<Models.Responses.AirlineRS> AirlineByCodeAsync(string code)
