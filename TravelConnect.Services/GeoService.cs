@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using TravelConnect.CommonServices;
 using TravelConnect.Interfaces;
 using TravelConnect.Models;
 using TravelConnect.Models.Responses;
@@ -16,14 +17,17 @@ namespace TravelConnect.Services
     {
         private ISabreConnector _SabreConnector;
         private IMemoryCache _cache;
+        private ILogService _LogService;
         private readonly TCContext _context;
 
         public GeoService(ISabreConnector _SabreConnector,
             IMemoryCache _cache,
+            ILogService _LogService,
             TCContext _context)
         {
             this._SabreConnector = _SabreConnector;
             this._cache = _cache;
+            this._LogService = _LogService;
             this._context = _context;
         }
 
@@ -200,21 +204,29 @@ namespace TravelConnect.Services
 
         private async Task<bool> SaveAirportToDbAsync(AirportRS airportRs)
         {
-            _context.Airports.Add(new Airport
+            try
             {
-                Id = airportRs.Code,
-                Name = airportRs.Name,
-                Longitude = (float)airportRs.Longitude,
-                Latitude = (float)airportRs.Latitude,
-                CountryCode = airportRs.CountryCode,
-                CityName = airportRs.CityName,
-                CreatedTime = DateTime.Now,
-                UpdatedTime = DateTime.Now,
-            });
+                _context.Airports.Add(new Airport
+                {
+                    Id = airportRs.Code,
+                    Name = airportRs.Name,
+                    Longitude = (float)airportRs.Longitude,
+                    Latitude = (float)airportRs.Latitude,
+                    CountryCode = airportRs.CountryCode,
+                    CityName = airportRs.CityName,
+                    CreatedTime = DateTime.Now,
+                    UpdatedTime = DateTime.Now,
+                });
 
-            int x = await _context.SaveChangesAsync();
+                int x = await _context.SaveChangesAsync();
 
-            return x > 0;
+                return x > 0;
+            }
+            catch (Exception ex)
+            {
+                _LogService.LogException(ex);
+                return false;
+            }
         }
     }
 }
