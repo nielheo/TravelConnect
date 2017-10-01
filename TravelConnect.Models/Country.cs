@@ -6,12 +6,11 @@ using System.Text;
 
 namespace TravelConnect.Models
 {
-    [Table("Airline")]
-    public class Airline
+    [Table("Country")]
+    public class Country
     {
         [Required]
         [StringLength(2)]
-        //Airline Code
         public string Id { get; set; }
 
         [Required]
@@ -21,5 +20,7 @@ namespace TravelConnect.Models
         public DateTime CreatedTime { get; set; }
 
         public DateTime UpdatedTime { get; set; }
+
+        public ICollection<Airport> Airports { get; set; }
     }
 }

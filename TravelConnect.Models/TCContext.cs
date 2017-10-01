@@ -10,6 +10,7 @@ namespace TravelConnect.Models
 
         public DbSet<Airline> Airlines { get; set; }
         public DbSet<Airport> Airports { get; set; }
+        public DbSet<Country> Countries { get; set; }
         public DbSet<SabreCredential> SabreCredentials { get; set; }
         public DbSet<User> Users { get; set; }
     }

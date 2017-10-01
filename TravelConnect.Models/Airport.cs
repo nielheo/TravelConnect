@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TravelConnect.Models
 {
+    [Table("Airport")]
     public class Airport
     {
         [Required]
@@ -24,9 +26,13 @@ namespace TravelConnect.Models
         public float Longitude { get; set; }
 
         public float Latitude { get; set; }
-
+        
         public DateTime CreatedTime { get; set; }
 
         public DateTime UpdatedTime { get; set; }
+
+        [ForeignKey("CountryCode")]
+        public Country Country { get; set; }
+
     }
 }

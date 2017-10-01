@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TravelConnect.Models
 {
+    [Table("User")]
     public class User
     {
         public int Id { get; set; }

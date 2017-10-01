@@ -35,7 +35,7 @@ namespace TravelConnect_React
                     "User id=sa;" +
                     "Password=123qwe!@#Q;";
 
-            services.AddDbContext<TCContext>(options => options.UseSqlServer(connection, b => b.MigrationsAssembly("TravelConnect.Web")));
+            services.AddDbContext<TCContext>(options => options.UseSqlServer(connection, b => b.MigrationsAssembly("TravelConnect.Models")));
 
             services.AddTransient<ISabreConnector, SabreConnector>();
             services.AddTransient<IGeoService, GeoService>();
