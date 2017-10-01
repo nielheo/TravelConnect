@@ -23,7 +23,7 @@ namespace TravelConnect.React.Controllers
         [HttpGet]
         public async Task<Models.Responses.AirlineRS> Get(string id)
         {
-            return await _FlightService.GetAirlineAsync(id);
+            return await _FlightService.AirlineByCodeAsync(id);
         }
     }
 }

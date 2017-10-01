@@ -23,12 +23,5 @@ namespace TravelConnect.React.Controllers
         {
             return await _FlightService.AirLowFareSearchAsync(request);
         }
-
-        [HttpGet]
-        [Route("api/flights/{id}")]
-        public async Task<FlightSearchRS> Get(string id, int page)
-        {
-            return await _FlightService.NextAirLowFareSearchAsync(id, page);
-        }
     }
 }

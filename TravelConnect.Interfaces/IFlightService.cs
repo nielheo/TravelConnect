@@ -7,8 +7,7 @@ namespace TravelConnect.Interfaces
     public interface IFlightService
     {
         Task<FlightSearchRS> AirLowFareSearchAsync(FlightSearchRQ request);
-        Task<FlightSearchRS> NextAirLowFareSearchAsync(string requestId, int page);
 
-        Task<AirlineRS> GetAirlineAsync(string code);
+        Task<AirlineRS> AirlineByCodeAsync(string code);
     }
 }

@@ -8,6 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using TravelConnect.Interfaces;
 using TravelConnect.Models;
 using TravelConnect.Sabre;
+using TravelConnect.Sabre.Interfaces;
+using TravelConnect.Sabre.Services;
 using TravelConnect.Services;
 
 namespace TravelConnect_React
@@ -41,6 +43,8 @@ namespace TravelConnect_React
             services.AddTransient<IGeoService, GeoService>();
             services.AddTransient<IFlightService, FlightService>();
             services.AddTransient<IPnrService, PnrService>();
+            services.AddTransient<IAirService, AirService>();
+            services.AddTransient<IUtilityService, UtilityService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
