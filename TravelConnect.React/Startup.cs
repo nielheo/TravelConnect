@@ -33,12 +33,13 @@ namespace TravelConnect_React
             services.AddResponseCompression();
 
             var connection =
-                    "Data Source=(local);" +
+                    "Data Source=travelconnect.db";/* +
                     "Initial Catalog=TravelConnect;" +
                     "User id=sa;" +
-                    "Password=123qwe!@#Q;";
+                    "Password=123qwe!@#Q;";*/
 
-            services.AddDbContext<TCContext>(options => options.UseSqlServer(connection, b => b.MigrationsAssembly("TravelConnect.Models")));
+            services.AddDbContext<TCContext>(options => 
+                options.UseSqlite(connection, b => b.MigrationsAssembly("TravelConnect.Models")));
 
             services.AddTransient<ISabreConnector, SabreConnector>();
             services.AddTransient<IGeoService, GeoService>();
@@ -47,6 +48,12 @@ namespace TravelConnect_React
             services.AddTransient<IAirService, AirService>();
             services.AddTransient<IUtilityService, UtilityService>();
             services.AddTransient<ILogService, LogService>();
+
+            using (var context = new TCContext(new DbContextOptions<TCContext>()))
+            {
+                context.Database.Migrate();
+            }
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

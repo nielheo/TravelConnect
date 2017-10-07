@@ -31,8 +31,8 @@ namespace TravelConnect.Models
 
         public DateTime UpdatedTime { get; set; }
 
-        [StringLength(300)]
-        public string TopDestinations { get; set; }
+        //[StringLength(300)]
+        //public string TopDestinations { get; set; }
 
         [ForeignKey("CountryCode")]
         public Country Country { get; set; }

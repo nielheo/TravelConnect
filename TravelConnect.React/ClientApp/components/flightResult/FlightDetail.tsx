@@ -68,9 +68,9 @@ export default class FlightDetails extends React.Component<{ segment: any, leg: 
           </Row>
           <Row>
             <Col md={9} mdOffset={3}>
-              {originAirport ? originAirport.name + ' (' + originAirport.code + ')' : segment.origin}
+              {originAirport ? originAirport.fullName : segment.origin}
               <i> to </i>
-              {destinationAirport ? destinationAirport.name + ' (' + destinationAirport.code + ')' : segment.destination}
+              {destinationAirport ? destinationAirport.fullName : segment.destination}
             </Col>
           </Row>
           <Row>

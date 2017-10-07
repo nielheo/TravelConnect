@@ -40,6 +40,7 @@
     <None Remove="ClientApp\components\flightSearch\SelectDate.tsx" />
     <None Remove="ClientApp\components\flightSearch\SelectPax.tsx" />
     <None Remove="ClientApp\store\Flight.ts" />
+    <None Remove="Properties\PublishProfiles\TravelConnectReact20171002093432 - Web Deploy.pubxml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -72,6 +73,10 @@
     <TypeScriptCompile Include="ClientApp\components\flightSearch\SelectDate.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightSearch\SelectPax.tsx" />
     <TypeScriptCompile Include="ClientApp\store\Flight.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
