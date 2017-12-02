@@ -8,6 +8,8 @@ using TravelConnect.Models.Requests;
 using TravelConnect.Models.Responses;
 using kestrel.AirService;
 using TravelConnect.uAPI.Utility;
+using TravelConnect.CommonServices;
+using System.Linq;
 
 namespace TravelConnect.uAPI.Services
 {
@@ -15,12 +17,58 @@ namespace TravelConnect.uAPI.Services
     {
         public Task<FlightSearchRS> AirLowFareSearchAsync(FlightSearchRQ request)
         {
-            SubmitAirLowFareSearchRequest();
+            LogService _LogService = new LogService();
+
+            _LogService.LogInfo($"FlightSearchRQ", request);
+
+            var binding = GenerateBasicHttpBinding();
+
+            var endpoint = new EndpointAddress("https://apac.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/AirService");
+
+            AirLowFareSearchPortTypeClient client = new AirLowFareSearchPortTypeClient(binding, endpoint);
+
+            var httpHeaders = Helper.ReturnHttpHeader();
+            client.Endpoint.EndpointBehaviors.Add(new HttpHeadersEndpointBehavior(httpHeaders));
+
+            var req = ConvertToLowFareSearchReq(request);
+            
+            _LogService.LogInfo($"uAPI/LowFareSearchReq", req);
+
+            var result = client.serviceAsync(null, req).Result;
+
+            _LogService.LogInfo($"uAPI/LowFareSearchRsp", result);
 
             return null;
         }
 
-        private void SubmitAirLowFareSearchRequest()
+        public Task<List<string>> GetTopDestinationsAsync(string airportCode)
+        {
+            throw new NotImplementedException();
+        }
+
+        private typeSearchLocation GenerateTypeSearchLocation(string point, bool isAirport)
+        {
+            if (isAirport)
+                return new typeSearchLocation { Item = new Airport { Code = point } };
+            else
+                return new typeSearchLocation { Item = new City { Code = point } };
+        }
+
+        private SearchAirLeg GenerateSearchAirLeg(string originPoint, bool isOriginAirport,
+            string destinationPoint, bool isDestinationAirport, DateTime date)
+        {
+            return new SearchAirLeg
+            {
+                SearchOrigin = new typeSearchLocation[]
+                    { GenerateTypeSearchLocation(originPoint, isOriginAirport) },
+                SearchDestination = new typeSearchLocation[]
+                    { GenerateTypeSearchLocation(destinationPoint, isDestinationAirport) },
+                Items = new typeFlexibleTimeSpec[]
+                    { new typeFlexibleTimeSpec { PreferredTime = date.ToString("yyyy-MM-dd") } }
+            };
+        }
+
+        private BasicHttpsBinding GenerateBasicHttpBinding()
         {
             var binding = new BasicHttpsBinding();
             binding.Name = "SystemPingPort";
@@ -29,32 +77,54 @@ namespace TravelConnect.uAPI.Services
             binding.ReceiveTimeout = TimeSpan.FromMinutes(10);
             binding.SendTimeout = TimeSpan.FromMinutes(1);
             binding.Security.Mode = BasicHttpsSecurityMode.Transport;
-            //binding.ProxyAddress = new Uri("http://localhost:8888");
-            //BasicHttpSecurityMode.Transport;
+            binding.MaxReceivedMessageSize = Int32.MaxValue;
 
-            //            binding.Security.Transport.
+            return binding;
+        }
 
-            var endpoint = new EndpointAddress("https://apac.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/AirService");
+        private LowFareSearchReq ConvertToLowFareSearchReq(FlightSearchRQ request)
+        {
+            //Segments
+            var SearchAirLegs = request.Segments.Select(s =>
+                GenerateSearchAirLeg(s.Origin, true, s.Destination, true, s.Departure));
 
-            AirLowFareSearchPortTypeClient client = new AirLowFareSearchPortTypeClient(binding, endpoint);
+            AirSearchModifiers airSearchModifiers = new AirSearchModifiers
+            { PreferredProviders = new Provider[] { new Provider { Code = "1G" } } };
 
-            //client.ClientCredentials.UserName.UserName = "UniversalAPI/uAPI8931078193-41fe5ac8";
-            //client.ClientCredentials.UserName.Password = "kE8jAwj28td8nqQTSgtM2rhw7";
+            AirPricingModifiers airPricingModifiers = new AirPricingModifiers
+            {
+                ETicketabilitySpecified = true,
+                ETicketability = typeEticketability.Required,
+                FaresIndicatorSpecified = true,
+                FaresIndicator = typeFaresIndicator.AllFares,
+            };
 
-            var httpHeaders = Helper.ReturnHttpHeader();
-            client.Endpoint.EndpointBehaviors.Add(new HttpHeadersEndpointBehavior(httpHeaders));
+            //Passengers
+            var SearchPassengers = new List<SearchPassenger>();
+
+            request.Ptcs.ForEach(p =>
+            {
+                for (int i = 1; i <= p.Quantity; i++)
+                    SearchPassengers.Add(new SearchPassenger { Code = p.Code });
+            });
 
             LowFareSearchReq req = new LowFareSearchReq
             {
-
+                BillingPointOfSaleInfo = new kestrel.AirService.BillingPointOfSaleInfo
+                {
+                    OriginApplication = "uAPI"
+                },
+                TargetBranch = "P7073862",
+                MaxNumberOfExpertSolutions = "50",
+                SolutionResult = false,
+                Items = SearchAirLegs.ToArray(),
+                AirSearchModifiers = airSearchModifiers,
+                AirPricingModifiers = airPricingModifiers,
+                SearchPassenger = SearchPassengers.ToArray(),
+                ReturnUpsellFare = true
             };
 
-            var result = client.serviceAsync(null, req).Result;
-        }
-
-        public Task<List<string>> GetTopDestinationsAsync(string airportCode)
-        {
-            throw new NotImplementedException();
+            return req;
         }
     }
 }

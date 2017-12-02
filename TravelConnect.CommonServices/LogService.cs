@@ -1,5 +1,6 @@
 ﻿using log4net;
 using log4net.Config;
+using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Reflection;
@@ -10,6 +11,7 @@ namespace TravelConnect.CommonServices
     public interface ILogService
     {
         string LogInfo(string message, string threadId = "");
+        string LogInfo(string title, object obj, string threadId = "");
 
         string LogException(Exception ex, string methodName, string threadId = "");
     }
@@ -47,28 +49,47 @@ namespace TravelConnect.CommonServices
 
         public string LogException(Exception ex, string methodName, string threadId = "")
         {
-            string thread = !string.IsNullOrEmpty(threadId) ? threadId : ThreadId;
+            if (!string.IsNullOrEmpty(threadId))
+                _threadId = threadId;
 
             log.Error(string.Format("[{0}] [{1}] Exception.Message: {2}",
-                thread, methodName, ex.Message));
+                _threadId, methodName, ex.Message));
             log.Error(string.Format("[{0}] [{1}] Exception.Stack Trace: {2}",
-                thread, methodName, ex.StackTrace));
+                _threadId, methodName, ex.StackTrace));
 
             if (ex.InnerException != null)
             {
-                LogException(ex.InnerException, methodName, thread);
+                LogException(ex.InnerException, methodName, _threadId);
             }
 
-            return thread;
+            return _threadId;
         }
 
         public string LogInfo(string message, string threadId = "")
         {
-            string thread = !string.IsNullOrEmpty(threadId) ? threadId : ThreadId;
+            if (!string.IsNullOrEmpty(threadId))
+                _threadId = threadId;
+            //string thread = !string.IsNullOrEmpty(threadId) ? threadId : ThreadId;
 
-            log.Info(string.Format("[{0}] {1}", thread, message));
+            log.Info(string.Format("[{0}] {1}", _threadId, message));
 
-            return thread;
+            return _threadId;
+        }
+
+        public string LogInfo(string title, object obj, string threadId = "")
+        {
+            if (!string.IsNullOrEmpty(threadId))
+                _threadId = threadId;
+            //string thread = !string.IsNullOrEmpty(threadId) ? threadId : ThreadId;
+            string json = JsonConvert.SerializeObject(obj,
+                Newtonsoft.Json.Formatting.None,
+                new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+
+            return LogInfo($"{title} - {json}");
         }
     }
 }

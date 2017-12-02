@@ -113,8 +113,8 @@ namespace uAPI
                     OriginApplication = "uAPI"
                 },
                 TargetBranch = "P7073862",
-                MaxNumberOfExpertSolutions = "10",
-                SolutionResult = true,
+                MaxNumberOfExpertSolutions = "50",
+                SolutionResult = false,
                 Items = SearchAirLegs.ToArray(),
                 AirSearchModifiers = airSearchModifiers,
                 AirPricingModifiers = airPricingModifiers,
@@ -131,13 +131,14 @@ namespace uAPI
 
             LogService _LogService = new LogService();
 
-            
-            
+
+            //string jRequest = JsonConvert.SerializeObject(req);
+            _LogService.LogInfo($"uAPI/LowFareSearchReq", req);
 
             var result = client.serviceAsync(null, req).Result;
 
-            string jResult = JsonConvert.SerializeObject(result);
-            _LogService.LogInfo(jResult);
+            //string jResult = JsonConvert.SerializeObject(result);
+            _LogService.LogInfo($"uAPI/LowFareSearchRsp", result);
             /*
 
 

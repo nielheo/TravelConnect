@@ -45,7 +45,7 @@ namespace TravelConnect_React
             services.AddTransient<IGeoService, GeoService>();
             services.AddTransient<IFlightService, FlightService>();
             services.AddTransient<IPnrService, PnrService>();
-            services.AddTransient<IAirService, AirService>();
+            services.AddTransient<IAirService, TravelConnect.uAPI.Services.AirService>();
             services.AddTransient<IUtilityService, UtilityService>();
             services.AddTransient<ILogService, LogService>();
 
