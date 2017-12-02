@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TravelConnect.CommonServices\TravelConnect.CommonServices.csproj" />
+    <ProjectReference Include="..\TravelConnect.Interfaces\TravelConnect.Interfaces.csproj" />
     <ProjectReference Include="..\TravelConnect.Models\TravelConnect.Models.csproj" />
   </ItemGroup>
 

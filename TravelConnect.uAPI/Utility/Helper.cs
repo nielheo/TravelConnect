@@ -20,13 +20,13 @@ namespace TravelConnect.uAPI.Utility
 
         public static string ReturnPassword()
         {
-            return "kE8jAwj28td8nqQTSgtM2rhw7";
+            return "dH!45oM-_F";// "kE8jAwj28td8nqQTSgtM2rhw7";
             //return CommonUtility.GetConfigValue(ProjectConstants.PASSWORD);
         }
 
         public static string RetrunUsername()
         {
-            return "Universal API/uAPI8931078193-41fe5ac8";
+            return "Universal API/uAPI8364930492-11c7f931";// "Universal API/uAPI8931078193-41fe5ac8";
             //return "uAPI8931078193-41fe5ac8";
             //return CommonUtility.GetConfigValue(ProjectConstants.USERNAME);
         }

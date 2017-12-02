@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelConnect.Interfaces", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelConnect.React", "TravelConnect.React\TravelConnect.React.csproj", "{B124DD94-87EE-492F-B213-B52CD5E4EE1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelConnect.CommonServices", "TravelConnect.CommonServices\TravelConnect.CommonServices.csproj", "{1ECA1EE3-2826-4872-908D-9B7C74FFD282}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelConnect.CommonServices", "TravelConnect.CommonServices\TravelConnect.CommonServices.csproj", "{1ECA1EE3-2826-4872-908D-9B7C74FFD282}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

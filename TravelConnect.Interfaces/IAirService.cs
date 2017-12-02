@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using TravelConnect.Models.Requests;
 using TravelConnect.Models.Responses;
 
-namespace TravelConnect.Sabre.Interfaces
+namespace TravelConnect.Interfaces
 {
     public interface IAirService
     {

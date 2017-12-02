@@ -28,8 +28,8 @@ public class HttpHeaderMessageInspector : IClientMessageInspector
     {
         HttpRequestMessageProperty httpRequestMessage;
         object httpRequestMessageObject;
-        string userName = "Universal API/uAPI8931078193-41fe5ac8";
-        string passWord = "kE8jAwj28td8nqQTSgtM2rhw7";
+        string userName = "Universal API/uAPI8364930492-11c7f931";// "Universal API/uAPI8931078193-41fe5ac8";
+        string passWord = "dH!45oM-_F";// "kE8jAwj28td8nqQTSgtM2rhw7";
 
         if (request.Properties.TryGetValue(HttpRequestMessageProperty.Name, out httpRequestMessageObject))
         {

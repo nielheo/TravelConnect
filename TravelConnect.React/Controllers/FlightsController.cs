@@ -10,18 +10,18 @@ namespace TravelConnect.React.Controllers
     [RequestSizeLimit(100000000)]
     public class FlightsController : Controller
     {
-        private IFlightService _FlightService;
+        private IAirService _AirService;
 
-        public FlightsController(IFlightService _FlightService)
+        public FlightsController(IAirService _AirService)
         {
-            this._FlightService = _FlightService;
+            this._AirService = _AirService;
         }
 
         [HttpPost]
         [Route("api/flights")]
         public async Task<FlightSearchRS> Post([FromBody]FlightSearchRQ request)
         {
-            return await _FlightService.AirLowFareSearchAsync(request);
+            return await _AirService.AirLowFareSearchAsync(request);
         }
     }
 }

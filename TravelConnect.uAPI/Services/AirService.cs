@@ -1,13 +1,26 @@
 ﻿using kestrel.SystemService;
 using System;
+using System.Collections.Generic;
 using System.ServiceModel;
+using System.Threading.Tasks;
+using TravelConnect.Interfaces;
+using TravelConnect.Models.Requests;
+using TravelConnect.Models.Responses;
+using kestrel.AirService;
 using TravelConnect.uAPI.Utility;
 
-namespace TravelConnect.uAPI
+namespace TravelConnect.uAPI.Services
 {
-    public class AirService
+    public class AirService : IAirService
     {
-        public void Ping()
+        public Task<FlightSearchRS> AirLowFareSearchAsync(FlightSearchRQ request)
+        {
+            SubmitAirLowFareSearchRequest();
+
+            return null;
+        }
+
+        private void SubmitAirLowFareSearchRequest()
         {
             var binding = new BasicHttpsBinding();
             binding.Name = "SystemPingPort";
@@ -21,9 +34,9 @@ namespace TravelConnect.uAPI
 
             //            binding.Security.Transport.
 
-            var endpoint = new EndpointAddress("https://apac.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/SystemService");
+            var endpoint = new EndpointAddress("https://apac.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/AirService");
 
-            SystemPingPortTypeClient client = new SystemPingPortTypeClient(binding, endpoint);
+            AirLowFareSearchPortTypeClient client = new AirLowFareSearchPortTypeClient(binding, endpoint);
 
             //client.ClientCredentials.UserName.UserName = "UniversalAPI/uAPI8931078193-41fe5ac8";
             //client.ClientCredentials.UserName.Password = "kE8jAwj28td8nqQTSgtM2rhw7";
@@ -31,13 +44,17 @@ namespace TravelConnect.uAPI
             var httpHeaders = Helper.ReturnHttpHeader();
             client.Endpoint.EndpointBehaviors.Add(new HttpHeadersEndpointBehavior(httpHeaders));
 
-            PingReq req = new PingReq
+            LowFareSearchReq req = new LowFareSearchReq
             {
-                TraceId = "Test",
-                Payload = "Ping test",
+
             };
 
-            var result = client.serviceAsync(req).Result;
+            var result = client.serviceAsync(null, req).Result;
+        }
+
+        public Task<List<string>> GetTopDestinationsAsync(string airportCode)
+        {
+            throw new NotImplementedException();
         }
     }
 }
