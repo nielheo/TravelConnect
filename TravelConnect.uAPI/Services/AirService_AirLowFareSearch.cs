@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 
 namespace TravelConnect.uAPI.Services
 {
-    public class AirService : IAirService
+    public partial class AirService : IAirService
     {
         LogService _LogService;
 

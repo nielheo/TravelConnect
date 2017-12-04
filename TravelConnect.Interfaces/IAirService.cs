@@ -10,6 +10,7 @@ namespace TravelConnect.Interfaces
     public interface IAirService
     {
         Task<FlightSearchRS> AirLowFareSearchAsync(FlightSearchRQ request);
+        Task<AirPriceRS> AirPriceAsync(AirPriceRQ request);
         Task<List<string>> GetTopDestinationsAsync(string airportCode);
     }
 }
