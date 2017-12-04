@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ServiceModel;
 using System.Threading.Tasks;
 using TravelConnect.Interfaces;
+using TravelConnect.Models;
 using TravelConnect.Models.Requests;
 using TravelConnect.Models.Responses;
 using kestrel.AirService;
@@ -66,7 +67,7 @@ namespace TravelConnect.uAPI.Services
         private typeSearchLocation GenerateTypeSearchLocation(string point, bool isAirport)
         {
             if (isAirport)
-                return new typeSearchLocation { Item = new Airport { Code = point } };
+                return new typeSearchLocation { Item = new kestrel.AirService.Airport { Code = point } };
             else
                 return new typeSearchLocation { Item = new City { Code = point } };
         }

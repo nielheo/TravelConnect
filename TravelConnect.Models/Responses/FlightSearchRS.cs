@@ -30,14 +30,7 @@ namespace TravelConnect.Models.Responses
         public bool UpsellBrandFound { get; set; }
         public string Name { get; set; }
     }
-
-    [NotMapped]
-    public class FlightNumber
-    {
-        public string Airline { get; set; }
-        public string Number { get; set; }
-    }
-
+    
     [NotMapped]
     public class Timing
     {

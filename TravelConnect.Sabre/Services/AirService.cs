@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TravelConnect.Interfaces;
+using TravelConnect.Models;
 using TravelConnect.Models.Requests;
 using TravelConnect.Models.Responses;
 using TravelConnect.Sabre.Interfaces;
@@ -40,6 +41,11 @@ namespace TravelConnect.Sabre.Services
             {
                 return null;
             }
+        }
+
+        public Task<AirPriceRS> AirPriceAsync(AirPriceRQ request)
+        {
+            throw new System.NotImplementedException();
         }
 
         public Task<List<string>> GetTopDestinationsAsync(string airportCode)
