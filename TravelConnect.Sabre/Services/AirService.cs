@@ -226,7 +226,7 @@ namespace TravelConnect.Sabre.Services
                                                         Airline = seg.OperatingAirline.Code,
                                                         Number = seg.OperatingAirline.FlightNumber
                                                     },
-                                                    BRD = seg.ResBookDesigCode,
+                                                    BookingCode = seg.ResBookDesigCode,
                                                     MarriageGrp = seg.MarriageGrp
                                                 };
                                             }).ToList()

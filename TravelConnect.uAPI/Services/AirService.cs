@@ -122,7 +122,11 @@ namespace TravelConnect.uAPI.Services
             request.Ptcs.ForEach(p =>
             {
                 for (int i = 1; i <= p.Quantity; i++)
-                    SearchPassengers.Add(new SearchPassenger { Code = p.Code });
+                    SearchPassengers.Add(new SearchPassenger
+                    {
+                        Code = p.Code == "CNN" ? "CHD" : p.Code,
+                        Age = p.Code == "CNN" ? "8" : null,
+                    });
             });
 
             LowFareSearchReq req = new LowFareSearchReq
@@ -210,6 +214,8 @@ namespace TravelConnect.uAPI.Services
                     var segment = segments.Where(s => s.Key == bi.SegmentRef).FirstOrDefault();
                     return new SegmentRS
                     {
+                        Key = segment.Key,
+                        Group = segment.Group,
                         Origin = segment.Origin,
                         Destination = segment.Destination,
                         Departure = new Timing
@@ -222,7 +228,8 @@ namespace TravelConnect.uAPI.Services
                             Time = Convert.ToDateTime(segment.ArrivalTime.Split('+')[0]),
                             GmtOffset = Convert.ToInt32(segment.ArrivalTime.Split('+')[1].Split(':')[0])
                         },
-                        BRD = bi.BookingCode,
+                        BookingCode = bi.BookingCode,
+                        CabinClass = bi.CabinClass,
                         Elapsed = Convert.ToInt32(segment.FlightTime),
                         MarketingFlight = new FlightNumber
                         {
@@ -241,6 +248,57 @@ namespace TravelConnect.uAPI.Services
             return leg;
         }
 
+        private List<Models.Responses.FareInfo> GenerateFareInfos(List<List<FareInfoRef>> fareInfoRefs,
+            List<kestrel.AirService.FareInfo> fareInfos, List<kestrel.AirService.Brand> brands)
+        {
+            List<Models.Responses.FareInfo> response = new List<Models.Responses.FareInfo>();
+            
+
+            fareInfoRefs.ForEach(fInfo =>
+            {
+                Models.Responses.FareInfo fareInfoRs = new Models.Responses.FareInfo()
+                {
+                    FareInfoDetails = new List<FareInfoDetail>()
+                };
+
+                fInfo.ForEach(fi =>
+                {
+                    kestrel.AirService.FareInfo fareInfo = fareInfos.First(f => f.Key == fi.Key);
+                    kestrel.AirService.Brand brand = fareInfo.Brand == null ? null :
+                        brands.FirstOrDefault(b => b.Key == fi.Key);
+
+                    fareInfoRs.Ptc = fareInfo.PassengerTypeCode;
+
+
+                    fareInfoRs.FareInfoDetails.Add(new Models.Responses.FareInfoDetail
+                    {
+                        FareBasis = fareInfo.FareBasis,
+                        Origin = fareInfo.Origin,
+                        Destination = fareInfo.Destination,
+                        IsPrivateFare = fareInfo.PrivateFareSpecified,
+                        Amount = new Fare
+                        {
+                            Curr = fareInfo.Amount.Substring(0, 3),
+                            Amount = Convert.ToInt32(fareInfo.Amount.Substring(3))
+                        },
+                        Brand = (brand == null || fareInfo.Brand == null) ? null
+                            : new Models.Responses.Brand
+                            {
+                                BrandId = fareInfo.Brand.BrandID,
+                                Name = brand.Name,
+                                UpsellBrandFound = fareInfo.Brand.UpSellBrandFound
+                            }
+                    });
+                });
+
+                response.Add(fareInfoRs);
+            });
+
+
+            return response;
+        }
+
+
         private FlightSearchRS ConvertToFlightSearchRS(LowFareSearchRsp response)
         {
             
@@ -252,50 +310,51 @@ namespace TravelConnect.uAPI.Services
 
             ((AirPricePointList)response.Items.First()).AirPricePoint.ToList().ForEach(p =>
             {
-                p.AirPricingInfo.ToList().ForEach(pi =>
+                
+                List<List<int>> options = new List<List<int>>();
+                //_LogService.LogInfo("FlightOptionsList: ", pi.FlightOptionsList);
+                AllIndexOptions(ref options, p.AirPricingInfo.First().FlightOptionsList.ToList(), 
+                    new List<int>(), 0);
+                //_LogService.LogInfo("all options", options);
+
+                foreach (var leg in options)
                 {
-                    List<List<int>> options = new List<List<int>>();
-                    //_LogService.LogInfo("FlightOptionsList: ", pi.FlightOptionsList);
-                    AllIndexOptions(ref options, pi.FlightOptionsList.ToList(), 
-                        new List<int>(), 0);
-                    //_LogService.LogInfo("all options", options);
-
-                    foreach(var leg in options)
+                    List<Models.Responses.Leg> legs = new List<Models.Responses.Leg>();
+                    for (int legIdx = 0; legIdx < leg.Count(); legIdx++)
                     {
-                        List<Models.Responses.Leg> legs = new List<Models.Responses.Leg>();
-                        for (int legIdx = 0; legIdx < leg.Count(); legIdx++)
-                        {
-                            legs.Add(GenerateLeg(pi.FlightOptionsList[legIdx].Option[leg[legIdx]], 
-                                response.AirSegmentList.ToList()));
-                        }
-
-                        rs.PricedItins.Add(new PricedItin
-                        {
-                            TotalFare = new Fare
-                            {
-                                Amount = float.Parse(p.TotalPrice.Substring(3)),
-                                Curr = p.TotalPrice.Substring(0, 3)
-                            },
-                            BaseFare = new Fare
-                            {
-                                Amount = float.Parse(p.BasePrice.Substring(3)),
-                                Curr = p.BasePrice.Substring(0, 3)
-                            },
-                            Taxes = new Fare
-                            {
-                                Amount = float.Parse(p.Taxes.Substring(3)),
-                                Curr = p.Taxes.Substring(0, 3)
-                            },
-                            Legs = legs
-                        });
+                        legs.Add(GenerateLeg(p.AirPricingInfo.First().FlightOptionsList[legIdx].Option[leg[legIdx]],
+                            response.AirSegmentList.ToList()));
                     }
 
-                    pi.FlightOptionsList.First().Option.ToList().ForEach(opt =>
+                    rs.PricedItins.Add(new PricedItin
                     {
-                        
+                        TotalFare = new Fare
+                        {
+                            Amount = float.Parse(p.TotalPrice.Substring(3)),
+                            Curr = p.TotalPrice.Substring(0, 3)
+                        },
+                        BaseFare = new Fare
+                        {
+                            Amount = float.Parse(p.BasePrice.Substring(3)),
+                            Curr = p.BasePrice.Substring(0, 3)
+                        },
+                        Taxes = new Fare
+                        {
+                            Amount = float.Parse(p.Taxes.Substring(3)),
+                            Curr = p.Taxes.Substring(0, 3)
+                        },
+                        Legs = legs,
+                        FareInfos = GenerateFareInfos(
+                            p.AirPricingInfo.ToList().Select(ap=>ap.FareInfoRef.ToList()).ToList(),
+                            response.FareInfoList.ToList(),
+                            response.BrandList.ToList())
                     });
-                    
-                });
+
+                    p.AirPricingInfo.ToList().ForEach(pi =>
+                    {
+
+                    });
+                }
             });
 
             return rs;

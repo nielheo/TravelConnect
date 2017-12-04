@@ -5,8 +5,30 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace TravelConnect.Models.Responses
 {
     [NotMapped]
-    public class FareBreakdown
+    public class FareInfo
     {
+        public string Ptc { get; set; }
+        public List<FareInfoDetail> FareInfoDetails { get; set; }
+        
+    }
+
+    [NotMapped]
+    public class FareInfoDetail
+    {
+        public string Origin { get; set; }
+        public string Destination { get; set; }
+        public string FareBasis { get; set; }
+        public bool IsPrivateFare { get; set; }
+        public Fare Amount { get; set; }
+        public Brand Brand { get; set; }
+    }
+
+    [NotMapped]
+    public class Brand
+    {
+        public string BrandId { get; set; }
+        public bool UpsellBrandFound { get; set; }
+        public string Name { get; set; }
     }
 
     [NotMapped]
@@ -26,6 +48,8 @@ namespace TravelConnect.Models.Responses
     [NotMapped]
     public class SegmentRS
     {
+        public string Key { get; set; }
+        public int Group { get; set; }
         public string Origin { get; set; }
         public string Destination { get; set; }
         public Timing Departure { get; set; }
@@ -33,7 +57,8 @@ namespace TravelConnect.Models.Responses
         public int Elapsed { get; set; }
         public FlightNumber OperatingFlight { get; set; }
         public FlightNumber MarketingFlight { get; set; }
-        public string BRD { get; set; }
+        public string BookingCode { get; set; }
+        public string CabinClass { get; set; }
         public string MarriageGrp { get; set; }
     }
 
@@ -58,7 +83,7 @@ namespace TravelConnect.Models.Responses
         public Fare Taxes { get; set; }
         public Fare TotalFare { get; set; }
 
-        public List<FareBreakdown> FareBreakdowns { get; set; }
+        public List<FareInfo> FareInfos { get; set; }
         public List<Leg> Legs { get; set; }
         public DateTime? LastTicketDate { get; set; }
     }
