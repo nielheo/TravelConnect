@@ -51,16 +51,16 @@ namespace TravelConnect.CommonServices
         {
             if (!string.IsNullOrEmpty(threadId))
                 _threadId = threadId;
-            
-            //log.Error(string.Format("[{0}] [{1}] Exception.Message: {2}",
-            //    _threadId, methodName, ex.Message));
-            //log.Error(string.Format("[{0}] [{1}] Exception.Stack Trace: {2}",
-            //    _threadId, methodName, ex.StackTrace));
 
-            //if (ex.InnerException != null)
-            //{
-            //    LogException(ex.InnerException, methodName, _threadId);
-            //}
+            log.Error(string.Format("[{0}] [{1}] Exception.Message: {2}",
+                _threadId, methodName, ex.Message));
+            log.Error(string.Format("[{0}] [{1}] Exception.Stack Trace: {2}",
+                _threadId, methodName, ex.StackTrace));
+
+            if (ex.InnerException != null)
+            {
+                LogException(ex.InnerException, methodName, _threadId);
+            }
 
             return _threadId;
         }

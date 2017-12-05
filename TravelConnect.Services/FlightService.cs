@@ -142,7 +142,7 @@ namespace TravelConnect.Services
                 var currentMethod = System.Reflection.MethodBase.GetCurrentMethod();
                 var fullMethodName = currentMethod.DeclaringType.FullName + "." + currentMethod.Name;
 
-                _LogService.LogException(ex, fullMethodName);
+                //_LogService.LogException(ex, fullMethodName);
 
                 return false;
             }

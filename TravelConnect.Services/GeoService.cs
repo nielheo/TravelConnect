@@ -179,23 +179,32 @@ namespace TravelConnect.Services
         {
             try
             {
-                Country country = await RetrieveCountryFromDbAsync(airportRs.CountryCode);
-                country.Airports = new List<Airport>();
-                country.Airports.Add(new Airport
+                var city = await RetrieveAirportFromDbAsync(airportRs.Code);
+
+                if (city == null)
                 {
-                    Id = airportRs.Code,
-                    Name = airportRs.Name,
-                    Longitude = (float)airportRs.Longitude,
-                    Latitude = (float)airportRs.Latitude,
-                    //CountryCode = airportRs.CountryCode,
-                    CityName = airportRs.CityName,
-                    CreatedTime = DateTime.Now,
-                    UpdatedTime = DateTime.Now,
-                });
+                    Country country = await RetrieveCountryFromDbAsync(airportRs.CountryCode);
+                    country.Airports = new List<Airport>();
+                    country.Airports.Add(new Airport
+                    {
+                        Id = airportRs.Code,
+                        Name = airportRs.Name,
+                        Longitude = (float)airportRs.Longitude,
+                        Latitude = (float)airportRs.Latitude,
+                        //CountryCode = airportRs.CountryCode,
+                        CityName = airportRs.CityName,
+                        CreatedTime = DateTime.Now,
+                        UpdatedTime = DateTime.Now,
+                    });
 
-                int x = await _context.SaveChangesAsync();
+                    int x = await _context.SaveChangesAsync();
 
-                return x > 0;
+                    return x > 0;
+                }
+                else
+                {
+                    return true;
+                }
             }
             catch (Exception ex)
             {

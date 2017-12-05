@@ -68,16 +68,35 @@ namespace TravelConnect.uAPI.Services
                     {
                         Key = s.Key,
                         Group = s.Group,
-                        Origin = s.Origin,
-                        Destination = s.Destination,
                         FlightNumber = s.FlightNumber.Number,
                         Carrier = s.FlightNumber.Airline,
-                        FlightDetails = s.FlightDetails.Select(fd => new FlightDetails
-                        {
-                            DepartureTime = fd.DepartureTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                            ArrivalTime = fd.ArrivalTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                        }).ToArray()
+                        Origin = s.Origin,
+                        Destination = s.Destination,
+                        ProviderCode = "1G",
+                        DepartureTime = $"{s.DepartureTime.Time.ToString("yyyy-MM-ddTHH:mm:ss.000")}+{s.DepartureTime.GmtOffset.ToString("00")}:00",
+                        ArrivalTime = $"{s.ArrivalTime.Time.ToString("yyyy-MM-ddTHH:mm:ss.000")}+{s.ArrivalTime.GmtOffset.ToString("00")}:00",
                     }).ToArray()
+                },
+                SearchPassenger = new SearchPassenger[]
+                {
+                    new SearchPassenger
+                    {
+                        Code = "ADT",
+                        BookingTravelerRef = "PT1",
+                    },
+                    //new SearchPassenger
+                    //{
+                    //    Code = "CHD",
+                    //    Age = "8",
+                    //    BookingTravelerRef = "PT2",
+                    //}
+                },
+                AirPricingCommand = new AirPricingCommand[]
+                {
+                    new AirPricingCommand
+                    {
+                         CabinClass = "Economy",
+                    }
                 }
             };
 

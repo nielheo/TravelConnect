@@ -6,13 +6,6 @@ using System.Text;
 namespace TravelConnect.Models.Requests
 {
     [NotMapped]
-    public class AirPriceFlightDetail
-    {
-        public DateTime DepartureTime { get; set; }
-        public DateTime ArrivalTime { get; set; }
-    }
-
-    [NotMapped]
     public class AirPriceSegment
     {
         public string Key { get; set; }
@@ -20,7 +13,8 @@ namespace TravelConnect.Models.Requests
         public string Origin { get; set; }
         public string Destination { get; set; }
         public FlightNumber FlightNumber { get; set; }
-        public List<AirPriceFlightDetail> FlightDetails { get; set; }
+        public Timing DepartureTime { get; set; }
+        public Timing ArrivalTime { get; set; }
     }
 
     [NotMapped]

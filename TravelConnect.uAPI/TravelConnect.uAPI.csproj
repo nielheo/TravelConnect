@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Services\AirService_AirLowFareSearch.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="log4net.config">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>

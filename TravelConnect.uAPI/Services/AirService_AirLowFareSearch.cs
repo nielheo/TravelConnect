@@ -90,11 +90,12 @@ namespace TravelConnect.uAPI.Services
         {
             var binding = new BasicHttpsBinding();
             binding.Name = "SystemPingPort";
-            binding.CloseTimeout = TimeSpan.FromMinutes(10);
-            binding.OpenTimeout = TimeSpan.FromMinutes(10);
-            binding.ReceiveTimeout = TimeSpan.FromMinutes(10);
-            binding.SendTimeout = TimeSpan.FromMinutes(10);
+            binding.CloseTimeout = new TimeSpan(0, 3, 00);
+            binding.OpenTimeout = new TimeSpan(0, 3, 00);
+            binding.ReceiveTimeout = new TimeSpan(0, 3, 00);
+            binding.SendTimeout = new TimeSpan(0, 3, 00);
             binding.Security.Mode = BasicHttpsSecurityMode.Transport;
+            
             binding.MaxReceivedMessageSize = Int32.MaxValue;
 
             return binding;
@@ -187,116 +188,161 @@ namespace TravelConnect.uAPI.Services
             List<FlightOption> flightOptions, List<int> index, int level)
         {
             //_LogService.LogInfo($"Level: {level}, Max: {flightOptions.Count}, Length: {flightOptions[level].Option.Count()}, index: {JsonConvert.SerializeObject(index)}");
-            for (int idx=0; idx < flightOptions[level].Option.Length; idx++)
+            try
             {
-                //_LogService.LogInfo($"idx: {idx}, index: {JsonConvert.SerializeObject(index)}");
-                var localIndex = index.Select(i => i).ToList();
-
-                localIndex.Add(idx);
-
-                if (level == (flightOptions.Count - 1))
+                for (int idx = 0; idx < flightOptions[level].Option.Length; idx++)
                 {
-                    indexOptions.Add(localIndex);
-                }
-                else
-                {
-                    int nextLevel = level + 1;
-                    AllIndexOptions(ref indexOptions, flightOptions, localIndex, nextLevel);
+                    //_LogService.LogInfo($"idx: {idx}, index: {JsonConvert.SerializeObject(index)}");
+                    var localIndex = index.Select(i => i).ToList();
+
+                    localIndex.Add(idx);
+
+                    if (level == (flightOptions.Count - 1))
+                    {
+                        indexOptions.Add(localIndex);
+                    }
+                    else
+                    {
+                        int nextLevel = level + 1;
+                        AllIndexOptions(ref indexOptions, flightOptions, localIndex, nextLevel);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                var currentMethod = System.Reflection.MethodBase.GetCurrentMethod();
+                var fullMethodName = currentMethod.DeclaringType.FullName + "." + currentMethod.Name;
+                
+                _LogService.LogException(ex, fullMethodName);
+                throw;
+            }
+        }
+
+        private Timing ConvertToTiming(string datetime)
+        {
+            string[] date = datetime.Split("T");
+            bool positiveOffset = date[1].IndexOf("+") > 0;
+            string[] offset = date[1].Split(positiveOffset ? "+" : "-");
+
+            Timing timing = new Timing();
+            timing.Time = Convert.ToDateTime(date[0] + "T" + offset[0]);
+            timing.GmtOffset = (Convert.ToInt32(offset[1].Split(':')[0]) 
+                + (Convert.ToInt32(offset[1].Split(':')[1]) / 60))
+                * (positiveOffset ? 1 : -1);
+
+            return timing;
         }
 
         private Models.Responses.Leg GenerateLeg(Option option, List<typeBaseAirSegment> segments)
         {
-            Models.Responses.Leg leg = new Models.Responses.Leg
+            typeBaseAirSegment segment = new typeBaseAirSegment();
+            try
             {
-                Elapsed = ToElapsed(option.TravelTime),
-                Segments = option.BookingInfo.ToList().Select(bi => {
-                    var segment = segments.Where(s => s.Key == bi.SegmentRef).FirstOrDefault();
-                    return new SegmentRS
+                Models.Responses.Leg leg = new Models.Responses.Leg
+                {
+                    Elapsed = ToElapsed(option.TravelTime),
+                    Segments = option.BookingInfo.ToList().Select(bi =>
                     {
-                        Key = segment.Key,
-                        Group = segment.Group,
-                        Origin = segment.Origin,
-                        Destination = segment.Destination,
-                        Departure = new Timing
+                        segment = segments.Where(s => s.Key == bi.SegmentRef).FirstOrDefault();
+                        return new SegmentRS
                         {
-                            Time = Convert.ToDateTime(segment.DepartureTime.Split('+')[0]),
-                            GmtOffset = Convert.ToInt32(segment.DepartureTime.Split('+')[1].Split(':')[0])
-                        },
-                        Arrival = new Timing
-                        {
-                            Time = Convert.ToDateTime(segment.ArrivalTime.Split('+')[0]),
-                            GmtOffset = Convert.ToInt32(segment.ArrivalTime.Split('+')[1].Split(':')[0])
-                        },
-                        BookingCode = bi.BookingCode,
-                        CabinClass = bi.CabinClass,
-                        Elapsed = Convert.ToInt32(segment.FlightTime),
-                        MarketingFlight = new FlightNumber
-                        {
-                            Airline = segment.Carrier,
-                            Number = segment.FlightNumber
-                        },
-                        OperatingFlight = new FlightNumber
-                        {
-                            Airline = segment.Carrier,
-                            Number = segment.FlightNumber
-                        }
-                    };
-                }).ToList()
-            };
+                            Key = segment.Key,
+                            Group = segment.Group,
+                            Origin = segment.Origin,
+                            Destination = segment.Destination,
+                            Departure = ConvertToTiming(segment.DepartureTime),
+                            Arrival = ConvertToTiming(segment.ArrivalTime),
+                            BookingCode = bi.BookingCode,
+                            CabinClass = bi.CabinClass,
+                            Elapsed = Convert.ToInt32(segment.FlightTime),
+                            MarketingFlight = new FlightNumber
+                            {
+                                Airline = segment.Carrier,
+                                Number = segment.FlightNumber
+                            },
+                            OperatingFlight = new FlightNumber
+                            {
+                                Airline = segment.Carrier,
+                                Number = segment.FlightNumber
+                            }
+                        };
+                    }).ToList()
+                };
+                return leg;
+            }
+            catch (Exception ex)
+            {
+                var currentMethod = System.Reflection.MethodBase.GetCurrentMethod();
+                var fullMethodName = currentMethod.DeclaringType.FullName + "." + currentMethod.Name;
 
-            return leg;
+                _LogService.LogInfo($"currentMethod.Name/Segment", segment);
+                _LogService.LogException(ex, fullMethodName);
+                throw;
+            }
         }
 
         private List<Models.Responses.FareInfo> GenerateFareInfos(List<List<FareInfoRef>> fareInfoRefs,
             List<kestrel.AirService.FareInfo> fareInfos, List<kestrel.AirService.Brand> brands)
         {
-            List<Models.Responses.FareInfo> response = new List<Models.Responses.FareInfo>();
-            
-
-            fareInfoRefs.ForEach(fInfo =>
+            try
             {
-                Models.Responses.FareInfo fareInfoRs = new Models.Responses.FareInfo()
+                List<Models.Responses.FareInfo> response = new List<Models.Responses.FareInfo>();
+
+
+                fareInfoRefs.ForEach(fInfo =>
                 {
-                    FareInfoDetails = new List<FareInfoDetail>()
-                };
-
-                fInfo.ForEach(fi =>
-                {
-                    kestrel.AirService.FareInfo fareInfo = fareInfos.First(f => f.Key == fi.Key);
-                    kestrel.AirService.Brand brand = fareInfo.Brand == null ? null :
-                        brands.FirstOrDefault(b => b.Key == fi.Key);
-
-                    fareInfoRs.Ptc = fareInfo.PassengerTypeCode;
-
-
-                    fareInfoRs.FareInfoDetails.Add(new Models.Responses.FareInfoDetail
+                    Models.Responses.FareInfo fareInfoRs = new Models.Responses.FareInfo()
                     {
-                        FareBasis = fareInfo.FareBasis,
-                        Origin = fareInfo.Origin,
-                        Destination = fareInfo.Destination,
-                        IsPrivateFare = fareInfo.PrivateFareSpecified,
-                        Amount = new Fare
+                        FareInfoDetails = new List<FareInfoDetail>()
+                    };
+
+                    fInfo.ForEach(fi =>
+                    {
+                        kestrel.AirService.FareInfo fareInfo = fareInfos.First(f => f.Key == fi.Key);
+
+
+                        kestrel.AirService.Brand brand = null;
+                        if (fareInfo.Brand != null)
+                            brand = brands.FirstOrDefault(b => b.BrandID == fareInfo.Brand.BrandID);
+
+                        fareInfoRs.Ptc = fareInfo.PassengerTypeCode;
+
+                        fareInfoRs.FareInfoDetails.Add(new Models.Responses.FareInfoDetail
                         {
-                            Curr = fareInfo.Amount.Substring(0, 3),
-                            Amount = Convert.ToInt32(fareInfo.Amount.Substring(3))
-                        },
-                        Brand = (brand == null || fareInfo.Brand == null) ? null
-                            : new Models.Responses.Brand
+                            FareBasis = fareInfo.FareBasis,
+                            Origin = fareInfo.Origin,
+                            Destination = fareInfo.Destination,
+                            IsPrivateFare = fareInfo.PrivateFareSpecified,
+                            Amount = new Fare
                             {
-                                BrandId = fareInfo.Brand.BrandID,
-                                Name = brand.Name,
-                                UpsellBrandFound = fareInfo.Brand.UpSellBrandFound
-                            }
+                                Curr = fareInfo.Amount.Substring(0, 3),
+                                Amount = Convert.ToInt32(fareInfo.Amount.Substring(3))
+                            },
+                            Brand = (brand == null || fareInfo.Brand == null) ? null
+                                : new Models.Responses.Brand
+                                {
+                                    Key = brand.Key,
+                                    Carrier = brand.Carrier,
+                                    BrandId = fareInfo.Brand.BrandID,
+                                    Name = brand.Name,
+                                    UpsellBrandFound = fareInfo.Brand.UpSellBrandFound
+                                }
+                        });
                     });
+
+                    response.Add(fareInfoRs);
                 });
+                
+                return response;
+            }
+            catch (Exception ex)
+            {
+                var currentMethod = System.Reflection.MethodBase.GetCurrentMethod();
+                var fullMethodName = currentMethod.DeclaringType.FullName + "." + currentMethod.Name;
 
-                response.Add(fareInfoRs);
-            });
-
-
-            return response;
+                _LogService.LogException(ex, fullMethodName);
+                throw;
+            }
         }
 
 

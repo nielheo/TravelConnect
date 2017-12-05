@@ -11,4 +11,11 @@ namespace TravelConnect.Models
         public string Airline { get; set; }
         public string Number { get; set; }
     }
+
+    [NotMapped]
+    public class Timing
+    {
+        public DateTime Time { get; set; }
+        public float GmtOffset { get; set; }
+    }
 }

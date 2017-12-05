@@ -26,18 +26,13 @@ namespace TravelConnect.Models.Responses
     [NotMapped]
     public class Brand
     {
+        public string Key { get; set; }
         public string BrandId { get; set; }
         public bool UpsellBrandFound { get; set; }
         public string Name { get; set; }
+        public string Carrier { get; set; }
     }
     
-    [NotMapped]
-    public class Timing
-    {
-        public DateTime Time { get; set; }
-        public float GmtOffset { get; set; }
-    }
-
     [NotMapped]
     public class SegmentRS
     {
