@@ -15,11 +15,21 @@ namespace TravelConnect.Models.Requests
         public FlightNumber FlightNumber { get; set; }
         public Timing DepartureTime { get; set; }
         public Timing ArrivalTime { get; set; }
+        public string ClassOfService { get; set; }
+        public bool IsConnection { get; set; }
+    }
+
+    public class AirPricePtc
+    {
+        public string Code { get; set; }
+        public int? Age { get; set; }
     }
 
     [NotMapped]
     public class AirPriceRQ
     {
         public List<AirPriceSegment> Segments { get; set; }
+        public string CabinClass { get; set; }
+        public List<AirPricePtc> Ptcs { get; set; }
     }
 }

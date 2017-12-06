@@ -8,6 +8,7 @@ using kestrel.AirService;
 using TravelConnect.CommonServices;
 using TravelConnect.uAPI.Utility;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace TravelConnect.uAPI.Services
 {
@@ -55,6 +56,7 @@ namespace TravelConnect.uAPI.Services
 
         private AirPriceReq ConvertToAirPriceReq(AirPriceRQ request)
         {
+            int counter = 0;
             AirPriceReq req = new AirPriceReq()
             {
                 BillingPointOfSaleInfo = new kestrel.AirService.BillingPointOfSaleInfo
@@ -75,29 +77,35 @@ namespace TravelConnect.uAPI.Services
                         ProviderCode = "1G",
                         DepartureTime = $"{s.DepartureTime.Time.ToString("yyyy-MM-ddTHH:mm:ss.000")}+{s.DepartureTime.GmtOffset.ToString("00")}:00",
                         ArrivalTime = $"{s.ArrivalTime.Time.ToString("yyyy-MM-ddTHH:mm:ss.000")}+{s.ArrivalTime.GmtOffset.ToString("00")}:00",
+                        ClassOfService = s.ClassOfService,
+                        Connection = s.IsConnection ? new Connection { } : null
                     }).ToArray()
                 },
-                SearchPassenger = new SearchPassenger[]
+                SearchPassenger = request.Ptcs.Select(ptc =>
                 {
-                    new SearchPassenger
+                    SearchPassenger pax = new SearchPassenger
                     {
-                        Code = "ADT",
-                        BookingTravelerRef = "PT1",
-                    },
-                    //new SearchPassenger
-                    //{
-                    //    Code = "CHD",
-                    //    Age = "8",
-                    //    BookingTravelerRef = "PT2",
-                    //}
-                },
+                        Code = ptc.Code,
+                        BookingTravelerRef = $"PT{counter++}",
+                    };
+                    if (ptc.Age != null) pax.Age = ptc.Age.ToString();
+                    return pax;
+                }).ToArray(),
                 AirPricingCommand = new AirPricingCommand[]
                 {
                     new AirPricingCommand
                     {
-                         CabinClass = "Economy",
+                         CabinClass = request.CabinClass,
                     }
-                }
+                },
+               
+                //AirPricingModifiers = new AirPricingModifiers
+                //{
+                //    BrandModifiers = new BrandModifiers
+                //    {
+                //        ModifierType = BrandModifiersModifierType.FareFamilyDisplay
+                //    }
+                //}
             };
 
             return req;
