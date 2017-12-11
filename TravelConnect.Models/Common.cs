@@ -18,4 +18,11 @@ namespace TravelConnect.Models
         public DateTime Time { get; set; }
         public float GmtOffset { get; set; }
     }
+
+    [NotMapped]
+    public class RoomOccupancy
+    {
+        public int AdultCount { get; set; }
+        public List<int> ChildAges { get; set; }
+    }
 }

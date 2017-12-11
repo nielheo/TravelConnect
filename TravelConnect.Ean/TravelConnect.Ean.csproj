@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="log4net.config">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TravelConnect.CommonServices\TravelConnect.CommonServices.csproj" />
+    <ProjectReference Include="..\TravelConnect.Interfaces\TravelConnect.Interfaces.csproj" />
+    <ProjectReference Include="..\TravelConnect.Models\TravelConnect.Models.csproj" />
+  </ItemGroup>
+
+</Project>

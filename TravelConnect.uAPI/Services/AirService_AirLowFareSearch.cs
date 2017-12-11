@@ -19,17 +19,19 @@ namespace TravelConnect.uAPI.Services
     {
         LogService _LogService;
 
-        public async Task<FlightSearchRS> AirLowFareSearchAsync(FlightSearchRQ request)
+        private enum JourneyType
+        {
+            DepartOnly = 0,
+            ReturnOnly = 1,
+            DepartAndReturn = 2,
+        }
+
+        private async Task<LowFareSearchRsp> SubmitAirLowFareSearchAsync(FlightSearchRQ request, JourneyType journeyType)
         {
             AirLowFareSearchPortTypeClient client;
-            _LogService = new LogService();
-
+            var binding = GenerateBasicHttpBinding();
             try
             {
-                _LogService.LogInfo($"FlightSearchRQ", request);
-
-                var binding = GenerateBasicHttpBinding();
-
                 var endpoint = new EndpointAddress("https://apac.universal-api.pp.travelport.com/B2BGateway/connect/uAPI/AirService");
 
                 client = new AirLowFareSearchPortTypeClient(binding, endpoint);
@@ -37,13 +39,62 @@ namespace TravelConnect.uAPI.Services
                 var httpHeaders = Helper.ReturnHttpHeader();
                 client.Endpoint.EndpointBehaviors.Add(new HttpHeadersEndpointBehavior(httpHeaders));
 
-                var req = ConvertToLowFareSearchReq(request);
-                _LogService.LogInfo($"uAPI/LowFareSearchReq", req);
+                var req = ConvertToLowFareSearchReq(request, journeyType);
+                _LogService.LogInfo($"uAPI/LowFareSearchReq_{journeyType}", req);
 
-                var result = await client.serviceAsync(null, req);
-                _LogService.LogInfo($"uAPI/LowFareSearchRsp", result);
+                var response = await client.serviceAsync(null, req);
+                _LogService.LogInfo($"uAPI/LowFareSearchRsp_{journeyType}", response);
+                return response.LowFareSearchRsp;
+            }
+            catch(Exception ex)
+            {
+                _LogService.LogException(ex, $"uAPI.AirService.SubmitAirLowFareSearchAsync_{journeyType}");
+                return null;
+            }
+            finally
+            {
+                client = null;
+                binding = null;
+            }
+        }
 
-                var response = ConvertToFlightSearchRS(result.LowFareSearchRsp);
+        public async Task<FlightSearchRS> AirLowFareSearchAsync(FlightSearchRQ request)
+        {
+            _LogService = new LogService();
+
+            try
+            {
+                _LogService.LogInfo($"FlightSearchRQ", request);
+
+                LowFareSearchRsp departAndReturnResult = null;
+                LowFareSearchRsp departOnlyResult = null;
+                LowFareSearchRsp returnOnlyResult = null;
+
+                Task<LowFareSearchRsp> departAndReturnTask = null;
+                Task<LowFareSearchRsp> returnOnlyTask = null;
+
+                if (request.Segments.Count == 2)
+                {
+                    //Depart and Return Flight
+                    departAndReturnTask = SubmitAirLowFareSearchAsync(request, JourneyType.DepartAndReturn);
+                    
+                    //Return Only Flight
+                    returnOnlyTask = SubmitAirLowFareSearchAsync(request, JourneyType.ReturnOnly);
+                }
+
+                //Depart Only Flight
+                Task<LowFareSearchRsp> departOnlyTask =
+                    SubmitAirLowFareSearchAsync(request, JourneyType.DepartOnly);
+
+                departOnlyResult = await departOnlyTask;
+                
+                if (request.Segments.Count == 2)
+                {
+                    departAndReturnResult = await departAndReturnTask;
+                    returnOnlyResult = await returnOnlyTask;
+                }
+                
+                var response = ConvertToFlightSearchRS(departAndReturnResult);
                 _LogService.LogInfo($"FlightSearchRS", response);
 
                 return response;
@@ -53,10 +104,7 @@ namespace TravelConnect.uAPI.Services
                 _LogService.LogException(ex, "uAPI.AirService.AirLowFareSearchAsyc");
                 throw;
             }
-            finally
-            {
-                client = null;
-            }
+            
         }
 
         public Task<List<string>> GetTopDestinationsAsync(string airportCode)
@@ -89,11 +137,11 @@ namespace TravelConnect.uAPI.Services
         private BasicHttpsBinding GenerateBasicHttpBinding()
         {
             var binding = new BasicHttpsBinding();
-            binding.Name = "SystemPingPort";
-            binding.CloseTimeout = new TimeSpan(0, 3, 00);
-            binding.OpenTimeout = new TimeSpan(0, 3, 00);
-            binding.ReceiveTimeout = new TimeSpan(0, 3, 00);
-            binding.SendTimeout = new TimeSpan(0, 3, 00);
+            //binding.Name = "SystemPingPort";
+            //binding.CloseTimeout = new TimeSpan(0, 3, 00);
+            //binding.OpenTimeout = new TimeSpan(0, 3, 00);
+            binding.ReceiveTimeout = new TimeSpan(0, 10, 00);
+            binding.SendTimeout = new TimeSpan(0, 10, 00);
             binding.Security.Mode = BasicHttpsSecurityMode.Transport;
             
             binding.MaxReceivedMessageSize = Int32.MaxValue;
@@ -101,11 +149,34 @@ namespace TravelConnect.uAPI.Services
             return binding;
         }
 
-        private LowFareSearchReq ConvertToLowFareSearchReq(FlightSearchRQ request)
+        private LowFareSearchReq ConvertToLowFareSearchReq(FlightSearchRQ request, JourneyType journeyType)
         {
+            if (request.Segments.Count == 0)
+                throw new  ApplicationException("Segment is required");
             //Segments
-            var SearchAirLegs = request.Segments.Select(s =>
-                GenerateSearchAirLeg(s.Origin, true, s.Destination, true, s.Departure));
+            IEnumerable<SearchAirLeg> SearchAirLegs = new List<SearchAirLeg>();
+
+            switch (journeyType)
+            {
+                case JourneyType.DepartAndReturn:
+                    if (request.Segments.Count == 1)
+                        throw new ApplicationException("2 segment is request to generate Depart and Return journey");
+                    SearchAirLegs = request.Segments.OrderBy(s => s.Departure).Select(s =>
+                        GenerateSearchAirLeg(s.Origin, true, s.Destination, true, s.Departure));
+                    break;
+                case JourneyType.DepartOnly:
+                    SearchAirLegs = request.Segments.OrderBy(s => s.Departure).Take(1).Select(s =>
+                        GenerateSearchAirLeg(s.Origin, true, s.Destination, true, s.Departure));
+                    break;
+                case JourneyType.ReturnOnly:
+                    if (request.Segments.Count == 1)
+                        throw new ApplicationException("2 segment is request to generate Return Only journey");
+
+                    SearchAirLegs = request.Segments.OrderBy(s => s.Departure).Skip(1).Take(1).Select(s =>
+                        GenerateSearchAirLeg(s.Origin, true, s.Destination, true, s.Departure));
+                    break;
+            }
+            
 
             AirSearchModifiers airSearchModifiers = new AirSearchModifiers
             { PreferredProviders = new Provider[] { new Provider { Code = "1G" } } };
@@ -299,8 +370,7 @@ namespace TravelConnect.uAPI.Services
                     fInfo.ForEach(fi =>
                     {
                         kestrel.AirService.FareInfo fareInfo = fareInfos.First(f => f.Key == fi.Key);
-
-
+                        
                         kestrel.AirService.Brand brand = null;
                         if (fareInfo.Brand != null)
                             brand = brands.FirstOrDefault(b => b.BrandID == fareInfo.Brand.BrandID);
@@ -355,56 +425,65 @@ namespace TravelConnect.uAPI.Services
                 RequestId = response.TransactionId,
             };
 
-            ((AirPricePointList)response.Items.First()).AirPricePoint.ToList().ForEach(p =>
+            try
             {
-                
-                List<List<int>> options = new List<List<int>>();
-                //_LogService.LogInfo("FlightOptionsList: ", pi.FlightOptionsList);
-                AllIndexOptions(ref options, p.AirPricingInfo.First().FlightOptionsList.ToList(), 
-                    new List<int>(), 0);
-                //_LogService.LogInfo("all options", options);
-
-                foreach (var leg in options)
+                foreach (AirPricePoint p in ((AirPricePointList)response.Items.First()).AirPricePoint)
                 {
-                    List<Models.Responses.Leg> legs = new List<Models.Responses.Leg>();
-                    for (int legIdx = 0; legIdx < leg.Count(); legIdx++)
+                    List<List<int>> options = new List<List<int>>();
+                    //_LogService.LogInfo("FlightOptionsList: ", pi.FlightOptionsList);
+                    AllIndexOptions(ref options, p.AirPricingInfo.First().FlightOptionsList.ToList(),
+                        new List<int>(), 0);
+                    //_LogService.LogInfo("all options", options);
+
+                    foreach (var leg in options)
                     {
-                        legs.Add(GenerateLeg(p.AirPricingInfo.First().FlightOptionsList[legIdx].Option[leg[legIdx]],
-                            response.AirSegmentList.ToList()));
+                        List<Models.Responses.Leg> legs = new List<Models.Responses.Leg>();
+                        for (int legIdx = 0; legIdx < leg.Count(); legIdx++)
+                        {
+                            legs.Add(GenerateLeg(p.AirPricingInfo.First().FlightOptionsList[legIdx].Option[leg[legIdx]],
+                                response.AirSegmentList.ToList()));
+                        }
+
+                        var a = p.AirPricingInfo.ToList().Select(ap => ap.FareInfoRef.ToList());
+
+                        rs.PricedItins.Add(new PricedItin
+                        {
+                            TotalFare = new Fare
+                            {
+                                Amount = float.Parse(p.TotalPrice.Substring(3)),
+                                Curr = p.TotalPrice.Substring(0, 3)
+                            },
+                            BaseFare = new Fare
+                            {
+                                Amount = float.Parse(p.BasePrice.Substring(3)),
+                                Curr = p.BasePrice.Substring(0, 3)
+                            },
+                            Taxes = new Fare
+                            {
+                                Amount = float.Parse(p.Taxes.Substring(3)),
+                                Curr = p.Taxes.Substring(0, 3)
+                            },
+                            Legs = legs,
+                            FareInfos = GenerateFareInfos(
+                                p.AirPricingInfo.ToList().Select(ap => ap.FareInfoRef.ToList()).ToList(),
+                                response.FareInfoList.ToList(),
+                                response.BrandList?.ToList() ?? new List<kestrel.AirService.Brand>())
+                        });
+
+                        p.AirPricingInfo.ToList().ForEach(pi =>
+                        {
+
+                        });
                     }
+                };
 
-                    rs.PricedItins.Add(new PricedItin
-                    {
-                        TotalFare = new Fare
-                        {
-                            Amount = float.Parse(p.TotalPrice.Substring(3)),
-                            Curr = p.TotalPrice.Substring(0, 3)
-                        },
-                        BaseFare = new Fare
-                        {
-                            Amount = float.Parse(p.BasePrice.Substring(3)),
-                            Curr = p.BasePrice.Substring(0, 3)
-                        },
-                        Taxes = new Fare
-                        {
-                            Amount = float.Parse(p.Taxes.Substring(3)),
-                            Curr = p.Taxes.Substring(0, 3)
-                        },
-                        Legs = legs,
-                        FareInfos = GenerateFareInfos(
-                            p.AirPricingInfo.ToList().Select(ap=>ap.FareInfoRef.ToList()).ToList(),
-                            response.FareInfoList.ToList(),
-                            response.BrandList.ToList())
-                    });
-
-                    p.AirPricingInfo.ToList().ForEach(pi =>
-                    {
-
-                    });
-                }
-            });
-
-            return rs;
+                return rs;
+            }
+            catch (Exception ex)
+            {
+                _LogService.LogException(ex, "uAPI.AirService.ConvertToFlightSearchRS");
+                return null;
+            }
         }
     }
 }

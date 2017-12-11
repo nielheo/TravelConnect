@@ -51,6 +51,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TravelConnect.CommonServices\TravelConnect.CommonServices.csproj" />
+    <ProjectReference Include="..\TravelConnect.Ean\TravelConnect.Ean.csproj" />
     <ProjectReference Include="..\TravelConnect.Interfaces\TravelConnect.Interfaces.csproj" />
     <ProjectReference Include="..\TravelConnect.Models\TravelConnect.Models.csproj" />
     <ProjectReference Include="..\TravelConnect.Sabre\TravelConnect.Sabre.csproj" />

@@ -9,7 +9,6 @@ namespace TravelConnect.Models.Responses
     {
         public string Ptc { get; set; }
         public List<FareInfoDetail> FareInfoDetails { get; set; }
-        
     }
 
     [NotMapped]
@@ -80,6 +79,9 @@ namespace TravelConnect.Models.Responses
     public class FlightSearchRS
     {
         public List<PricedItin> PricedItins { get; set; }
+        public List<PricedItin> DepartPricedItins { get; set; }
+        public List<PricedItin> ReturnPricedItins { get; set; }
+
         public string RequestId { get; set; }
         public Page Page { get; set; }
         public List<string> Airlines { get; set; }
