@@ -8,11 +8,14 @@ using TravelConnect.Interfaces;
 using TravelConnect.Models.Requests;
 using TravelConnect.Models.Responses;
 using TravelConnect.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TravelConnect.React.Controllers
 {
     [Produces("application/json")]
     [Route("api/Hotels")]
+    [RequestSizeLimit(100000000)]
+    [Authorize]
     public class HotelsController : Controller
     {
         private IHotelService _HotelService;
