@@ -27,8 +27,9 @@ export default class Home extends React.Component<RouteComponentProps<{}>, any> 
     
     return <div>
 
-      <h1>Travel Connect</h1>
-      <p>Welcome to Travel Connect, bring your Travel Shop Online</p>
+      {//<h1 className='white'>Travel Connect</h1>
+        //<p>Welcome to Travel Connect, bring your Travel Shop Online</p>
+      }
       <input
         className={this.state.activeTab === 'flight' ? 'btn btn-primary' : 'btn'}
         type="button" value="Flight"

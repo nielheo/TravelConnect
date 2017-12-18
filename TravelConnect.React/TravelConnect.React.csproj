@@ -30,6 +30,9 @@
   <ItemGroup>
     <None Remove="ClientApp\components\Classes.tsx" />
     <None Remove="ClientApp\components\Commons.tsx" />
+    <None Remove="ClientApp\components\commons\FormDropdown.tsx" />
+    <None Remove="ClientApp\components\commons\FormInput.tsx" />
+    <None Remove="ClientApp\components\commons\FormTextbox.tsx" />
     <None Remove="ClientApp\components\flightPax\Segment.tsx" />
     <None Remove="ClientApp\components\flightResult\Filter.tsx" />
     <None Remove="ClientApp\components\flightResult\FilterAirline.tsx" />
@@ -63,6 +66,9 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\components\Classes.tsx" />
     <TypeScriptCompile Include="ClientApp\components\Commons.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\commons\FormInput.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\commons\FormTextbox.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\commons\FormDropdown.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightPax\Segment.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightResult\Filter.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightResult\FilterAirline.tsx" />
@@ -79,7 +85,7 @@
     <TypeScriptCompile Include="ClientApp\components\flightPax\Index.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightSearch\Index.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightSearch\AirportAutocomplete.tsx" />
-    <TypeScriptCompile Include="ClientApp\components\flightSearch\SelectDate.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\commons\SelectDate.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightSearch\SelectPax.tsx" />
     <TypeScriptCompile Include="ClientApp\components\hotelSearch\index.tsx" />
     <TypeScriptCompile Include="ClientApp\store\Flight.ts" />

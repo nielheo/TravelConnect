@@ -10,7 +10,7 @@ import * as queryString from 'query-string'
 const CryptoJS = require('crypto-js') as any;
 
 import AirportAutocomplete from './AirportAutocomplete'
-import SelectDate from './SelectDate'
+import SelectDate from '../commons/SelectDate'
 import SelectPax from './SelectPax'
 
 type FlightProps =
