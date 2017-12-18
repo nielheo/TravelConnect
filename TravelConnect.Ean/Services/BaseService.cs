@@ -12,10 +12,16 @@ namespace TravelConnect.Ean.Services
     public class BaseService
     {
         protected LogService _LogService = null;
-        protected string _ApiKey = "sb4ps442bpwzv4fc6m9gd7rb";
-        protected string _SharedSecret = "eETy7g9Y";
-        protected string _Cid = "461518";
+        protected string _ApiKey = "2wt5kd9pdbvbycdrrk3y9yzp";
+        protected string _SharedSecret = "RrwEwN7j";
+        protected string _Cid = "454244";
         protected string _MinorRev = "30";
+
+        //protected string _ApiKey = "sb4ps442bpwzv4fc6m9gd7rb";
+        //protected string _SharedSecret = "eETy7g9Y";
+        //protected string _Cid = "461518";
+        //protected string _MinorRev = "30";
+
 
         //https://api.eancdn.com/ean-services/rs/hotel/v3/list?minorRev=30&cid=461518&apiExperience=PARTNER_AFFILIATE&apiKey=sb4ps442bpwzv4fc6m9gd7rb&sig=3d0876455851f6941e809bf018e0a703&customerIpAddress=119.81.47.27&customerUserAgent=web&customerSessionId=54321&minorRev=30&locale=en_US&currencyCode=USD&city=Bali&countryCode=ID&arrivalDate=09/04/2018&departureDate=09/05/2018&room1=2&_type=json
 
