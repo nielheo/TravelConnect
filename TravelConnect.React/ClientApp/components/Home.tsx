@@ -51,7 +51,7 @@ export default class Home extends React.Component<RouteComponentProps<{}>, any> 
               </ul>
             </Row>
             <Row>
-              <HotelSearch />
+                <HotelSearch history={this.props.history} />
             </Row>
           </section>
         }

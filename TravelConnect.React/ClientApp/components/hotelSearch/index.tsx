@@ -3,6 +3,7 @@
 import { Panel, Grid, Row, Col } from 'react-bootstrap'
 import * as moment from 'moment'
 
+
 import FormInput from '../commons/FormInput'
 import FormTextbox from '../commons/FormTextbox'
 import FormDropdown from '../commons/FormDropdown'
@@ -10,15 +11,15 @@ import SelectDate from '../commons/SelectDate'
 
 import Occupancy from './Occupancy'
 
-export default class HotelSearch_Index extends React.Component<{}, any> {
+export default class HotelSearch_Index extends React.Component<{ history: any }, any> {
   constructor() {
     super();
     //let now = moment()
     //let today = moment({ year: now.year(), month: now.month(), day: now.day() })
 
     this.state = {
-      country: '',
-      city: '',
+      country: 'sg',
+      city: 'singapore',
       checkIn: moment().add(90, 'days'),
       checkOut: moment().add(92, 'days'),
       rooms: 1,
@@ -60,13 +61,28 @@ export default class HotelSearch_Index extends React.Component<{}, any> {
     this.setState({ occupancies: occu })
   }
 
+  _createResultUrl = () => {
+    var url = '/hotels/' + this.state.country + '/' + this.state.city
+    url += '?cin=' + this.state.checkIn.format('YYYY-MM-DD')
+    url += '&cout=' + this.state.checkOut.format('YYYY-MM-DD')
+    for (var i = 1; i <= this.state.rooms; i++) {
+      url += '&room' + i + '=' + this.state.occupancies[i - 1].adult
+      for (var j = 1; j <= this.state.occupancies[i - 1].child; j++) {
+        url += ',' + this.state.occupancies[i - 1].childAges[j - 1]
+      }
+    }
+
+    return url
+  }
+
   _onSearchClick = () => {
     this.setState({ searchClicked: true })
+    //console.log(this._createResultUrl())
+    this.props.history.push(this._createResultUrl())
   }
 
   public render() {
     var idx = 2
-    console.log(this.state.occupancies)
     return <Col md={12}>
 
       <Row>
