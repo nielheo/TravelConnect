@@ -49,6 +49,7 @@
     <None Remove="ClientApp\components\flightSearch\SelectDate.tsx" />
     <None Remove="ClientApp\components\flightSearch\SelectPax.tsx" />
     <None Remove="ClientApp\components\hotelSearch\index.tsx" />
+    <None Remove="ClientApp\components\hotelSearch\Occupancy.tsx" />
     <None Remove="ClientApp\store\Flight.ts" />
     <None Remove="Properties\PublishProfiles\TravelConnectReact20171002093432 - Web Deploy.pubxml" />
   </ItemGroup>
@@ -87,7 +88,8 @@
     <TypeScriptCompile Include="ClientApp\components\flightSearch\AirportAutocomplete.tsx" />
     <TypeScriptCompile Include="ClientApp\components\commons\SelectDate.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightSearch\SelectPax.tsx" />
-    <TypeScriptCompile Include="ClientApp\components\hotelSearch\index.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\hotelSearch\Index.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\hotelSearch\Occupancy.tsx" />
     <TypeScriptCompile Include="ClientApp\store\Flight.ts" />
   </ItemGroup>
 
