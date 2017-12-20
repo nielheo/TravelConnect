@@ -14,5 +14,18 @@ namespace TravelConnect.Models.Requests
         public string City { get; set; }
         public List<RoomOccupancy> Occupancies { get; set; }
         public List<string> Suppliers { get; set; }
+        public string Locale { get; set; }
+        public string Currency { get; set; }
+    }
+
+    [NotMapped]
+    public class HotelGetMoreRQ
+    {
+        public string Locale { get; set; }
+        public string Currency { get; set; }
+        public string CacheKey { get; set; }
+        public string CacheLocation { get; set; }
+        public string RequestKey { get; set; }
+        public List<string> Suppliers { get; set; }
     }
 }

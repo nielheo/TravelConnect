@@ -30,5 +30,10 @@ namespace TravelConnect.Models.Responses
         public List<RoomOccupancy> Occupancies { get; set; }
         public string Supplier { get; set; }
         public List<HotelRS> Hotels { get; set; }
+        public string Locale { get; set; }
+        public string Currency { get; set; }
+        public string CacheKey { get; set; }
+        public string CacheLocation { get; set; }
+        public string RequestKey { get; set; }
     }
 }

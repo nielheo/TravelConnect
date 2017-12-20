@@ -7,5 +7,6 @@ namespace TravelConnect.Interfaces
     public interface IHotelService
     {
         Task<HotelSearchCityRS> HotelSearchByCityAsync(HotelSearchCityRQ request);
+        Task<HotelSearchCityRS> HotelGetMoreAsync(HotelGetMoreRQ request);
     }
 }

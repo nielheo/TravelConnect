@@ -24,8 +24,25 @@ namespace TravelConnect.React.Controllers
             this._HotelService = _HotelService;
         }
 
+        [Route("more")]
+        public async Task<HotelSearchCityRS> Get(string locale, string currency, string cacheKey,
+            string cacheLocation, string requestKey)
+        {
+            HotelGetMoreRQ request = new HotelGetMoreRQ
+            {
+                Locale = locale,
+                Currency = currency,
+                CacheKey = cacheKey,
+                CacheLocation = cacheLocation,
+                RequestKey = requestKey,
+                Suppliers = new List<string> { "EAN" }
+            };
+
+            return await _HotelService.HotelGetMoreAsync(request);
+        }
+
         [Route("{country}/{city}")]
-        public async Task<HotelSearchCityRS> Get(string country, string city, DateTime checkIn, DateTime checkOut, string rooms)
+        public async Task<HotelSearchCityRS> Get(string country, string city, DateTime checkIn, DateTime checkOut, string locale, string currency, string rooms)
         {
             HotelSearchCityRQ request = new HotelSearchCityRQ
             {
@@ -33,6 +50,8 @@ namespace TravelConnect.React.Controllers
                 CheckOut = checkOut,
                 City = city,
                 Country = country,
+                Locale = locale,
+                Currency = currency,
                 Suppliers = new List<string> { "EAN" },
                 Occupancies = rooms.Split('|').ToList().Select(r =>
                 {

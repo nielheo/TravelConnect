@@ -65,13 +65,19 @@ export default class HotelSearch_Index extends React.Component<{ history: any },
     var url = '/hotels/' + this.state.country + '/' + this.state.city
     url += '?cin=' + this.state.checkIn.format('YYYY-MM-DD')
     url += '&cout=' + this.state.checkOut.format('YYYY-MM-DD')
-    for (var i = 1; i <= this.state.rooms; i++) {
-      url += '&room' + i + '=' + this.state.occupancies[i - 1].adult
-      for (var j = 1; j <= this.state.occupancies[i - 1].child; j++) {
-        url += ',' + this.state.occupancies[i - 1].childAges[j - 1]
-      }
+
+    let aRoom = []
+    for (var x = 0; x < this.state.rooms; x++) {
+        let room = this.state.occupancies[x].adult
+        if (this.state.occupancies[x].child > 0) {
+            room += ',' + this.state.occupancies[x].childAges.slice(0, this.state.occupancies[x].child).join(',')
+        }
+        //console.log(this.state.occupancies[x])
+        aRoom.push(room)
     }
 
+    url += '&rooms=' + aRoom.join('|')
+    
     return url
   }
 
