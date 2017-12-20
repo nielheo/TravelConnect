@@ -15,7 +15,6 @@ namespace TravelConnect.React.Controllers
     [Produces("application/json")]
     [Route("api/Hotels")]
     [RequestSizeLimit(100000000)]
-    [Authorize]
     public class HotelsController : Controller
     {
         private IHotelService _HotelService;
