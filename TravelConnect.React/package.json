@@ -41,7 +41,7 @@
     "moment": "^2.18.1",
     "node-noop": "1.0.0",
     "query-string": "^5.0.0",
-    "react": "15.6.1",
+    "react": "^15.6.2",
     "react-bootstrap": "^0.31.3",
     "react-bootstrap-typeahead": "^2.0.0-alpha.3",
     "react-datepicker": "^0.53.0",

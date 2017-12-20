@@ -115,6 +115,9 @@ export default class HotelResult_Index extends React.Component<
                                     <Col md={12}>{hotel.name}</Col>
                                 </Row>
                                 <Row>
+                                    <Col md={12}>{hotel.shortDesc}</Col>
+                                </Row>
+                                <Row>
                                     <Col md={12}>{hotel.currCode} {hotel.rateFrom} - {hotel.currCode} {hotel.rateTo}</Col>
                                 </Row>
                             </Panel>

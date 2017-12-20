@@ -48,10 +48,9 @@ namespace TravelConnect.React.Controllers
 
                     return occu;
                 }).ToList()
-
             };
 
-            return await _HotelService.HotelSearchByCity(request);
+            return await _HotelService.HotelSearchByCityAsync(request);
         }
     }
 }
