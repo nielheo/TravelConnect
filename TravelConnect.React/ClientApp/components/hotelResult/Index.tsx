@@ -1,6 +1,6 @@
 ﻿import * as React from 'react'
 
-import { Panel, Grid, Row, Col } from 'react-bootstrap'
+import { Panel, Grid, Row, Col, Pagination } from 'react-bootstrap'
 
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -11,6 +11,9 @@ import FormInput from '../commons/FormInput'
 import FormTextbox from '../commons/FormTextbox'
 import FormDropdown from '../commons/FormDropdown'
 import SelectDate from '../commons/SelectDate'
+
+import HotelItem from './HotelItem'
+import HotelFilter from './HotelFilter'
 
 export default class HotelResult_Index extends React.Component<
   RouteComponentProps<{
@@ -40,7 +43,10 @@ export default class HotelResult_Index extends React.Component<
       //occupancies: query.rooms,
       locale: props.match.params.locale || 'en_US',
       currency: query.currency || 'USD',
+      page: 1,
       result: null,
+
+      filteredHotelName: ''
     };
   }
 
@@ -142,31 +148,76 @@ export default class HotelResult_Index extends React.Component<
               }
           })
   }
+
+  _onPageChange = (a: any) => {
+      if (a !== this.state.page) {
+          this.setState({
+              page: a
+          })
+      }
+  }
+
+  _onFilterHotelNameChange = (e: any) => {
+    this.setState({ filteredHotelName: e.target.value })
+  }
   
   public render() {
-    return <div>
+    let hotels = (this.state.result && this.state.result.hotels) || []
+    if (this.state.filteredHotelName)
+      hotels = hotels.filter((h: any) =>
+        h.name.toLowerCase().indexOf(this.state.filteredHotelName.toLowerCase()) >= 0)
+      
+    console.log(hotels.length)
+
+      const itemsPerPage = 20
+      const { page } = this.state
+      let _totalPages = hotels.length
+        ? Math.ceil(hotels.length / itemsPerPage)
+        : 0
+      let _page = page > _totalPages ? _totalPages : page
+      let _startIndex = (_page - 1) * itemsPerPage
+      let _endIndex = _page * itemsPerPage
+
+      return <Row>
+          <Col md={3}>
+              {
+                  this.state.result && this.state.result.hotels &&
+            <HotelFilter
+              hotels={this.state.result.hotels}
+              filteredHotelName={this.state.filteredHotelName}
+              onFilterHotelNameChange={this._onFilterHotelNameChange}
+            />
+              }
+          </Col>
+          <Col md={9}>
         {
             this.state.result
                 ? <section>
-                    <Row><Col md={12}><h3>{this.state.result.hotels.length} hotels found</h3></Col></Row>
+                    <Row><Col md={12}><h3>Select from {hotels.length} hotels</h3></Col></Row>
+                    <Row className="text-right">
+                        <Col md={12}>
+                            <Pagination prev next first last ellipsis boundaryLinks
+                                items={_totalPages} maxButtons={5} activePage={_page}
+                                onSelect={this._onPageChange} />
+                        </Col>
+                    </Row>
+
                     {
-                        this.state.result.hotels.map((hotel:any) => 
-                            <Panel>
-                                <Row>
-                                    <Col md={12}>{hotel.name}</Col>
-                                </Row>
-                                <Row>
-                                    <Col md={12}>{hotel.shortDesc}</Col>
-                                </Row>
-                                <Row>
-                                    <Col md={12}>{hotel.currCode} {hotel.rateFrom} - {hotel.currCode} {hotel.rateTo}</Col>
-                                </Row>
-                            </Panel>
+                  hotels.slice(_startIndex, _endIndex).map((hotel: any) =>
+                                  <HotelItem hotel={hotel} />
                         )
                     }
+                    <Row className="text-right">
+                        <Col md={12}>
+                            <Pagination prev next first last ellipsis boundaryLinks
+                                items={_totalPages} maxButtons={5} activePage={_page}
+                                onSelect={this._onPageChange} />
+                        </Col>
+                    </Row>
                 </section>
                 : <Row><Col md={12}>Search your hotels. Please wait....</Col></Row>
-        }
-      </div>
+              }
+              </Col>
+      </Row>
   }
 }

@@ -48,6 +48,9 @@
     <None Remove="ClientApp\components\flightPax\Index.tsx" />
     <None Remove="ClientApp\components\flightSearch\SelectDate.tsx" />
     <None Remove="ClientApp\components\flightSearch\SelectPax.tsx" />
+    <None Remove="ClientApp\components\hotelResult\HotelFiIlter.tsx" />
+    <None Remove="ClientApp\components\hotelResult\HotelFilter.tsx" />
+    <None Remove="ClientApp\components\hotelResult\HotelItem.tsx" />
     <None Remove="ClientApp\components\hotelResult\Index.tsx" />
     <None Remove="ClientApp\components\hotelSearch\index.tsx" />
     <None Remove="ClientApp\components\hotelSearch\Occupancy.tsx" />
@@ -89,6 +92,8 @@
     <TypeScriptCompile Include="ClientApp\components\flightSearch\AirportAutocomplete.tsx" />
     <TypeScriptCompile Include="ClientApp\components\commons\SelectDate.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightSearch\SelectPax.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\hotelResult\HotelFilter.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\hotelResult\HotelItem.tsx" />
     <TypeScriptCompile Include="ClientApp\components\hotelResult\Index.tsx" />
     <TypeScriptCompile Include="ClientApp\components\hotelSearch\Index.tsx" />
     <TypeScriptCompile Include="ClientApp\components\hotelSearch\Occupancy.tsx" />
