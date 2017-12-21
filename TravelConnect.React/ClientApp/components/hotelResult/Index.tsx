@@ -46,7 +46,8 @@ export default class HotelResult_Index extends React.Component<
       page: 1,
       result: null,
 
-      filteredHotelName: ''
+      filteredHotelName: '',
+      filteredStarRating: [],
     };
   }
 
@@ -160,12 +161,41 @@ export default class HotelResult_Index extends React.Component<
   _onFilterHotelNameChange = (e: any) => {
     this.setState({ filteredHotelName: e.target.value })
   }
+
+  _onFilterStarRatingChange = (e: any, starRating: number) => {
+    if (this.state.filteredStarRating.indexOf(starRating) < 0 && e.target.checked) {
+      var filtered = this.state.filteredStarRating
+      filtered.push(starRating)
+      
+      this.setState({
+        filteredStarRating: filtered
+      })
+    }
+
+    if (this.state.filteredStarRating.indexOf(starRating) >= 0 && !e.target.checked) {
+      var filtered = this.state.filteredStarRating.filter((s: any) => s !== starRating)
+      //filtered.splice(this.state.filteredStarRating.indexOf(starRating), 1)
+
+      console.log(filtered)
+
+      this.setState({
+        filteredStarRating: filtered
+      })
+    }
+    
+  }
   
   public render() {
     let hotels = (this.state.result && this.state.result.hotels) || []
     if (this.state.filteredHotelName)
       hotels = hotels.filter((h: any) =>
         h.name.toLowerCase().indexOf(this.state.filteredHotelName.toLowerCase()) >= 0)
+
+    let hotelsByName = hotels
+
+    if (this.state.filteredStarRating.length)
+      hotels = hotels.filter((h: any) =>
+        this.state.filteredStarRating.indexOf(h.starRating) >= 0)
       
     console.log(hotels.length)
 
@@ -183,9 +213,12 @@ export default class HotelResult_Index extends React.Component<
               {
                   this.state.result && this.state.result.hotels &&
             <HotelFilter
-              hotels={this.state.result.hotels}
+              hotels={hotelsByName}
+              filteredHotels={hotels}
               filteredHotelName={this.state.filteredHotelName}
               onFilterHotelNameChange={this._onFilterHotelNameChange}
+              filteredStarRating={this.state.filteredStarRating}
+              onFilterStarRatingChange={this._onFilterStarRatingChange}
             />
               }
           </Col>
