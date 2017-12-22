@@ -14,7 +14,7 @@ using TravelConnect.Models.Responses;
 
 namespace TravelConnect.Ean.Services
 {
-    public class HotelService : BaseService, IHotelService
+    public partial class HotelService : BaseService, IHotelService
     {
         private IMemoryCache _cache;
 
@@ -74,7 +74,7 @@ namespace TravelConnect.Ean.Services
                     {
                         if (cacheSearchRS.Hotels.FirstOrDefault(h => h.Id == hotel.Id) == null)
                         {
-                           cacheSearchRS.Hotels.Add(hotel);
+                            cacheSearchRS.Hotels.Add(hotel);
                         }
                     });
 
@@ -199,7 +199,7 @@ namespace TravelConnect.Ean.Services
             return cacheSearchRS;
         }
 
-        private HotelSearchCityRS ConvertToResponse(HotelListRs rs, 
+        private HotelSearchCityRS ConvertToResponse(HotelListRs rs,
             HotelSearchCityRQ request, string requestKey)
         {
             HotelSearchCityRS response = new HotelSearchCityRS
@@ -245,7 +245,6 @@ namespace TravelConnect.Ean.Services
         {
             HotelSearchCityRS response = new HotelSearchCityRS
             {
-                
                 Supplier = "EAN",
                 Locale = request.Locale,
                 Currency = request.Currency,
