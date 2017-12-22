@@ -12,14 +12,17 @@ import FormTextbox from '../commons/FormTextbox'
 import FormDropdown from '../commons/FormDropdown'
 import SelectDate from '../commons/SelectDate'
 
-import HotelItem from './HotelItem'
-import HotelFilter from './HotelFilter'
-
 export default class HotelResult_Index extends React.Component<
   RouteComponentProps<{
     country: string
     city: string
-    
+    hotelId: number
+    cin: string
+    cout: string
+    room1: string
+    room2: string
+    room3: string
+    room4: string
   }>, any> {
   constructor(props: any) {
     super(props);
@@ -132,18 +135,18 @@ export default class HotelResult_Index extends React.Component<
     console.log(this.state)
   }
 
-  componentDidMount() {
-    this._sendRequest(this._constructRequest())
-      .then(r => {
+  //componentDidMount() {
+  //  //this._sendRequest(this._constructRequest())
+  //  //  .then(r => {
 
-        this.setState({ result: r })
+  //  //    this.setState({ result: r })
 
-        if (this.state.result.cacheKey) {
-          console.log('get more')
-          this._getMore()
-        }
-      })
-  }
+  //  //    if (this.state.result.cacheKey) {
+  //  //      console.log('get more')
+  //  //      this._getMore()
+  //  //    }
+  //  //  })
+  //}
 
   _onPageChange = (a: any) => {
     if (a !== this.state.page) {
@@ -180,11 +183,9 @@ export default class HotelResult_Index extends React.Component<
   }
 
   _onHotelSelect = (id: number) => {
-    var url = '/' + this.state.locale + '/hotels/' + this.state.country + '/' + this.state.city + '/' + id
+    var url = '/hotels/' + this.state.country + '/' + this.state.city + '/' + id
     url += '?cin=' + this.state.checkIn.format('YYYY-MM-DD')
     url += '&cout=' + this.state.checkOut.format('YYYY-MM-DD')
-    url += '&rooms=' + this.state.rooms + '&currency=' + this.state.currency
-
     console.log(this.props)
     this.props.history.push(url)
     console.log(id)
@@ -215,52 +216,9 @@ export default class HotelResult_Index extends React.Component<
 
     return <Row>
       <Col md={3}>
-        {
-          this.state.result && this.state.result.hotels &&
-          <HotelFilter
-            hotels={hotelsByName}
-            filteredHotels={hotels}
-            filteredHotelName={this.state.filteredHotelName}
-            onFilterHotelNameChange={this._onFilterHotelNameChange}
-            filteredStarRating={this.state.filteredStarRating}
-            onFilterStarRatingChange={this._onFilterStarRatingChange}
-          />
-        }
+        -------
       </Col>
-      <Col md={9}>
-        {
-          this.state.result
-            ? <section>
-              <Row><Col md={12}><h3>Select from {hotels.length} hotels</h3></Col></Row>
-              <Row className="text-right">
-                <Col md={12}>
-                  <Pagination prev next first last ellipsis boundaryLinks
-                    items={_totalPages} maxButtons={5} activePage={_page}
-                    onSelect={this._onPageChange} />
-                </Col>
-              </Row>
-
-              {
-                hotels.slice(_startIndex, _endIndex).map((hotel: any) =>
-                  <HotelItem hotel={hotel} url={
-                    '/' + this.state.locale + '/hotels/' + this.state.country + '/' + this.state.city + '/' + hotel.id
-                          + '?cin=' + this.state.checkIn.format('YYYY-MM-DD')
-                          + '&cout=' + this.state.checkOut.format('YYYY-MM-DD')
-                          + '&rooms=' + this.state.rooms + '&currency=' + this.state.currency
-                  } />
-                )
-              }
-              <Row className="text-right">
-                <Col md={12}>
-                  <Pagination prev next first last ellipsis boundaryLinks
-                    items={_totalPages} maxButtons={5} activePage={_page}
-                    onSelect={this._onPageChange} />
-                </Col>
-              </Row>
-            </section>
-            : <Row><Col md={12}>Search your hotels. Please wait....</Col></Row>
-        }
-      </Col>
+      
     </Row>
   }
 }

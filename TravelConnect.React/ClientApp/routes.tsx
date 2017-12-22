@@ -8,11 +8,18 @@ import FlightSearch from './components/flightSearch'
 import FlightResult from './components/flightResult'
 import FlightPax from './components/FlightPax'
 import HotelResult from './components/hotelResult'
+import HotelDetail from './components/hotelDetail'
 
 export const routes = <Layout>
   <Route exact path='/' component={Home} />
-  <Route path='/:locale/hotels/:country/:city' component={HotelResult} />
-  <Route path='/hotels/:country/:city' component={HotelResult} />
+  <Route exact path='/:locale/hotels/:country/:city/:hotelId' component={HotelDetail} />
+  <Route exact path='/hotels/:country/:city/:hotelId' component={HotelDetail} />
+  <Route exact path='/:locale/hotels/:country/:city' component={HotelResult} />
+  <Route exact path='/hotels/:country/:city' component={HotelResult} />
+
+  
+
+  
   <Route path='/counter' component={Counter} />
   <Route path='/flight/search' component={FlightSearch} />
   <Route path='/flight/result/:route' component={FlightResult} />
