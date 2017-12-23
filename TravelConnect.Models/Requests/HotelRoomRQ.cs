@@ -12,5 +12,8 @@ namespace TravelConnect.Models.Requests
         public DateTime CheckOut { get; set; }
         public int HotelId { get; set; }
         public List<RoomOccupancy> Occupancies { get; set; }
+        public string Locale { get; set; }
+        public string Currency { get; set; }
+        public List<string> Suppliers { get; set; }
     }
 }

@@ -31,6 +31,8 @@ namespace TravelConnect.Ean.Services
             {
                 case RequestType.HotelList:
                     return "https://api.eancdn.com/ean-services/rs/hotel/v3/list";
+                case RequestType.RoomAvailability:
+                    return "https://api.eancdn.com/ean-services/rs/hotel/v3/avail";
                 default:
                     return "";
             } 
@@ -41,6 +43,7 @@ namespace TravelConnect.Ean.Services
             switch (requestType)
             {
                 case RequestType.HotelList:
+                case RequestType.RoomAvailability:
                     return false;
                 default:
                     return false;
@@ -50,6 +53,7 @@ namespace TravelConnect.Ean.Services
         protected enum RequestType
         {
             HotelList = 0,
+            RoomAvailability = 1,
         }
 
         protected async Task<string> SubmitAsync(string request, RequestType requestType)
@@ -123,7 +127,7 @@ namespace TravelConnect.Ean.Services
             return CreateMD5($"{_ApiKey}{_SharedSecret}{timeStamp.ToString()}");
         }
 
-        private string CreateMD5(string input)
+        protected string CreateMD5(string input)
         {
             // Use input string to calculate MD5 hash
             using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())

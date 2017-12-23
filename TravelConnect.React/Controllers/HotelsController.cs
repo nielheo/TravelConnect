@@ -71,5 +71,35 @@ namespace TravelConnect.React.Controllers
 
             return await _HotelService.HotelSearchByCityAsync(request);
         }
+
+        [Route("{country}/{city}/{id}/rooms")]
+        public async Task<HotelRoomRS> GetRoom(string country, string city, int id, DateTime checkIn, DateTime checkOut, string locale, string currency, string rooms)
+        {
+            HotelRoomRQ request = new HotelRoomRQ()
+            {
+                CheckIn = checkIn,
+                CheckOut = checkOut,
+                Currency = currency,
+                Locale = locale,
+                HotelId = id,
+                Suppliers = new List<string> { "EAN" },
+                Occupancies = rooms.Split('|').ToList().Select(r =>
+                {
+                    var occu = new RoomOccupancy
+                    {
+                        AdultCount = Convert.ToInt32(r.Split(',')[0])
+                    };
+
+                    if (r.Split(',').Length > 1)
+                    {
+                        occu.ChildAges = r.Split(',').Skip(1).Select(c => Convert.ToInt32(c)).ToList();
+                    }
+
+                    return occu;
+                }).ToList(),
+            };
+
+            return await _HotelService.HotelRoomAsync(request);
+        }
     }
 }

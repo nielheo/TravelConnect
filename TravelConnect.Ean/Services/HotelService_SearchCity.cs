@@ -23,94 +23,7 @@ namespace TravelConnect.Ean.Services
         {
             this._cache = memoryCache;
         }
-
-        public async Task<HotelSearchCityRS> HotelGetMoreAsync(HotelGetMoreRQ request)
-        {
-            if (!request.Suppliers.Contains("EAN"))
-            {
-                return new HotelSearchCityRS();
-            }
-
-            _LogService = new LogService();
-
-            if (string.IsNullOrEmpty(request.Locale))
-                request.Locale = "en_US";
-
-            if (string.IsNullOrEmpty(request.Currency))
-                request.Currency = "USD";
-
-            try
-            {
-                _LogService.LogInfo("EAN/HotelGetMoreRQ", request);
-
-                var response = await SubmitAsync($"locale={request.Locale ?? "en_US"}" +
-                    $"&currencyCode={request.Currency ?? "USD"}" +
-                    $"&cachekey={request.CacheKey}" +
-                    $"&cachelocation={request.CacheLocation}" +
-                    $"&options=HOTEL_SUMMARY",
-                    //+     $"&includeDetails=true",
-                    RequestType.HotelList);
-
-                var rs = JsonConvert.DeserializeObject<HotelListRs>(response);
-                HotelSearchCityRS hotelSearchCityRS = ConvertToResponse(rs, request);
-
-                _LogService.LogInfo($"EAN/HotelGetMoreRS", response);
-
-                //Add result to cache
-
-                HotelSearchCityRS cacheSearchRS;
-
-                var cacheEntryOptions = new MemoryCacheEntryOptions()
-                            // Keep in cache for this time, reset time if accessed.
-                            .SetAbsoluteExpiration(TimeSpan.FromHours(1));
-
-                if (!_cache.TryGetValue(request.RequestKey, out cacheSearchRS))
-                {
-                    _cache.Set(request.RequestKey, hotelSearchCityRS, cacheEntryOptions);
-                }
-                else
-                {
-                    hotelSearchCityRS.Hotels.ForEach(hotel =>
-                    {
-                        if (cacheSearchRS.Hotels.FirstOrDefault(h => h.Id == hotel.Id) == null)
-                        {
-                            cacheSearchRS.Hotels.Add(hotel);
-                        }
-                    });
-
-                    _cache.Set(request.RequestKey, cacheSearchRS, cacheEntryOptions);
-                }
-                return hotelSearchCityRS;
-            }
-            catch (Exception ex)
-            {
-                _LogService.LogException(ex, "Ean.HotelService.HotelGetMoreAsync");
-                return new HotelSearchCityRS();
-            }
-            finally
-            {
-                _LogService = null;
-            }
-        }
-
-        private string CreateMD5(string input)
-        {
-            // Use input string to calculate MD5 hash
-            using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
-            {
-                byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
-                byte[] hashBytes = md5.ComputeHash(inputBytes);
-
-                // Convert the byte array to hexadecimal string
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < hashBytes.Length; i++)
-                {
-                    sb.Append(hashBytes[i].ToString("X2"));
-                }
-                return sb.ToString().ToLower();
-            }
-        }
-
+        
         public async Task<HotelSearchCityRS> HotelSearchByCityAsync(HotelSearchCityRQ request)
         {
             if (!request.Suppliers.Contains("EAN"))
@@ -161,22 +74,7 @@ namespace TravelConnect.Ean.Services
                         // Save data in cache.
                         _cache.Set(sRequest, cityResponse, cacheEntryOptions);
                     }
-
-                    //if (rs.HotelListResponse.moreResultsAvailable)
-                    //{
-                    //    var getMoreReq = new HotelGetMoreRQ
-                    //    {
-                    //        CacheKey = rs.HotelListResponse.cacheKey,
-                    //        CacheLocation = rs.HotelListResponse.cacheLocation,
-                    //        Currency = request.Currency,
-                    //        Locale = request.Locale,
-                    //        RequestKey = sRequest,
-                    //        Suppliers = new List<string> { "EAN" }
-                    //    };
-
-                    //    var more = HotelGetMoreAsync(getMoreReq).Result;
-                    //}
-
+                    
                     return cityResponse;
                 }
                 catch (Exception ex)
