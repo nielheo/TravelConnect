@@ -33,14 +33,22 @@ namespace TravelConnect.Models.Responses
     }
 
     [NotMapped]
+    public class RoomImageRS
+    {
+        public string Url { get; set; }
+        public string HighResUrl { get; set; }
+        public bool IsHeroImage { get; set; }
+    }
+
+    [NotMapped]
     public class RoomRS
     {
         public string RateCode { get; set; }
-        public string RoomTypeCode { get; set; }
+        public string RoomTypeId  { get; set; }
+        public string RoomCode { get; set; }
         public string RateDesc { get; set; }
         public string RoomTypeDesc { get; set; }
-        public string CheckInInstructions { get; set; }
-        public string SpecialCheckInInstructions { get; set; }
+        public string RoomTypeDescLong { get; set; }
         public bool IsPromo { get; set; }
         public string PromoId { get; set; }
         public string PromoDesc { get; set; }
@@ -49,6 +57,7 @@ namespace TravelConnect.Models.Responses
         public bool IsDepositRequired { get; set; }
         public ChargeableRateRS ChargeableRate { get; set; }
         public List<RoomGroupRS> RoomGroups { get; set; }
+        public List<RoomImageRS> RoomImages { get; set; }
     }
 
     [NotMapped]
@@ -62,6 +71,7 @@ namespace TravelConnect.Models.Responses
         public string Locale { get; set; }
         public string Currency { get; set; }
         public List<RoomRS> Rooms { get; set; }
-
+        public string CheckInInstructions { get; set; }
+        public string SpecialCheckInInstructions { get; set; }
     }
 }

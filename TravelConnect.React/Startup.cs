@@ -28,6 +28,9 @@ namespace TravelConnect_React
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            //.AddJsonOptions(options => {
+            //    options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+            //});
 
             services.Configure<GzipCompressionProviderOptions>(options => options.Level = System.IO.Compression.CompressionLevel.Optimal);
             services.AddResponseCompression();

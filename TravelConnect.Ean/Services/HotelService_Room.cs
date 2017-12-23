@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using TravelConnect.CommonServices;
 using TravelConnect.Ean.Models.Rooms;
@@ -41,12 +42,15 @@ namespace TravelConnect.Ean.Services
                         $"&hotelId={request.HotelId}" +
                         $"&arrivalDate={request.CheckIn.ToString("MM/dd/yyyy")}" +
                         $"&departureDate={request.CheckOut.ToString("MM/dd/yyyy")}" +
+                        $"&includeRoomImages=true" +
+                        $"&includeHotelFeeBreakdown=true" +
+                        $"&options=HOTEL_DETAILS,ROOM_TYPES,ROOM_AMENITIES,PROPERTY_AMENITIES,HOTEL_IMAGES" +
                         $"&{OccupancyToString(request.Occupancies)}",
                         //+     $"&includeDetails=true",
                         RequestType.RoomAvailability);
 
                     var rs = JsonConvert.DeserializeObject<HotelRoomAvailRS>(response);
-                    HotelRoomRS roomResponse = ConvertToHotelRoomRS(rs);//, request, sRequest);
+                    HotelRoomRS roomResponse = ConvertToHotelRoomRS(rs, request);//, request, sRequest);
 
                     _LogService.LogInfo($"EAN/HotelRoomRS", roomResponse);
 
@@ -60,7 +64,7 @@ namespace TravelConnect.Ean.Services
                         _cache.Set(sRequest, roomResponse, cacheEntryOptions);
                     }
 
-                    return new HotelRoomRS();
+                    return roomResponse;
                 }
                 catch (Exception ex)
                 {
@@ -76,9 +80,70 @@ namespace TravelConnect.Ean.Services
             return cacheRoomRS;
         }
 
-        private HotelRoomRS ConvertToHotelRoomRS(HotelRoomAvailRS response)
+        private HotelRoomRS ConvertToHotelRoomRS(HotelRoomAvailRS response, HotelRoomRQ request)
         {
-            HotelRoomRS rs = new HotelRoomRS();
+            HotelRoomRS rs = new HotelRoomRS()
+            {
+                CheckIn = request.CheckIn,
+                CheckOut = request.CheckOut,
+                Currency = request.Currency,
+                Locale = request.Locale,
+                HotelId = request.HotelId,
+                Occupancies = request.Occupancies,
+                Supplier = "EAN",
+                CheckInInstructions = response.HotelRoomAvailabilityResponse.checkInInstructions,
+                SpecialCheckInInstructions = response.HotelRoomAvailabilityResponse.specialCheckInInstructions,
+                Rooms = new System.Collections.Generic.List<RoomRS>()
+            };
+
+            foreach (var r in response.HotelRoomAvailabilityResponse.HotelRoomResponse)
+            {
+                Rateinfo rateInfo = r.RateInfos.RateInfo;
+                Chargeablerateinfo chargeable = rateInfo.ChargeableRateInfo;
+
+                RoomRS room = new RoomRS
+                {
+                    RateCode = r.rateCode.ToString(),
+                    RoomTypeId = r.RoomType.roomTypeId,
+                    RoomCode = r.RoomType.roomCode,
+                    RateDesc = r.rateDescription,
+                    RoomTypeDesc = r.RoomType.description,
+                    RoomTypeDescLong = r.RoomType.descriptionLong,
+                    IsPromo = rateInfo.promo.ToLower() == "true",
+                    PromoId = rateInfo.promoId.ToString(),
+                    PromoDesc = rateInfo.promoDescription,
+                    Allotmnet = rateInfo.currentAllotment,
+                    IsGuaranteRequired = rateInfo.guaranteeRequired,
+                    IsDepositRequired = rateInfo.depositRequired,
+                    ChargeableRate = new ChargeableRateRS
+                    {
+                        Currency = chargeable.currencyCode,
+                        Total = Convert.ToDecimal(chargeable.total),
+                        TotalCommissionable = Convert.ToDecimal(chargeable.commissionableUsdTotal),
+                        TotalSurcharge = Convert.ToDecimal(chargeable.surchargeTotal),
+                    },
+                    RoomGroups = rateInfo.RoomGroup.Room.Select(rm => new RoomGroupRS
+                    {
+                        Adult = rm.numberOfAdults,
+                        Child = rm.numberOfChildren,
+                        RateKey = rm.rateKey,
+                        RoomDailyRates = rm.ChargeableNightlyRates.Select(dr => new RoomDailyRate
+                        {
+                            BaseRate = Convert.ToDecimal(dr.baseRate),
+                            Rate = Convert.ToDecimal(dr.rate),
+                            IsPromo = dr.promo.ToLower() == "true"
+                        }).ToList()
+                    }).ToList(),
+                    RoomImages = r.RoomImages.RoomImage.Select(img => new RoomImageRS
+                    {
+                        Url = img.url,
+                        HighResUrl = img.highResolutionUrl,
+                        IsHeroImage = img.heroImage
+                    }).ToList()
+                };
+
+                rs.Rooms.Add(room);
+            }
 
             return rs;
         }
