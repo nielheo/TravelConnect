@@ -111,7 +111,7 @@ namespace TravelConnect.Ean.Services
                     PropertyDescription = hotelResponse.HotelDetails.propertyDescription,
                     HotelPolicy = hotelResponse.HotelDetails.hotelPolicy,
                     RoomInformation = hotelResponse.HotelDetails.roomInformation,
-                    PropertyAmenities = hotelResponse.PropertyAmenities.PropertyAmenity.Select(am => new AmenityRS
+                    PropertyAmenities = hotelResponse.PropertyAmenities.PropertyAmenity.Select(am => new IdStringName
                     {
                         Id = am.amenityId.ToString(),
                         Name = am.amenity
@@ -147,13 +147,35 @@ namespace TravelConnect.Ean.Services
                         Allotmnet = rateInfo.currentAllotment,
                         IsGuaranteRequired = rateInfo.guaranteeRequired,
                         IsDepositRequired = rateInfo.depositRequired,
+                        IsNonRefundable = rateInfo.nonRefundable,
                         ChargeableRate = new ChargeableRateRS
                         {
                             Currency = chargeable.currencyCode,
                             Total = Convert.ToDecimal(chargeable.total),
                             TotalCommissionable = Convert.ToDecimal(chargeable.commissionableUsdTotal),
                             TotalSurcharge = Convert.ToDecimal(chargeable.surchargeTotal),
-                        }
+                        },
+                        CancellationPolicyDesc = rateInfo.cancellationPolicy,
+                        CancellationPolicies = rateInfo.CancelPolicyInfoList.CancelPolicyInfo.Select(cxl =>
+                        {
+                            string[] cxlTime = cxl.cancelTime.Split(":");
+                            DateTime cancelTime = request.CheckIn
+                                .AddHours(Convert.ToInt32(cxlTime[0]))
+                                .AddMinutes(Convert.ToInt32(cxlTime[1]))
+                                .AddSeconds(Convert.ToInt32(cxlTime[2]))
+                                .AddHours(cxl.startWindowHours * -1);
+
+
+                            return new CancellationPolicyRS
+                            {
+                                Currency = cxl.currencyCode,
+                                NightCount = cxl.nightCount,
+                                Percent = cxl.percent,
+                                Amount = cxl.amount,
+                                TimeZoneDesc = cxl.timeZoneDescription,
+                                CancelTime = cancelTime
+                            };
+                        }).ToList()
                     };
 
                     room.RoomGroups = rateInfo.RoomGroup.Room.Select(rm => new RoomGroupRS
@@ -182,10 +204,16 @@ namespace TravelConnect.Ean.Services
                         IsHeroImage = img.heroImage
                     }).ToList();
 
-                    room.RoomAmenities = r.RoomType.roomAmenities == null ? null : r.RoomType.roomAmenities.RoomAmenity.Select(am => new AmenityRS
+                    room.RoomAmenities = r.RoomType.roomAmenities == null ? null : r.RoomType.roomAmenities.RoomAmenity.Select(am => new IdStringName
                     {
                          Id = am.amenityId,
-                         Name =am.amenity
+                         Name = am.amenity
+                    }).ToList();
+
+                    room.BedTypes = r.BedTypes == null ? null : r.BedTypes.BedType.Select(bt => new IdStringName
+                    {
+                        Id = bt.id,
+                        Name = bt.description
                     }).ToList();
 
                     rs.Rooms.Add(room);

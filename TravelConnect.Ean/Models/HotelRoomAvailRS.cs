@@ -133,10 +133,20 @@ namespace TravelConnect.Ean.Models.Rooms
         public string amenity { get; set; }
     }
 
+    public class Bedtype
+    {
+        [JsonProperty(PropertyName = "@id")]
+        public string id { get; set; }
+
+        public string description { get; set; }
+    }
+    
     public class Bedtypes
     {
         public string size { get; set; }
-        public object BedType { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<Bedtype>))]
+        public List<Bedtype> BedType { get; set; }
     }
 
     public class Rateinfos
@@ -299,6 +309,7 @@ namespace TravelConnect.Ean.Models.Rooms
         public int startWindowHours { get; set; }
         public int nightCount { get; set; }
         public int percent { get; set; }
+        public decimal amount { get; set; }
         public string currencyCode { get; set; }
         public string timeZoneDescription { get; set; }
     }

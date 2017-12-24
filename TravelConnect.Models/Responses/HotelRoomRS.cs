@@ -48,6 +48,18 @@ namespace TravelConnect.Models.Responses
     }
 
     [NotMapped]
+    public class CancellationPolicyRS
+    {
+        public DateTime CancelTime { get; set; }
+        public int StartWindowHours { get; set; }
+        public int NightCount { get; set; }
+        public decimal Percent { get; set; }
+        public decimal Amount { get; set; }
+        public string Currency { get; set; }
+        public string TimeZoneDesc { get; set; }
+    }
+
+    [NotMapped]
     public class RoomRS
     {
         public string RateCode { get; set; }
@@ -56,6 +68,7 @@ namespace TravelConnect.Models.Responses
         public string RateDesc { get; set; }
         public string RoomTypeDesc { get; set; }
         public string RoomTypeDescLong { get; set; }
+        public bool IsNonRefundable { get; set; }
         public bool IsPromo { get; set; }
         public string PromoId { get; set; }
         public string PromoDesc { get; set; }
@@ -63,14 +76,17 @@ namespace TravelConnect.Models.Responses
         public bool IsGuaranteRequired { get; set; }
         public bool IsDepositRequired { get; set; }
         public ChargeableRateRS ChargeableRate { get; set; }
+        public string CancellationPolicyDesc { get; set; }
+        public List<CancellationPolicyRS> CancellationPolicies { get; set; }
         public List<ValueAddRS> ValueAdds { get; set; }
         public List<RoomGroupRS> RoomGroups { get; set; }
         public List<ImageRS> RoomImages { get; set; }
-        public List<AmenityRS> RoomAmenities { get; set; }
+        public List<IdStringName> RoomAmenities { get; set; }
+        public List<IdStringName> BedTypes { get; set; }
     }
 
     [NotMapped]
-    public class AmenityRS
+    public class IdStringName
     {
         public string Id { get; set; }
         public string Name { get; set; }
@@ -96,7 +112,7 @@ namespace TravelConnect.Models.Responses
         public string PropertyDescription { get; set; }
         public string HotelPolicy { get; set; }
         public string RoomInformation { get; set; }
-        public List<AmenityRS> PropertyAmenities { get; set; }
+        public List<IdStringName> PropertyAmenities { get; set; }
         public List<ImageRS> HotelImages { get; set; }
     }
 

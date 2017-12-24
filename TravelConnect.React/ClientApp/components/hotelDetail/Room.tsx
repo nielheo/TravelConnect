@@ -1,6 +1,6 @@
 ﻿import * as React from 'react'
 
-import { Panel, Grid, Row, Col, Pagination, PageHeader } from 'react-bootstrap'
+import { Panel, Grid, Row, Col, Pagination, PageHeader, ButtonToolbar, Button } from 'react-bootstrap'
 
 import RoomAmenitiesList from './RoomAmenitiesList'
 
@@ -44,9 +44,37 @@ export default class HotelResult_Index extends React.Component<{ room: any }, an
                         {room.valueAdds.map((va: any) => <li key={'va_' + room.rateCode + '_' + va.id}>{va.description}</li>)}
                       </ul>
                     }
+                    
+                    {room.bedTypes &&
+                      <ButtonToolbar>
+                      {room.bedTypes.map((bt: any) => <Button bsStyle='default'>{bt.name}</Button>)}
+                      </ButtonToolbar>
+                    }
                   </Col>
-                  <Col md={3}><h4>{room.chargeableRate.currency} {room.chargeableRate.total}</h4>
-                    {room.promoDesc} 
+                  <Col md={3}><h4>{room.chargeableRate.currency} {room.chargeableRate.total.toLocaleString('en-US')}</h4>
+                    
+                    {
+                      room.isNonRefundable
+                        ? <h5>
+                          {room.promoDesc && <section>
+                            <div className='label label-danger label-outlined'>{room.promoDesc}</div><br />
+                            </section>
+                          }
+                          <div className='label label-warning label-outlined'>Non Refundable</div>
+                          </h5>
+                        : <h5>
+                          {room.promoDesc && <section>
+                            <div className='label label-danger label-outlined'>{room.promoDesc}</div><br />
+                          </section>
+                          }
+                          <div className='label label-success label-outlined'>Refundable</div>
+                          </h5>
+                    }
+                    <Row>
+                      <Col md={12}><br />
+                        <Button className='btn btn-primary'>Book Now</Button>
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
               </Panel>
