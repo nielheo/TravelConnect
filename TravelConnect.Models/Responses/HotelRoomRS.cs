@@ -33,7 +33,7 @@ namespace TravelConnect.Models.Responses
     }
 
     [NotMapped]
-    public class RoomImageRS
+    public class ImageRS
     {
         public string Url { get; set; }
         public string HighResUrl { get; set; }
@@ -57,7 +57,38 @@ namespace TravelConnect.Models.Responses
         public bool IsDepositRequired { get; set; }
         public ChargeableRateRS ChargeableRate { get; set; }
         public List<RoomGroupRS> RoomGroups { get; set; }
-        public List<RoomImageRS> RoomImages { get; set; }
+        public List<ImageRS> RoomImages { get; set; }
+    }
+
+    [NotMapped]
+    public class AmenityRS
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
+    [NotMapped]
+    public class HotelDetailRS
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string Country { get; set; }
+        public string CheckInInstructions { get; set; }
+        public string SpecialCheckInInstructions { get; set; }
+        public int NumberOfRooms { get; set; }
+        public string CheckInTime { get; set; }
+        public string CheckInEndTime { get; set; }
+        public string CheckInMinAge { get; set; }
+        public string CheckOutTime { get; set; }
+        public string PropertyInformation { get; set; }
+        public string AreaInformation { get; set; }
+        public string PropertyDescription { get; set; }
+        public string HotelPolicy { get; set; }
+        public string RoomInformation { get; set; }
+        public List<AmenityRS> PropertyAmenities { get; set; }
+        public List<ImageRS> HotelImages { get; set; }
     }
 
     [NotMapped]
@@ -70,8 +101,7 @@ namespace TravelConnect.Models.Responses
         public string Supplier { get; set; }
         public string Locale { get; set; }
         public string Currency { get; set; }
+        public HotelDetailRS HotelDetail { get; set; }
         public List<RoomRS> Rooms { get; set; }
-        public string CheckInInstructions { get; set; }
-        public string SpecialCheckInInstructions { get; set; }
     }
 }

@@ -82,6 +82,7 @@ namespace TravelConnect.Ean.Services
 
         private HotelRoomRS ConvertToHotelRoomRS(HotelRoomAvailRS response, HotelRoomRQ request)
         {
+            var hotelResponse = response.HotelRoomAvailabilityResponse;
             HotelRoomRS rs = new HotelRoomRS()
             {
                 CheckIn = request.CheckIn,
@@ -91,8 +92,37 @@ namespace TravelConnect.Ean.Services
                 HotelId = request.HotelId,
                 Occupancies = request.Occupancies,
                 Supplier = "EAN",
-                CheckInInstructions = response.HotelRoomAvailabilityResponse.checkInInstructions,
-                SpecialCheckInInstructions = response.HotelRoomAvailabilityResponse.specialCheckInInstructions,
+                HotelDetail = new HotelDetailRS
+                {
+                    Id = hotelResponse.hotelId,
+                    Name = hotelResponse.hotelName,
+                    Address = hotelResponse.hotelAddress,
+                    City = hotelResponse.hotelCity,
+                    Country = hotelResponse.hotelCountry,
+                    CheckInInstructions = hotelResponse.checkInInstructions,
+                    SpecialCheckInInstructions = hotelResponse.specialCheckInInstructions,
+                    NumberOfRooms = hotelResponse.HotelDetails.numberOfRooms,
+                    CheckInTime = hotelResponse.HotelDetails.checkInTime,
+                    CheckInEndTime = hotelResponse.HotelDetails.checkInEndTime,
+                    CheckInMinAge = hotelResponse.HotelDetails.checkInMinAge,
+                    CheckOutTime = hotelResponse.HotelDetails.checkOutTime,
+                    PropertyInformation = hotelResponse.HotelDetails.propertyInformation,
+                    AreaInformation = hotelResponse.HotelDetails.areaInformation,
+                    PropertyDescription = hotelResponse.HotelDetails.propertyDescription,
+                    HotelPolicy = hotelResponse.HotelDetails.hotelPolicy,
+                    RoomInformation = hotelResponse.HotelDetails.roomInformation,
+                    PropertyAmenities = hotelResponse.PropertyAmenities.PropertyAmenity.Select(am => new AmenityRS
+                    {
+                        Id = am.amenityId,
+                        Name = am.amenity
+                    }).ToList(),
+                    HotelImages = hotelResponse.HotelImages.HotelImage.Select(img => new ImageRS
+                    {
+                        Url = img.url,
+                        HighResUrl = img.highResolutionUrl,
+                        IsHeroImage = img.heroImage
+                    }).ToList(),
+                },
                 Rooms = new System.Collections.Generic.List<RoomRS>()
             };
 
@@ -134,7 +164,7 @@ namespace TravelConnect.Ean.Services
                             IsPromo = dr.promo.ToLower() == "true"
                         }).ToList()
                     }).ToList(),
-                    RoomImages = r.RoomImages.RoomImage.Select(img => new RoomImageRS
+                    RoomImages = r.RoomImages.RoomImage.Select(img => new ImageRS
                     {
                         Url = img.url,
                         HighResUrl = img.highResolutionUrl,
