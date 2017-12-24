@@ -41,6 +41,13 @@ namespace TravelConnect.Models.Responses
     }
 
     [NotMapped]
+    public class ValueAddRS
+    {
+        public int Id { get; set; }
+        public string Description { get; set; }
+    }
+
+    [NotMapped]
     public class RoomRS
     {
         public string RateCode { get; set; }
@@ -56,14 +63,16 @@ namespace TravelConnect.Models.Responses
         public bool IsGuaranteRequired { get; set; }
         public bool IsDepositRequired { get; set; }
         public ChargeableRateRS ChargeableRate { get; set; }
+        public List<ValueAddRS> ValueAdds { get; set; }
         public List<RoomGroupRS> RoomGroups { get; set; }
         public List<ImageRS> RoomImages { get; set; }
+        public List<AmenityRS> RoomAmenities { get; set; }
     }
 
     [NotMapped]
     public class AmenityRS
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
     }
 

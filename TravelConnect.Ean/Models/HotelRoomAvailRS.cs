@@ -128,6 +128,7 @@ namespace TravelConnect.Ean.Models.Rooms
 
     public class Roomamenity
     {
+        [JsonProperty(PropertyName = "@amenityId")]
         public string amenityId { get; set; }
         public string amenity { get; set; }
     }
@@ -302,10 +303,19 @@ namespace TravelConnect.Ean.Models.Rooms
         public string timeZoneDescription { get; set; }
     }
 
+    public class Valueadd
+    {
+        [JsonProperty(PropertyName = "@id")]
+        public int id { get; set; }
+        public string description { get; set; }
+    }
+    
     public class Valueadds
     {
         public string size { get; set; }
-        public object ValueAdd { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<Valueadd>))]
+        public List<Valueadd> ValueAdd { get; set; }
     }
 
     public class Roomimages

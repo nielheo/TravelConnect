@@ -113,7 +113,7 @@ namespace TravelConnect.Ean.Services
                     RoomInformation = hotelResponse.HotelDetails.roomInformation,
                     PropertyAmenities = hotelResponse.PropertyAmenities.PropertyAmenity.Select(am => new AmenityRS
                     {
-                        Id = am.amenityId,
+                        Id = am.amenityId.ToString(),
                         Name = am.amenity
                     }).ToList(),
                     HotelImages = hotelResponse.HotelImages.HotelImage.Select(img => new ImageRS
@@ -128,31 +128,35 @@ namespace TravelConnect.Ean.Services
 
             foreach (var r in response.HotelRoomAvailabilityResponse.HotelRoomResponse)
             {
-                Rateinfo rateInfo = r.RateInfos.RateInfo;
-                Chargeablerateinfo chargeable = rateInfo.ChargeableRateInfo;
-
-                RoomRS room = new RoomRS
+                try
                 {
-                    RateCode = r.rateCode.ToString(),
-                    RoomTypeId = r.RoomType.roomTypeId,
-                    RoomCode = r.RoomType.roomCode,
-                    RateDesc = r.rateDescription,
-                    RoomTypeDesc = r.RoomType.description,
-                    RoomTypeDescLong = r.RoomType.descriptionLong,
-                    IsPromo = rateInfo.promo.ToLower() == "true",
-                    PromoId = rateInfo.promoId.ToString(),
-                    PromoDesc = rateInfo.promoDescription,
-                    Allotmnet = rateInfo.currentAllotment,
-                    IsGuaranteRequired = rateInfo.guaranteeRequired,
-                    IsDepositRequired = rateInfo.depositRequired,
-                    ChargeableRate = new ChargeableRateRS
+                    Rateinfo rateInfo = r.RateInfos.RateInfo;
+                    Chargeablerateinfo chargeable = rateInfo.ChargeableRateInfo;
+
+                    RoomRS room = new RoomRS
                     {
-                        Currency = chargeable.currencyCode,
-                        Total = Convert.ToDecimal(chargeable.total),
-                        TotalCommissionable = Convert.ToDecimal(chargeable.commissionableUsdTotal),
-                        TotalSurcharge = Convert.ToDecimal(chargeable.surchargeTotal),
-                    },
-                    RoomGroups = rateInfo.RoomGroup.Room.Select(rm => new RoomGroupRS
+                        RateCode = r.rateCode.ToString(),
+                        RoomTypeId = r.RoomType.roomTypeId,
+                        RoomCode = r.RoomType.roomCode,
+                        RateDesc = r.rateDescription,
+                        RoomTypeDesc = r.RoomType.description,
+                        RoomTypeDescLong = r.RoomType.descriptionLong,
+                        IsPromo = rateInfo.promo.ToLower() == "true",
+                        PromoId = rateInfo.promoId.ToString(),
+                        PromoDesc = rateInfo.promoDescription,
+                        Allotmnet = rateInfo.currentAllotment,
+                        IsGuaranteRequired = rateInfo.guaranteeRequired,
+                        IsDepositRequired = rateInfo.depositRequired,
+                        ChargeableRate = new ChargeableRateRS
+                        {
+                            Currency = chargeable.currencyCode,
+                            Total = Convert.ToDecimal(chargeable.total),
+                            TotalCommissionable = Convert.ToDecimal(chargeable.commissionableUsdTotal),
+                            TotalSurcharge = Convert.ToDecimal(chargeable.surchargeTotal),
+                        }
+                    };
+
+                    room.RoomGroups = rateInfo.RoomGroup.Room.Select(rm => new RoomGroupRS
                     {
                         Adult = rm.numberOfAdults,
                         Child = rm.numberOfChildren,
@@ -163,16 +167,33 @@ namespace TravelConnect.Ean.Services
                             Rate = Convert.ToDecimal(dr.rate),
                             IsPromo = dr.promo.ToLower() == "true"
                         }).ToList()
-                    }).ToList(),
-                    RoomImages = r.RoomImages.RoomImage.Select(img => new ImageRS
+                    }).ToList();
+
+                    room.ValueAdds = r.ValueAdds == null ? null : r.ValueAdds.ValueAdd.Select(va => new ValueAddRS
+                    {
+                        Id = va.id,
+                        Description = va.description
+                    }).ToList();
+
+                    room.RoomImages = r.RoomImages == null ? null : r.RoomImages.RoomImage.Select(img => new ImageRS
                     {
                         Url = img.url,
                         HighResUrl = img.highResolutionUrl,
                         IsHeroImage = img.heroImage
-                    }).ToList()
-                };
+                    }).ToList();
 
-                rs.Rooms.Add(room);
+                    room.RoomAmenities = r.RoomType.roomAmenities == null ? null : r.RoomType.roomAmenities.RoomAmenity.Select(am => new AmenityRS
+                    {
+                         Id = am.amenityId,
+                         Name =am.amenity
+                    }).ToList();
+
+                    rs.Rooms.Add(room);
+                }
+                catch (Exception ex)
+                {
+                    _LogService.LogException(ex, "Ean.HotelService.HotelRoomAsync.AddRoom");
+                }
             }
 
             return rs;
