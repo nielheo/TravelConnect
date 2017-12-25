@@ -76,6 +76,7 @@ namespace TravelConnect.Models.Responses
         public int Allotmnet { get; set; }
         public bool IsGuaranteRequired { get; set; }
         public bool IsDepositRequired { get; set; }
+        public bool IsRateChange { get; set; }
         public ChargeableRateRS ChargeableRate { get; set; }
         public string CancellationPolicyDesc { get; set; }
         public List<CancellationPolicyRS> CancellationPolicies { get; set; }

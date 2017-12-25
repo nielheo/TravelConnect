@@ -73,6 +73,7 @@ export default class HotelResult_Index extends React.Component<{ room: any }, an
                     <Row>
                       <Col md={12}><br />
                         <Button className='btn btn-primary'>Book Now</Button>
+                        <br/>{room.rateCode} - {room.roomCode}
                       </Col>
                     </Row>
                   </Col>

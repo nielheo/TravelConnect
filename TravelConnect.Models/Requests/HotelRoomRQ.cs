@@ -16,4 +16,11 @@ namespace TravelConnect.Models.Requests
         public string Currency { get; set; }
         public List<string> Suppliers { get; set; }
     }
+
+    [NotMapped]
+    public class HotelRecheckPriceRQ : HotelRoomRQ
+    {
+        public string RateCode { get; set; }
+        public string RoomTypeCode { get; set; }
+    }
 }

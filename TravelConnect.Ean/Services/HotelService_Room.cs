@@ -92,136 +92,141 @@ namespace TravelConnect.Ean.Services
                 HotelId = request.HotelId,
                 Occupancies = request.Occupancies,
                 Supplier = "EAN",
-                HotelDetail = new HotelDetailRS
-                {
-                    Id = hotelResponse.hotelId,
-                    Name = hotelResponse.hotelName,
-                    Address = hotelResponse.hotelAddress,
-                    City = hotelResponse.hotelCity,
-                    Country = hotelResponse.hotelCountry,
-                    CheckInInstructions = hotelResponse.checkInInstructions,
-                    SpecialCheckInInstructions = hotelResponse.specialCheckInInstructions,
-                    NumberOfRooms = hotelResponse.HotelDetails.numberOfRooms,
-                    CheckInTime = hotelResponse.HotelDetails.checkInTime,
-                    CheckInEndTime = hotelResponse.HotelDetails.checkInEndTime,
-                    CheckInMinAge = hotelResponse.HotelDetails.checkInMinAge,
-                    CheckOutTime = hotelResponse.HotelDetails.checkOutTime,
-                    PropertyInformation = hotelResponse.HotelDetails.propertyInformation,
-                    AreaInformation = hotelResponse.HotelDetails.areaInformation,
-                    PropertyDescription = hotelResponse.HotelDetails.propertyDescription,
-                    HotelPolicy = hotelResponse.HotelDetails.hotelPolicy,
-                    RoomInformation = hotelResponse.HotelDetails.roomInformation,
-                    PropertyAmenities = hotelResponse.PropertyAmenities.PropertyAmenity.Select(am => new IdStringName
-                    {
-                        Id = am.amenityId.ToString(),
-                        Name = am.amenity
-                    }).ToList(),
-                    HotelImages = hotelResponse.HotelImages.HotelImage.Select(img => new ImageRS
-                    {
-                        Url = img.url,
-                        HighResUrl = img.highResolutionUrl,
-                        IsHeroImage = img.heroImage,
-                        Caption = img.caption,
-                    }).ToList(),
-                },
                 Rooms = new System.Collections.Generic.List<RoomRS>()
             };
 
-            foreach (var r in response.HotelRoomAvailabilityResponse.HotelRoomResponse)
+            rs.HotelDetail = new HotelDetailRS
             {
-                try
+                Id = hotelResponse.hotelId,
+                Name = hotelResponse.hotelName,
+                Address = hotelResponse.hotelAddress,
+                City = hotelResponse.hotelCity,
+                Country = hotelResponse.hotelCountry,
+                CheckInInstructions = hotelResponse.checkInInstructions,
+                SpecialCheckInInstructions = hotelResponse.specialCheckInInstructions,
+                NumberOfRooms = hotelResponse.HotelDetails?.numberOfRooms ?? 0,
+                CheckInTime = hotelResponse.HotelDetails?.checkInTime,
+                CheckInEndTime = hotelResponse.HotelDetails?.checkInEndTime,
+                CheckInMinAge = hotelResponse.HotelDetails?.checkInMinAge,
+                CheckOutTime = hotelResponse.HotelDetails?.checkOutTime,
+                PropertyInformation = hotelResponse.HotelDetails?.propertyInformation,
+                AreaInformation = hotelResponse.HotelDetails?.areaInformation,
+                PropertyDescription = hotelResponse.HotelDetails?.propertyDescription,
+                HotelPolicy = hotelResponse.HotelDetails?.hotelPolicy,
+                RoomInformation = hotelResponse.HotelDetails?.roomInformation,
+                PropertyAmenities = hotelResponse.PropertyAmenities?.PropertyAmenity.Select(am => new IdStringName
                 {
-                    Rateinfo rateInfo = r.RateInfos.RateInfo;
-                    Chargeablerateinfo chargeable = rateInfo.ChargeableRateInfo;
+                    Id = am.amenityId.ToString(),
+                    Name = am.amenity
+                }).ToList(),
+                HotelImages = hotelResponse.HotelImages?.HotelImage.Select(img => new ImageRS
+                {
+                    Url = img.url,
+                    HighResUrl = img.highResolutionUrl,
+                    IsHeroImage = img.heroImage,
+                    Caption = img.caption,
+                }).ToList(),
+            };
 
-                    RoomRS room = new RoomRS
+            if (response.HotelRoomAvailabilityResponse.HotelRoomResponse != null)
+            {
+                foreach (var r in response.HotelRoomAvailabilityResponse.HotelRoomResponse)
+                {
+                    try
                     {
-                        RateCode = r.rateCode.ToString(),
-                        RoomTypeId = r.RoomType.roomTypeId,
-                        RoomCode = r.RoomType.roomCode,
-                        RateDesc = r.rateDescription,
-                        RoomTypeDesc = r.RoomType.description,
-                        RoomTypeDescLong = r.RoomType.descriptionLong,
-                        IsPromo = rateInfo.promo.ToLower() == "true",
-                        PromoId = rateInfo.promoId.ToString(),
-                        PromoDesc = rateInfo.promoDescription,
-                        Allotmnet = rateInfo.currentAllotment,
-                        IsGuaranteRequired = rateInfo.guaranteeRequired,
-                        IsDepositRequired = rateInfo.depositRequired,
-                        IsNonRefundable = rateInfo.nonRefundable,
-                        ChargeableRate = new ChargeableRateRS
-                        {
-                            Currency = chargeable.currencyCode,
-                            Total = Convert.ToDecimal(chargeable.total),
-                            TotalCommissionable = Convert.ToDecimal(chargeable.commissionableUsdTotal),
-                            TotalSurcharge = Convert.ToDecimal(chargeable.surchargeTotal),
-                        },
-                        CancellationPolicyDesc = rateInfo.cancellationPolicy,
-                        CancellationPolicies = rateInfo.CancelPolicyInfoList.CancelPolicyInfo.Select(cxl =>
-                        {
-                            string[] cxlTime = cxl.cancelTime.Split(":");
-                            DateTime cancelTime = request.CheckIn
-                                .AddHours(Convert.ToInt32(cxlTime[0]))
-                                .AddMinutes(Convert.ToInt32(cxlTime[1]))
-                                .AddSeconds(Convert.ToInt32(cxlTime[2]))
-                                .AddHours(cxl.startWindowHours * -1);
+                        Rateinfo rateInfo = r.RateInfos.RateInfo;
+                        Chargeablerateinfo chargeable = rateInfo.ChargeableRateInfo;
 
-
-                            return new CancellationPolicyRS
+                        RoomRS room = new RoomRS
+                        {
+                            RateCode = r.rateCode.ToString(),
+                            RoomTypeId = r.RoomType?.roomTypeId ?? r.roomTypeCode,
+                            RoomCode = r.RoomType?.roomCode ?? r.roomTypeCode,
+                            RateDesc = r.rateDescription,
+                            RoomTypeDesc = r.RoomType?.description ?? r.roomTypeDescription,
+                            RoomTypeDescLong = r.RoomType?.descriptionLong,
+                            IsPromo = rateInfo.promo.ToLower() == "true",
+                            PromoId = rateInfo.promoId.ToString(),
+                            PromoDesc = rateInfo.promoDescription,
+                            Allotmnet = rateInfo.currentAllotment,
+                            IsGuaranteRequired = rateInfo.guaranteeRequired,
+                            IsDepositRequired = rateInfo.depositRequired,
+                            IsNonRefundable = rateInfo.nonRefundable,
+                            IsRateChange = rateInfo.rateChange.ToLower() != "false",
+                            ChargeableRate = new ChargeableRateRS
                             {
-                                Currency = cxl.currencyCode,
-                                NightCount = cxl.nightCount,
-                                Percent = cxl.percent,
-                                Amount = cxl.amount,
-                                TimeZoneDesc = cxl.timeZoneDescription,
-                                CancelTime = cancelTime
-                            };
-                        }).ToList()
-                    };
+                                Currency = chargeable.currencyCode,
+                                Total = Convert.ToDecimal(chargeable.total),
+                                TotalCommissionable = Convert.ToDecimal(chargeable.commissionableUsdTotal),
+                                TotalSurcharge = Convert.ToDecimal(chargeable.surchargeTotal),
+                            },
+                            CancellationPolicyDesc = rateInfo.cancellationPolicy,
+                            CancellationPolicies = rateInfo.CancelPolicyInfoList.CancelPolicyInfo.Select(cxl =>
+                            {
+                                string[] cxlTime = cxl.cancelTime.Split(":");
+                                DateTime cancelTime = request.CheckIn
+                                    .AddHours(Convert.ToInt32(cxlTime[0]))
+                                    .AddMinutes(Convert.ToInt32(cxlTime[1]))
+                                    .AddSeconds(Convert.ToInt32(cxlTime[2]))
+                                    .AddHours(cxl.startWindowHours * -1);
 
-                    room.RoomGroups = rateInfo.RoomGroup.Room.Select(rm => new RoomGroupRS
-                    {
-                        Adult = rm.numberOfAdults,
-                        Child = rm.numberOfChildren,
-                        RateKey = rm.rateKey,
-                        RoomDailyRates = rm.ChargeableNightlyRates.Select(dr => new RoomDailyRate
+
+                                return new CancellationPolicyRS
+                                {
+                                    Currency = cxl.currencyCode,
+                                    NightCount = cxl.nightCount,
+                                    Percent = cxl.percent,
+                                    Amount = cxl.amount,
+                                    TimeZoneDesc = cxl.timeZoneDescription,
+                                    CancelTime = cancelTime
+                                };
+                            }).ToList()
+                        };
+
+                        room.RoomGroups = rateInfo.RoomGroup.Room.Select(rm => new RoomGroupRS
                         {
-                            BaseRate = Convert.ToDecimal(dr.baseRate),
-                            Rate = Convert.ToDecimal(dr.rate),
-                            IsPromo = dr.promo.ToLower() == "true"
-                        }).ToList()
-                    }).ToList();
+                            Adult = rm.numberOfAdults,
+                            Child = rm.numberOfChildren,
+                            RateKey = rm.rateKey,
+                            RoomDailyRates = rm.ChargeableNightlyRates.Select(dr => new RoomDailyRate
+                            {
+                                BaseRate = Convert.ToDecimal(dr.baseRate),
+                                Rate = Convert.ToDecimal(dr.rate),
+                                IsPromo = dr.promo.ToLower() == "true"
+                            }).ToList()
+                        }).ToList();
 
-                    room.ValueAdds = r.ValueAdds == null ? null : r.ValueAdds.ValueAdd.Select(va => new ValueAddRS
+                        room.ValueAdds = r.ValueAdds?.ValueAdd.Select(va => new ValueAddRS
+                        {
+                            Id = va.id,
+                            Description = va.description
+                        }).ToList();
+
+                        room.RoomImages = r.RoomImages?.RoomImage.Select(img => new ImageRS
+                        {
+                            Url = img.url,
+                            HighResUrl = img.highResolutionUrl,
+                            IsHeroImage = img.heroImage
+                        }).ToList();
+
+                        room.RoomAmenities = r.RoomType?.roomAmenities?.RoomAmenity.Select(am => new IdStringName
+                        {
+                            Id = am.amenityId,
+                            Name = am.amenity
+                        }).ToList();
+
+                        room.BedTypes = r.BedTypes?.BedType.Select(bt => new IdStringName
+                        {
+                            Id = bt.id,
+                            Name = bt.description
+                        }).ToList();
+
+                        rs.Rooms.Add(room);
+                    }
+                    catch (Exception ex)
                     {
-                        Id = va.id,
-                        Description = va.description
-                    }).ToList();
-
-                    room.RoomImages = r.RoomImages == null ? null : r.RoomImages.RoomImage.Select(img => new ImageRS
-                    {
-                        Url = img.url,
-                        HighResUrl = img.highResolutionUrl,
-                        IsHeroImage = img.heroImage
-                    }).ToList();
-
-                    room.RoomAmenities = r.RoomType.roomAmenities == null ? null : r.RoomType.roomAmenities.RoomAmenity.Select(am => new IdStringName
-                    {
-                         Id = am.amenityId,
-                         Name = am.amenity
-                    }).ToList();
-
-                    room.BedTypes = r.BedTypes == null ? null : r.BedTypes.BedType.Select(bt => new IdStringName
-                    {
-                        Id = bt.id,
-                        Name = bt.description
-                    }).ToList();
-
-                    rs.Rooms.Add(room);
-                }
-                catch (Exception ex)
-                {
-                    _LogService.LogException(ex, "Ean.HotelService.HotelRoomAsync.AddRoom");
+                        _LogService.LogException(ex, "Ean.HotelService.HotelRoomAsync.AddRoom");
+                    }
                 }
             }
 

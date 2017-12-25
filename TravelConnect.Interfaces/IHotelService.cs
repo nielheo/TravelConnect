@@ -9,5 +9,6 @@ namespace TravelConnect.Interfaces
         Task<HotelSearchCityRS> HotelSearchByCityAsync(HotelSearchCityRQ request);
         Task<HotelSearchCityRS> HotelGetMoreAsync(HotelGetMoreRQ request);
         Task<HotelRoomRS> HotelRoomAsync(HotelRoomRQ request);
+        Task<HotelRoomRS> HotelRecheckPriceAsync(HotelRecheckPriceRQ request);
     }
 }

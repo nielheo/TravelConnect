@@ -25,7 +25,9 @@ namespace TravelConnect.Ean.Models.Rooms
         public int numberOfRoomsRequested { get; set; }
         public string checkInInstructions { get; set; }
         public string specialCheckInInstructions { get; set; }
-        public Hotelroomresponse[] HotelRoomResponse { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<Hotelroomresponse>))]
+        public List<Hotelroomresponse> HotelRoomResponse { get; set; }
         public Hoteldetails HotelDetails { get; set; }
         public Propertyamenities PropertyAmenities { get; set; }
         public Hotelimages HotelImages { get; set; }
@@ -94,6 +96,8 @@ namespace TravelConnect.Ean.Models.Rooms
         public int rateCode { get; set; }
         public string rateDescription { get; set; }
         public Roomtype RoomType { get; set; }
+        public string roomTypeCode { get; set; }
+        public string roomTypeDescription { get; set; }
         public string supplierType { get; set; }
         public int propertyId { get; set; }
         public Bedtypes BedTypes { get; set; }
