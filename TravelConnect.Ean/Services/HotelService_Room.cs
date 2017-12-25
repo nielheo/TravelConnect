@@ -153,6 +153,7 @@ namespace TravelConnect.Ean.Services
                             IsDepositRequired = rateInfo.depositRequired,
                             IsNonRefundable = rateInfo.nonRefundable,
                             IsRateChange = rateInfo.rateChange.ToLower() != "false",
+                            IsPrepaid = rateInfo.rateType?.ToLower() == "merchantstandard",
                             ChargeableRate = new ChargeableRateRS
                             {
                                 Currency = chargeable.currencyCode,
