@@ -47,7 +47,7 @@ export default class HotelResult_Index extends React.Component<{ room: any }, an
                     
                     {room.bedTypes &&
                       <ButtonToolbar>
-                      {room.bedTypes.map((bt: any) => <Button bsStyle='default'>{bt.name}</Button>)}
+                      {room.bedTypes.map((bt: any) => <Button bsStyle='default' >{bt.name}</Button>)}
                       </ButtonToolbar>
                     }
                   </Col>

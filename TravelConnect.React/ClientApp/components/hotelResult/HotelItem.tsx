@@ -23,7 +23,7 @@ export default class HotelItem extends React.Component<{ hotel: any, url: any },
       </Row>
       <Row>
         <Col md={12}>
-          <NavLink exact to={this.props.url}>
+          <NavLink exact to={this.props.url} target='_blank'>
           <input
             className='btn'
             type="button" value="Select"

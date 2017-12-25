@@ -120,7 +120,8 @@ namespace TravelConnect.Ean.Services
                     {
                         Url = img.url,
                         HighResUrl = img.highResolutionUrl,
-                        IsHeroImage = img.heroImage
+                        IsHeroImage = img.heroImage,
+                        Caption = img.caption,
                     }).ToList(),
                 },
                 Rooms = new System.Collections.Generic.List<RoomRS>()

@@ -5,9 +5,14 @@ import { Panel, Grid, Row, Col, Pagination, PageHeader } from 'react-bootstrap'
 import { RouteComponentProps } from 'react-router-dom';
 
 import * as moment from 'moment'
+import { htmlEncode, htmlDecode } from 'js-htmlencode'
+import { Carousel } from 'react-responsive-carousel'
+
+
 import * as queryString from 'query-string'
 
 import Room from './Room'
+
 
 export default class HotelResult_Index extends React.Component<
   RouteComponentProps<{
@@ -75,22 +80,31 @@ export default class HotelResult_Index extends React.Component<
         this.setState({ result: r })
       })
   }
+
+  _rawMarkup = (content: any) => {
+    return { __html: content };
+  }
   
 
   public render() {
     console.log(this.state.result)
     let { result } = this.state
     let roomTypeIds: any[] = []
-    if (result)
+    if (result) {
       result.rooms.map((room: any) => {
         if (roomTypeIds.indexOf(room.roomTypeId) < 0)
           roomTypeIds.push(room.roomTypeId)
       })
+      console.log(result.hotelDetail.propertyAmenities)
+    }
     console.log(roomTypeIds)
+    
+
     return <section>
       {
-        this.state.result &&
-        <section>
+        this.state.result 
+          ? <section>
+            
           <Row>
             <Col md={12}>
               <PageHeader>{result.hotelDetail.name} <br />
@@ -100,9 +114,106 @@ export default class HotelResult_Index extends React.Component<
             </Col>
           </Row>
           <Row>
+            <Col md={12}>
+                <Carousel>
+                  {
+                    result.hotelDetail.hotelImages.map((img: any) => 
+                      <div>
+                        <img src={img.highResUrl} />
+                        <p className="legend">{img.caption}</p>
+                      </div>
+                      )
+                  }
+              </Carousel>
+            </Col>
+          </Row>
+          <Row>
             <Col md={12}> {roomTypeIds.map((roomTypeId: any) => <Room room={result.rooms.filter((room: any) => room.roomTypeId === roomTypeId)} key={roomTypeId} />)} </Col>
           </Row>
-        </section>
+          {
+            result.hotelDetail.checkInInstructions && <section>
+            <Row>
+              <Col md={3}><h4>Check In Instructions</h4></Col>
+              <Col md={9}>
+                <span dangerouslySetInnerHTML={this._rawMarkup(result.hotelDetail.checkInInstructions)} />
+              </Col>
+            </Row>
+            <hr />
+                </section>
+          }
+          {
+            result.hotelDetail.specialCheckInInstructions && <section>
+              <Row>
+                <Col md={3}><h4>Special Check In Instructions</h4></Col>
+                <Col md={9}>
+                  <span dangerouslySetInnerHTML={this._rawMarkup(result.hotelDetail.specialCheckInInstructions)} />
+                </Col>
+              </Row>
+              <hr />
+            </section>
+          }
+          {
+              result.hotelDetail.propertyAmenities.length && <section>
+                <Row>
+                  <Col md={3}><h4>Property Amenities</h4></Col>
+                  <Col md={9}>
+                    <ul>
+                      {result.hotelDetail.propertyAmenities.map((am: any) => <li>{am.name}</li>)}
+                    </ul>
+                  </Col>
+                </Row>
+                <hr />
+              </section>
+
+          }
+          {
+              result.hotelDetail.propertyInformation && <section>
+            <Row>
+              <Col md={3}><h4>Property Information</h4></Col>
+              <Col md={9}>
+                    <span dangerouslySetInnerHTML={this._rawMarkup(result.hotelDetail.propertyInformation)} />
+              </Col>
+              </Row>
+            <hr />
+                </section>
+          }
+          {
+            result.hotelDetail.areaInformation && <section>
+              <Row>
+                <Col md={3}><h4>Area Information</h4></Col>
+                <Col md={9}>
+                    <span dangerouslySetInnerHTML={this._rawMarkup(result.hotelDetail.areaInformation)} />
+                </Col>
+              </Row>
+              <hr />
+            </section>
+          }
+          
+          {
+            result.hotelDetail.hotelPolicy && <section>
+              <Row>
+                <Col md={3}><h4>Hotel Policy</h4></Col>
+                <Col md={9}>
+                    <span dangerouslySetInnerHTML={this._rawMarkup(result.hotelDetail.hotelPolicy)} />
+                </Col>
+              </Row>
+              <hr />
+            </section>
+          }
+          {
+            result.hotelDetail.roomInformation && <section>
+              <Row>
+                <Col md={3}><h4>Room Information</h4></Col>
+                <Col md={9}>
+                    <span dangerouslySetInnerHTML={this._rawMarkup(result.hotelDetail.roomInformation)} />
+                </Col>
+              </Row>
+              <hr />
+            </section>
+          }
+            <Row><Col> - </Col></Row>
+          </section>
+          : <h3>Searching Rate and Available for your selected hotel ....</h3>
         
       }
     </section>
