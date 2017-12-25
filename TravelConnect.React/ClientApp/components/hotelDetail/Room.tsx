@@ -4,7 +4,7 @@ import { Panel, Grid, Row, Col, Pagination, PageHeader, ButtonToolbar, Button } 
 
 import RoomAmenitiesList from './RoomAmenitiesList'
 
-export default class HotelResult_Index extends React.Component<{ room: any }, any> {
+export default class HotelResult_Index extends React.Component<{ room: any, onSelect: any }, any> {
   constructor(props: any) {
     super(props)
   }
@@ -23,8 +23,6 @@ export default class HotelResult_Index extends React.Component<{ room: any }, an
 
   public render() {
     let firstRoom = this.props.room[0]
-    console.log(this.props.room)
-    //let rate = room.chargeableRate
     
     return <Panel>
       <Row>
@@ -72,7 +70,10 @@ export default class HotelResult_Index extends React.Component<{ room: any }, an
                     }
                     <Row>
                       <Col md={12}><br />
-                        <Button className='btn btn-primary'>Book Now</Button>
+                        <Button
+                          className='btn btn-primary'
+                          onClick={() => this.props.onSelect(room)}
+                        >Book Now</Button>
                         <br /><span>{room.isPrepaid ? '' : 'Pay at Hotel'}</span>
                       </Col>
                     </Row>

@@ -8,6 +8,10 @@ export default class HotelItem extends React.Component<{ hotel: any, url: any },
     super(props)
   }
 
+  _rawMarkup = (content: any) => {
+    return { __html: content };
+  }
+
   public render() {
     let { hotel } = this.props
 
@@ -16,7 +20,7 @@ export default class HotelItem extends React.Component<{ hotel: any, url: any },
         <Col md={12}><h4>{hotel.name}</h4></Col>
       </Row>
       <Row>
-        <Col md={12}>{hotel.shortDesc}</Col>
+        <Col md={12}><span dangerouslySetInnerHTML={this._rawMarkup(hotel.shortDesc)} /></Col>
       </Row>
       <Row>
         <Col md={12}>{hotel.currCode} {hotel.rateFrom} - {hotel.currCode} {hotel.rateTo}</Col>

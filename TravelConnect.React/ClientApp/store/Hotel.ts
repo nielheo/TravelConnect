@@ -5,8 +5,9 @@ import { AppThunkAction } from './';
 // STATE - This defines the type of data maintained in the Redux store.
 
 export interface HotelState {
-  searchRequest: any
+  searchRequestHotel: any
   isRateChange: boolean
+  selectedHotel: any
   selectedRoom: any
 }
 
@@ -17,11 +18,13 @@ export interface HotelState {
 
 interface SetSearchAction { type: 'SET_SEARCH', searchRequest: any }
 interface SetRateChangeAction { type: 'SET_RATE_CHANGE' }
-interface SetSelectedReturnAction { type: 'SET_SELECTED_ROOM', selectedReturn: any }
+interface SetSelectedHotelAction { type: 'SET_SELECTED_HOTEL', selectedHotel: any }
+interface SetSelectedRoomAction { type: 'SET_SELECTED_ROOM', selectedRoom: any }
+
 
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SetSearchAction | SetRateChangeAction | SetSelectedReturnAction
+type KnownAction = SetSearchAction | SetRateChangeAction | SetSelectedHotelAction | SetSelectedRoomAction
 
 // ----------------
 // ACTION CREATORS - These are functions exposed to UI components that will trigger a state transition.
@@ -33,8 +36,11 @@ export const actionCreators = {
   setIsRateChnage: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
     dispatch({ type: 'SET_RATE_CHANGE' })
   },
-  setSelectedReturn: (selectedReturn: any): AppThunkAction<KnownAction> => (dispatch, getState) => {
-    dispatch({ type: 'SET_SELECTED_ROOM', selectedReturn: selectedReturn })
+  setSelectedHotel: (selectedHotel: any): AppThunkAction<KnownAction> => (dispatch, getState) => {
+    dispatch({ type: 'SET_SELECTED_HOTEL', selectedHotel: selectedHotel })
+  },
+  setSelectedRoom: (selectedRoom: any): AppThunkAction<KnownAction> => (dispatch, getState) => {
+    dispatch({ type: 'SET_SELECTED_ROOM', selectedRoom: selectedRoom })
   },
 }
 
@@ -44,11 +50,13 @@ export const actionCreators = {
 export const reducer: Reducer<HotelState> = (state: HotelState, action: KnownAction) => {
   switch (action.type) {
     case 'SET_SEARCH':
-      return { ...state, searchRequest: action.searchRequest };
+      return { ...state, searchRequestHotel: action.searchRequest };
     case 'SET_RATE_CHANGE':
       return { ...state, isRateChnage: true };
+    case 'SET_SELECTED_HOTEL':
+      return { ...state, selectedHotel: action.selectedHotel };
     case 'SET_SELECTED_ROOM':
-      return { ...state, selectedReturn: action.selectedReturn };
+      return { ...state, selectedRoom: action.selectedRoom };
     default:
       // The following line guarantees that every action in the KnownAction union has been covered by a case above
       const exhaustiveCheck: never = action;
@@ -56,5 +64,5 @@ export const reducer: Reducer<HotelState> = (state: HotelState, action: KnownAct
 
   // For unrecognized actions (or in cases where actions have no effect), must return the existing state
   //  (or default initial state if none was supplied)
-  return state || { searchRequest: null, selectedRoom: null, isRateChange: false };
+  return state || { searchRequestHotel: null, selectedHotel: null, selectedRoom: null, isRateChange: false };
 };

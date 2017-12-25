@@ -1,33 +1,30 @@
 ﻿import * as React from 'react'
-
+import { RouteComponentProps } from 'react-router-dom'
+import { connect } from 'react-redux'
 import { Panel, Grid, Row, Col, Pagination, PageHeader } from 'react-bootstrap'
-
-import { RouteComponentProps } from 'react-router-dom';
-
 import * as moment from 'moment'
-import { htmlEncode, htmlDecode } from 'js-htmlencode'
 import { Carousel } from 'react-responsive-carousel'
-
-
 import * as queryString from 'query-string'
+
+import { ApplicationState } from '../../store'
+import * as HotelStore from '../../store/Hotel'
 
 import Room from './Room'
 
-
-export default class HotelResult_Index extends React.Component<
-  RouteComponentProps<{
+type HotelDetailProps =
+  HotelStore.HotelState
+  & typeof HotelStore.actionCreators
+  & RouteComponentProps<{
     country: string
     city: string
-    hotelId: number
-  }>, any> {
+    hotelId: number }>
+
+class HotelDetail_Index extends React.Component<HotelDetailProps, any> {
   constructor(props: any) {
     super(props);
-    //let now = moment()
-    //let today = moment({ year: now.year(), month: now.month(), day: now.day() })
-
+    
     let query = queryString.parse(props.location.search)
-    //let rooms = this._parseRoom(query)
-
+    
     this.state = {
       country: props.match.params.country,
       city: props.match.params.city,
@@ -35,7 +32,6 @@ export default class HotelResult_Index extends React.Component<
       checkOut: this._parseDate(query.cout),
       hotelId: props.match.params.hotelId,
       rooms: query.rooms,
-      //occupancies: query.rooms,
       locale: props.match.params.locale || 'en_US',
       currency: query.currency || 'USD',
       result: null,
@@ -84,10 +80,24 @@ export default class HotelResult_Index extends React.Component<
   _rawMarkup = (content: any) => {
     return { __html: content };
   }
-  
 
+  _selectRoom = (room: any) => {
+    this.props.setSelectedRoom(room)
+    this.props.setSelectedHotel({
+      hotelId: this.state.hotelId,
+      checkIn: this.state.checkIn,
+      checkOut: this.state.checkOut,
+      rooms: this.state.rooms,
+      locale: this.state.locale,
+      currency: this.state.currency,
+      hotelDetail: this.state.result.hotelDetail
+    })
+
+    this.props.history.push('/bookhotel')
+  }
+  
   public render() {
-    console.log(this.state.result)
+    //console.log(this.state.result)
     let { result } = this.state
     let roomTypeIds: any[] = []
     if (result) {
@@ -95,11 +105,8 @@ export default class HotelResult_Index extends React.Component<
         if (roomTypeIds.indexOf(room.roomTypeId) < 0)
           roomTypeIds.push(room.roomTypeId)
       })
-      console.log(result.hotelDetail.propertyAmenities)
     }
-    console.log(roomTypeIds)
     
-
     return <section>
       {
         this.state.result 
@@ -113,22 +120,29 @@ export default class HotelResult_Index extends React.Component<
               </PageHeader>
             </Col>
           </Row>
+          {
+            //<Row>
+            //  <Col md={12}>
+            //      <Carousel>
+            //        {
+            //          result.hotelDetail.hotelImages.map((img: any) => 
+            //            <div>
+            //              <img src={img.highResUrl} />
+            //              <p className="legend">{img.caption}</p>
+            //            </div>
+            //            )
+            //        }
+            //    </Carousel>
+            //  </Col>
+            //</Row>
+          }
           <Row>
-            <Col md={12}>
-                <Carousel>
-                  {
-                    result.hotelDetail.hotelImages.map((img: any) => 
-                      <div>
-                        <img src={img.highResUrl} />
-                        <p className="legend">{img.caption}</p>
-                      </div>
-                      )
-                  }
-              </Carousel>
-            </Col>
-          </Row>
-          <Row>
-            <Col md={12}> {roomTypeIds.map((roomTypeId: any) => <Room room={result.rooms.filter((room: any) => room.roomTypeId === roomTypeId)} key={roomTypeId} />)} </Col>
+              <Col md={12}> {roomTypeIds.map((roomTypeId: any) =>
+                <Room
+                  room={result.rooms.filter((room: any) => room.roomTypeId === roomTypeId)} key={roomTypeId}
+                  onSelect={this._selectRoom}
+                />)}
+              </Col>
           </Row>
           {
             result.hotelDetail.checkInInstructions && <section>
@@ -219,3 +233,10 @@ export default class HotelResult_Index extends React.Component<
     </section>
   }
 }
+
+
+// Wire up the React component to the Redux store
+export default connect(
+  (state: ApplicationState) => state.hotel, // Selects which state properties are merged into the component's props
+  HotelStore.actionCreators                 // Selects which action creators are merged into the component's props
+)(HotelDetail_Index) as typeof HotelDetail_Index
