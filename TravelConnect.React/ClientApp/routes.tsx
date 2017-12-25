@@ -9,15 +9,19 @@ import HotelResult from './components/hotelResult'
 import HotelDetail from './components/hotelDetail'
 import BookHotel from './components/bookHotel'
 
+import ScrollToTop from './ScrollToTop'
+
 export const routes = <Layout>
-  <Route exact path='/' component={Home} />
-  <Route exact path='/:locale/hotels/:country/:city/:hotelId' component={HotelDetail} />
-  <Route exact path='/hotels/:country/:city/:hotelId' component={HotelDetail} />
-  <Route exact path='/:locale/hotels/:country/:city' component={HotelResult} />
-  <Route exact path='/hotels/:country/:city' component={HotelResult} />
-  <Route exact path='/bookHotel' component={BookHotel} />
+  <ScrollToTop>
+    <Route exact path='/' component={Home} />
+    <Route exact path='/:locale/hotels/:country/:city/:hotelId' component={HotelDetail} />
+    <Route exact path='/hotels/:country/:city/:hotelId' component={HotelDetail} />
+    <Route exact path='/:locale/hotels/:country/:city' component={HotelResult} />
+    <Route exact path='/hotels/:country/:city' component={HotelResult} />
+    <Route exact path='/bookHotel' component={BookHotel} />
   
-  <Route path='/flight/search' component={FlightSearch} />
-  <Route path='/flight/result/:route' component={FlightResult} />
-  <Route path='/flight/pax/' component={FlightPax} />
-</Layout>;
+    <Route path='/flight/search' component={FlightSearch} />
+    <Route path='/flight/result/:route' component={FlightResult} />
+    <Route path='/flight/pax/' component={FlightPax} />
+  </ScrollToTop>
+</Layout>

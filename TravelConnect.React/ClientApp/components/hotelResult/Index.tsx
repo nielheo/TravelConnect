@@ -19,7 +19,6 @@ export default class HotelResult_Index extends React.Component<
   RouteComponentProps<{
     country: string
     city: string
-    
   }>, any> {
   constructor(props: any) {
     super(props);

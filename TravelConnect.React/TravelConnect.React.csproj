@@ -59,6 +59,7 @@
     <None Remove="ClientApp\components\hotelResult\Index.tsx" />
     <None Remove="ClientApp\components\hotelSearch\index.tsx" />
     <None Remove="ClientApp\components\hotelSearch\Occupancy.tsx" />
+    <None Remove="ClientApp\ScrollToTop.tsx" />
     <None Remove="ClientApp\store\Flight.ts" />
     <None Remove="Properties\PublishProfiles\TravelConnectReact20171002093432 - Web Deploy.pubxml" />
   </ItemGroup>
@@ -106,6 +107,7 @@
     <TypeScriptCompile Include="ClientApp\components\hotelResult\Index.tsx" />
     <TypeScriptCompile Include="ClientApp\components\hotelSearch\Index.tsx" />
     <TypeScriptCompile Include="ClientApp\components\hotelSearch\Occupancy.tsx" />
+    <TypeScriptCompile Include="ClientApp\ScrollToTop.tsx" />
     <TypeScriptCompile Include="ClientApp\store\Flight.ts" />
   </ItemGroup>
 
