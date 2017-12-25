@@ -41,7 +41,7 @@
     "@types/react": {
       "version": "15.0.35",
       "resolved": "https://registry.npmjs.org/@types/react/-/react-15.0.35.tgz",
-      "integrity": "sha1-RnKSPNUC0D4UgNA4FuvFpxn7hto="
+      "integrity": "sha512-SDvfa+9dIq7RBTBiPhV0V+NeLT16RSFjcsjcyIJUBLlHpOatja1mHuOlI+P7tJ7fZZeBd8CV5pHxmFt4MdpyGQ=="
     },
     "@types/react-addons-linked-state-mixin": {
       "version": "0.14.18",
@@ -71,7 +71,7 @@
     "@types/react-dom": {
       "version": "15.5.1",
       "resolved": "https://registry.npmjs.org/@types/react-dom/-/react-dom-15.5.1.tgz",
-      "integrity": "sha1-88PhTGgnhZI8fWRYNTffMZRC3sE=",
+      "integrity": "sha512-4c+e/QPfvSa48YhgGOcQWoHishTo6BuJqka0Bh8qeLdnK1jS+1Nz8W/w1G17AIjtLxONYFUqmi8qyt+8p/yMFA==",
       "requires": {
         "@types/react": "15.0.35"
       }
@@ -87,7 +87,7 @@
     "@types/react-redux": {
       "version": "4.4.45",
       "resolved": "https://registry.npmjs.org/@types/react-redux/-/react-redux-4.4.45.tgz",
-      "integrity": "sha1-r62FHYWSEZIlqmvMQCx/a5x+QQY=",
+      "integrity": "sha512-bPM6BJucVy9Y0JCf9PCEC5zwmqnTx9+YGILNVwhGmIrkVrOXoJaEuVurncTH7llV+bxjlZVcW/RLxQtDvAHcQw==",
       "requires": {
         "@types/react": "15.0.35",
         "redux": "3.7.1"
@@ -115,7 +115,7 @@
     "@types/react-router-redux": {
       "version": "5.0.3",
       "resolved": "https://registry.npmjs.org/@types/react-router-redux/-/react-router-redux-5.0.3.tgz",
-      "integrity": "sha1-oknSzkRSl6VXyNF2n1Ht6m9U1qI=",
+      "integrity": "sha512-o82LOP4Ka4IgoJmzzABBD9jq8Qh6PuEEgfAmSQU6ZgYS8Tv/U5byKU3WHbB9dwXE+jgcL9rtWZsOoBY0asK0hw==",
       "requires": {
         "@types/history": "4.6.0",
         "@types/react": "15.0.35",
@@ -143,7 +143,7 @@
     "@types/uglify-js": {
       "version": "2.6.29",
       "resolved": "https://registry.npmjs.org/@types/uglify-js/-/uglify-js-2.6.29.tgz",
-      "integrity": "sha1-UhNH9p4gIB0hj1mRrmbhCHivzxo=",
+      "integrity": "sha512-BdFLCZW0GTl31AbqXSak8ss/MqEZ3DN2MH9rkAyGoTuzK7ifGUlX+u0nfbWeTsa7IPcZhtn8BlpYBXSV+vqGhQ==",
       "requires": {
         "@types/source-map": "0.5.0"
       }
@@ -4991,7 +4991,7 @@
     "redux": {
       "version": "3.7.1",
       "resolved": "https://registry.npmjs.org/redux/-/redux-3.7.1.tgz",
-      "integrity": "sha1-v8U1x1fThJVi6tCvGKxSEizXJo4=",
+      "integrity": "sha512-iEVTlORM5mv6xb3ZAOyrVehVUD+W87jdFAX6SYVgZh3/SQAWFSxTRJOqPWQdvo4VN4lJkNDvqKlBXBabsJTSkA==",
       "requires": {
         "lodash": "4.17.4",
         "lodash-es": "4.17.4",
