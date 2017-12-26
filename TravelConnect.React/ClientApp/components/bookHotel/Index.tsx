@@ -9,6 +9,7 @@ import * as HotelStore from '../../store/Hotel'
 
 import Info from './Info'
 import Guest from './Guest'
+import Header from '../Header'
 
 type HotelDetailProps =
   HotelStore.HotelState
@@ -81,6 +82,7 @@ class BookHotel_Index extends React.Component<HotelDetailProps, any> {
 
 
     return <section>
+        <Header />
       <Row>
         <Col md={12}>
           <PageHeader>Book Hotel: {selectedHotel.hotelDetail.name} <br />

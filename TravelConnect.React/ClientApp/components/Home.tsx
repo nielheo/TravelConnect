@@ -3,9 +3,10 @@ import { RouteComponentProps } from 'react-router-dom';
 import * as Commons from './Commons'
 import { NavLink, Link } from 'react-router-dom';
 
-import { Panel, Grid, Row, Col } from 'react-bootstrap'
+import { Panel, Grid, Row, Col, Tab, Tabs } from 'react-bootstrap'
 
 import HotelSearch from './hotelSearch'
+import Header from './Header'
 
 export default class Home extends React.Component<RouteComponentProps<{}>, any> {
   constructor() {
@@ -26,44 +27,31 @@ export default class Home extends React.Component<RouteComponentProps<{}>, any> 
   public render() {
     
     return <div>
-
-      {//<h1 className='white'>Travel Connect</h1>
-        //<p>Welcome to Travel Connect, bring your Travel Shop Online</p>
-      }
-      <input
-        className={this.state.activeTab === 'flight' ? 'btn btn-primary' : 'btn'}
-        type="button" value="Flight"
-        onClick={() => this._onTabClick('flight')}
-      />
-      <input
-        className={this.state.activeTab === 'hotel' ? 'btn btn-primary' : 'btn'}
-        type="button" value="Hotel"
-        onClick={() => this._onTabClick('hotel')}
-      />
-      <Panel>
-        {this.state.activeTab === 'hotel' &&
+      <Header />
+      <Tabs defaultActiveKey={2} id="uncontrolled-tab-example">
+        <Tab eventKey={1} title="Tab 1">
+          <ul>
+            <li>
+              <NavLink exact to={'/flight/search'}>Flight Search</NavLink>, connect with Travelport's uAPI
+            </li>
+          </ul>
+        </Tab>
+        <Tab eventKey={2} title="Tab 2">
           <section>
-            <Row>
-              <ul>
-                <li>
-                  Hotel Search is connected with EAN
-                </li>
-              </ul>
+            <Row><Col md={12}><br/>
+                <ul>
+                    <li>
+                        Hotel Search is connected with EAN
+              </li>
+                </ul></Col>
             </Row>
             <Row>
                 <HotelSearch history={this.props.history} />
             </Row>
           </section>
-        }
-        { this.state.activeTab === 'flight' &&
-          <li>
-            <NavLink exact to={'/flight/search'}>Flight Search</NavLink>, connect with Travelport's uAPI
-          </li> }
-      </Panel>
-      <ul>
-        
-        
-      </ul>
+        </Tab>
+      </Tabs>
+      
   
     </div>;
   }

@@ -14,6 +14,7 @@ import SelectDate from '../commons/SelectDate'
 
 import HotelItem from './HotelItem'
 import HotelFilter from './HotelFilter'
+import Header from '../Header'
 
 export default class HotelResult_Index extends React.Component<
   RouteComponentProps<{
@@ -212,7 +213,9 @@ export default class HotelResult_Index extends React.Component<
     let _startIndex = (_page - 1) * itemsPerPage
     let _endIndex = _page * itemsPerPage
 
-    return <Row>
+    return <section>
+        <Header />
+    <Row>
       <Col md={3}>
         {
           this.state.result && this.state.result.hotels &&
@@ -261,5 +264,6 @@ export default class HotelResult_Index extends React.Component<
         }
       </Col>
     </Row>
+        </section>
   }
 }

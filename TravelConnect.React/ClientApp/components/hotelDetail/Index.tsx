@@ -10,7 +10,7 @@ import { ApplicationState } from '../../store'
 import * as HotelStore from '../../store/Hotel'
 
 import Room from './Room'
-
+import Header from '../Header'
 type HotelDetailProps =
   HotelStore.HotelState
   & typeof HotelStore.actionCreators
@@ -109,6 +109,7 @@ class HotelDetail_Index extends React.Component<HotelDetailProps, any> {
     }
     
     return <section>
+        <Header />
       {
         this.state.result 
           ? <section>
@@ -122,20 +123,20 @@ class HotelDetail_Index extends React.Component<HotelDetailProps, any> {
             </Col>
           </Row>
           {
-            //<Row>
-            //  <Col md={12}>
-            //      <Carousel>
-            //        {
-            //          result.hotelDetail.hotelImages.map((img: any) => 
-            //            <div>
-            //              <img src={img.highResUrl} />
-            //              <p className="legend">{img.caption}</p>
-            //            </div>
-            //            )
-            //        }
-            //    </Carousel>
-            //  </Col>
-            //</Row>
+            <Row>
+              <Col md={12}>
+                  <Carousel>
+                    {
+                      result.hotelDetail.hotelImages.map((img: any) => 
+                        <div>
+                          <img src={img.highResUrl} />
+                          <p className="legend">{img.caption}</p>
+                        </div>
+                        )
+                    }
+                </Carousel>
+              </Col>
+            </Row>
           }
           <Row>
               <Col md={12}> {roomTypeIds.map((roomTypeId: any) =>
