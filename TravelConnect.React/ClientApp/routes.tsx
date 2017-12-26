@@ -8,7 +8,7 @@ import FlightPax from './components/FlightPax'
 import HotelResult from './components/hotelResult'
 import HotelDetail from './components/hotelDetail'
 import BookHotel from './components/bookHotel'
-
+import Thankyou from './components/thankyou'
 import ScrollToTop from './ScrollToTop'
 
 export const routes = <Layout>
@@ -19,7 +19,7 @@ export const routes = <Layout>
     <Route exact path='/:locale/hotels/:country/:city' component={HotelResult} />
     <Route exact path='/hotels/:country/:city' component={HotelResult} />
     <Route exact path='/bookHotel' component={BookHotel} />
-  
+    <Route exact path='/thankyou' component={Thankyou} />
     <Route path='/flight/search' component={FlightSearch} />
     <Route path='/flight/result/:route' component={FlightResult} />
     <Route path='/flight/pax/' component={FlightPax} />

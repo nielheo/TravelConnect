@@ -75,9 +75,9 @@ class BookHotel_Index extends React.Component<HotelDetailProps, any> {
   public render() {
     let { selectedHotel, selectedRoom, recheckedPrice } = this.props
 
-    console.log(selectedHotel)
-    console.log(selectedRoom)
-    console.log(recheckedPrice)
+    //console.log(selectedHotel)
+    //console.log(selectedRoom)
+    //console.log(recheckedPrice)
 
 
     return <section>
@@ -143,8 +143,10 @@ class BookHotel_Index extends React.Component<HotelDetailProps, any> {
         </Col>
       </Row>
       {
-        recheckedPrice && <Guest recheckedRoomPrice={this.props.recheckedPrice} />
+        recheckedPrice &&
+        <Guest recheckedRoomPrice={this.props.recheckedPrice} history={this.props.history} />
       }
+      <hr/>
     </section>
   }
 }

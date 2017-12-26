@@ -69,6 +69,7 @@ namespace TravelConnect.Models.Responses
         public string RateDesc { get; set; }
         public string RoomTypeDesc { get; set; }
         public string RoomTypeDescLong { get; set; }
+        public List<string> SmokingPreferences { get; set; }
         public bool IsNonRefundable { get; set; }
         public bool IsPromo { get; set; }
         public string PromoId { get; set; }

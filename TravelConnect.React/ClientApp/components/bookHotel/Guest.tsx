@@ -1,5 +1,5 @@
 ﻿import * as React from 'react'
-import { Row, Col } from 'react-bootstrap'
+import { Row, Col, Button } from 'react-bootstrap'
 
 import FormInput from '../commons/FormInput'
 import FormTextbox from '../commons/FormTextbox'
@@ -8,9 +8,13 @@ import RoomGuest from './RoomGuest'
 
 
 export default class BookHotel_Info extends React.Component<
-  { recheckedRoomPrice: any }, any> {
+  { recheckedRoomPrice: any, history: any }, any> {
   constructor(props: any) {
     super(props);
+  }
+
+  _onContinueClick = () => {
+    this.props.history.push('/thankyou')
   }
   
   public render() {
@@ -81,6 +85,9 @@ export default class BookHotel_Info extends React.Component<
         this.props.recheckedRoomPrice.rooms[0].roomGroups.map((r: any) =>
           <RoomGuest recheckedRoomPrice={this.props.recheckedRoomPrice} index={idx++} />)
       }
+      <Row>
+        <Col md={12}><Button bsStyle="primary" onClick={this._onContinueClick}>Continue</Button></Col>
+      </Row>
     </section>
   }
 }

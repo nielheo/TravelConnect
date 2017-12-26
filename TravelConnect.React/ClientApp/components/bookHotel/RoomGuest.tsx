@@ -22,6 +22,18 @@ export default class BookHotel_Info extends React.Component<
 
     return label
   }
+
+  _smokingOptions = (pref: string[]) => {
+    let options = []
+    if (pref.indexOf('E') >= 0)
+      options.push(<option value='E'>- No Preference -</option>)
+    if (pref.indexOf('NS') >= 0)
+      options.push(<option value='NS'>Non-smoking Room</option>)
+    if (pref.indexOf('S') >= 0)
+      options.push(<option value='S'>Smoking Room</option>)
+
+    return options
+  }
   
   public render() {
     let roomPrice = this.props.recheckedRoomPrice.rooms[0]
@@ -60,7 +72,6 @@ export default class BookHotel_Info extends React.Component<
             error=''
             onChange={null}
           >
-            <option value=''>- No Preference -</option>
             {roomPrice.bedTypes.map((bed: any) => <option value={bed.id}>{bed.name}</option>)}
 
           </FormDropdown>
@@ -73,9 +84,9 @@ export default class BookHotel_Info extends React.Component<
             error=''
             onChange={null}
           >
-            <option value=''>- No Preference -</option>
-            <option value='NS'>Non Smoking Room</option>
-            <option value='S'>Smoking Room</option>
+            {
+              this._smokingOptions(roomPrice.smokingPreferences).map((option: any) => option)
+            }
           </FormDropdown>
         </Col>
       </Row>

@@ -145,6 +145,7 @@ namespace TravelConnect.Ean.Services
                             RateDesc = r.rateDescription,
                             RoomTypeDesc = r.RoomType?.description ?? r.roomTypeDescription,
                             RoomTypeDescLong = r.RoomType?.descriptionLong,
+                            SmokingPreferences = r.smokingPreferences.Split(',').ToList(),
                             IsPromo = rateInfo.promo.ToLower() == "true",
                             PromoId = rateInfo.promoId.ToString(),
                             PromoDesc = rateInfo.promoDescription,
