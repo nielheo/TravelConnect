@@ -92,7 +92,8 @@ class HotelDetail_Index extends React.Component<HotelDetailProps, any> {
       currency: this.state.currency,
       hotelDetail: this.state.result.hotelDetail
     })
-
+    this.props.setRecheckedPrice(null)
+    this.props.setRateUnchange()
     this.props.history.push('/bookhotel')
   }
   

@@ -8,6 +8,7 @@ import { ApplicationState } from '../../store'
 import * as HotelStore from '../../store/Hotel'
 
 import Info from './Info'
+import Guest from './Guest'
 
 type HotelDetailProps =
   HotelStore.HotelState
@@ -21,10 +22,7 @@ type HotelDetailProps =
 class BookHotel_Index extends React.Component<HotelDetailProps, any> {
   constructor(props: any) {
     super(props);
-
-    this.state = {
-      recheckedPrice: null
-    }
+    
   }
   
   _GetFirstImageUrl = (imgs: any) => {
@@ -61,22 +59,25 @@ class BookHotel_Index extends React.Component<HotelDetailProps, any> {
       + '&locale=' + this.props.selectedHotel.locale
       + '&currency=' + this.props.selectedHotel.currency
       + '&rateCode=' + this.props.selectedRoom.rateCode
-      + '&roomTypeCode=' + this.props.selectedRoom.roomTypeId
+      + '&roomTypeCode=' + this.props.selectedRoom.roomCode
     return req
   }
 
   componentDidMount() {
     this._sendRequest(this._constructRequest()) 
       .then(r => {
-        this.setState({ recheckedPrice: r })
+        this.props.setRecheckedPrice(r)
+      //  this.props.setSelectedRoom(r.rooms && r.rooms.length && r.rooms[0])
       })
   }
   
+  
   public render() {
-    let { selectedHotel, selectedRoom } = this.props
+    let { selectedHotel, selectedRoom, recheckedPrice } = this.props
 
     console.log(selectedHotel)
     console.log(selectedRoom)
+    console.log(recheckedPrice)
 
 
     return <section>
@@ -105,8 +106,12 @@ class BookHotel_Index extends React.Component<HotelDetailProps, any> {
         </Col>
         <Col md={3}>
           {
-            this.state.recheckedPrice 
-              ? <span>USD</span>
+            recheckedPrice
+              ? <section><h3>
+                {recheckedPrice.rooms[0].chargeableRate.currency} {recheckedPrice.rooms[0].chargeableRate.total.toLocaleString('en-US')}
+              </h3>
+                Enter your detail below to secure your room now!
+                </section>
               : <span>Checking latest price and availability... </span>
           }
           </Col>
@@ -137,6 +142,9 @@ class BookHotel_Index extends React.Component<HotelDetailProps, any> {
           
         </Col>
       </Row>
+      {
+        recheckedPrice && <Guest recheckedRoomPrice={this.props.recheckedPrice} />
+      }
     </section>
   }
 }

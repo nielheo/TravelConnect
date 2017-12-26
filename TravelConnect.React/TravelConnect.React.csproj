@@ -28,8 +28,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\components\bookHotel\Guest.tsx" />
     <None Remove="ClientApp\components\bookHotel\Index.tsx" />
     <None Remove="ClientApp\components\bookHotel\Info.tsx" />
+    <None Remove="ClientApp\components\bookHotel\RoomGuest.tsx" />
     <None Remove="ClientApp\components\Classes.tsx" />
     <None Remove="ClientApp\components\Commons.tsx" />
     <None Remove="ClientApp\components\commons\FormDropdown.tsx" />
@@ -75,8 +77,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\components\bookHotel\Guest.tsx" />
     <TypeScriptCompile Include="ClientApp\components\bookHotel\Index.tsx" />
     <TypeScriptCompile Include="ClientApp\components\bookHotel\Info.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\bookHotel\RoomGuest.tsx" />
     <TypeScriptCompile Include="ClientApp\components\Classes.tsx" />
     <TypeScriptCompile Include="ClientApp\components\Commons.tsx" />
     <TypeScriptCompile Include="ClientApp\components\commons\FormInput.tsx" />

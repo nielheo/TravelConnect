@@ -7,6 +7,7 @@ import { AppThunkAction } from './';
 export interface HotelState {
   searchRequestHotel: any
   isRateChange: boolean
+  recheckedPrice: any
   selectedHotel: any
   selectedRoom: any
 }
@@ -18,13 +19,15 @@ export interface HotelState {
 
 interface SetSearchAction { type: 'SET_SEARCH', searchRequest: any }
 interface SetRateChangeAction { type: 'SET_RATE_CHANGE' }
+interface SetRateUnchangeAction { type: 'SET_RATE_UNCHANGE' }
+interface SetRecheckedPriceAction { type: 'SET_RECHECKED_PRICE', recheckedPrice: any }
 interface SetSelectedHotelAction { type: 'SET_SELECTED_HOTEL', selectedHotel: any }
 interface SetSelectedRoomAction { type: 'SET_SELECTED_ROOM', selectedRoom: any }
 
 
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SetSearchAction | SetRateChangeAction | SetSelectedHotelAction | SetSelectedRoomAction
+type KnownAction = SetSearchAction | SetRateUnchangeAction | SetRateChangeAction | SetRecheckedPriceAction | SetSelectedHotelAction | SetSelectedRoomAction
 
 // ----------------
 // ACTION CREATORS - These are functions exposed to UI components that will trigger a state transition.
@@ -33,8 +36,14 @@ export const actionCreators = {
   setSearch: (searchRequest: any): AppThunkAction<KnownAction> => (dispatch, getState) => {
     dispatch({ type: 'SET_SEARCH', searchRequest: searchRequest })
   },
-  setIsRateChnage: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
+  setRateChange: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
     dispatch({ type: 'SET_RATE_CHANGE' })
+  },
+  setRateUnchange: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
+    dispatch({ type: 'SET_RATE_UNCHANGE' })
+  },
+  setRecheckedPrice: (recheckedPrice: any): AppThunkAction<KnownAction> => (dispatch, getState) => {
+    dispatch({ type: 'SET_RECHECKED_PRICE', recheckedPrice: recheckedPrice })
   },
   setSelectedHotel: (selectedHotel: any): AppThunkAction<KnownAction> => (dispatch, getState) => {
     dispatch({ type: 'SET_SELECTED_HOTEL', selectedHotel: selectedHotel })
@@ -53,6 +62,10 @@ export const reducer: Reducer<HotelState> = (state: HotelState, action: KnownAct
       return { ...state, searchRequestHotel: action.searchRequest };
     case 'SET_RATE_CHANGE':
       return { ...state, isRateChnage: true };
+    case 'SET_RATE_UNCHANGE':
+      return { ...state, isRateChnage: false };
+    case 'SET_RECHECKED_PRICE':
+      return { ...state, recheckedPrice: action.recheckedPrice }
     case 'SET_SELECTED_HOTEL':
       return { ...state, selectedHotel: action.selectedHotel };
     case 'SET_SELECTED_ROOM':
@@ -64,5 +77,5 @@ export const reducer: Reducer<HotelState> = (state: HotelState, action: KnownAct
 
   // For unrecognized actions (or in cases where actions have no effect), must return the existing state
   //  (or default initial state if none was supplied)
-  return state || { searchRequestHotel: null, selectedHotel: null, selectedRoom: null, isRateChange: false };
+  return state || { searchRequestHotel: null, selectedHotel: null, selectedRoom: null, isRateChange: false, recheckedPrice: null };
 };
