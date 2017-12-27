@@ -22,13 +22,12 @@ export default class Occupancy extends React.Component<{
       <Col md={2}>
         <FormInput
           label=' '
-          error=''
-          disabled={false} >
+          error='' >
           <p>{'Room ' + this.props.index}</p>
         </FormInput>
       </Col>
       <Col md={2}>
-        <FormInput label='Adult' disabled={false} error=''>
+        <FormInput label='Adult' error=''>
           <select className="form-control" value={this.props.adult}
             onChange={(e) => this.props.onAdultChange(e, this.props.index)}>
             <option value='1'>1</option>
@@ -38,7 +37,7 @@ export default class Occupancy extends React.Component<{
         </FormInput>
       </Col>
       <Col md={2}>
-        <FormInput label='Child' disabled={false} error=''>
+        <FormInput label='Child' error=''>
           <select className="form-control" value={this.props.child}
             onChange={(e) => this.props.onChildChange(e, this.props.index)}>
             <option value='0'>0</option>
@@ -52,7 +51,7 @@ export default class Occupancy extends React.Component<{
         (this.props.child >= 1) &&
         
           <Col md={1} mdPush={10}>
-            <FormInput label='Age' disabled={false} error=''>
+            <FormInput label='Age' error=''>
             <select className="form-control" value={this.props.childAges[0]}
               onChange={(e) => this.props.onChildAgeChange(e, this.props.index, 0)} >
                 <option value='0'>0</option>
@@ -75,7 +74,7 @@ export default class Occupancy extends React.Component<{
         {
         (this.props.child >= 2) &&
           <Col md={1} mdPush={10}>
-            <FormInput label='Age' disabled={false} error=''>
+            <FormInput label='Age' error=''>
             <select className="form-control" value={this.props.childAges[1]}
                 onChange={(e) => this.props.onChildAgeChange(e, this.props.index, 1)}>
               <option value='0'>0</option>

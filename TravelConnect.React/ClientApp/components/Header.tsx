@@ -8,11 +8,6 @@ import { PageHeader } from 'react-bootstrap'
 import HotelSearch from './hotelSearch'
 
 export default class Home extends React.Component<any, any> {
-    constructor() {
-        super();
-    
-    }
-    
     //console.log(Commons._GetAirport('BKK'))
     public render() {
 

@@ -4,8 +4,8 @@ const typeahead = require('react-bootstrap-typeahead') as any;
 const AsyncTypeahead = typeahead.asyncContainer(typeahead.Typeahead) as any;
 
 export default class AirportAutocomplete extends React.Component<{ onChange: any, label: string, error: string }, any> {
-  constructor() {
-    super();
+  constructor(props: any) {
+    super(props);
     this.state = {
     };
   }

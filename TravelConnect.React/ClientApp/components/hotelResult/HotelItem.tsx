@@ -26,13 +26,13 @@ export default class HotelItem extends React.Component<{ hotel: any, url: any },
         <Col md={12}>{hotel.currCode} {hotel.rateFrom} - {hotel.currCode} {hotel.rateTo}</Col>
       </Row>
       <Row>
-        <Col md={12}>
-          <NavLink exact to={this.props.url} target='_blank'>
+            <Col md={12}>
+                <a href={this.props.url} target='_blank' >
           <input
             className='btn'
             type="button" value="Select"
             />
-          </NavLink>
+          </a>
         </Col>
       </Row>
     </Panel>

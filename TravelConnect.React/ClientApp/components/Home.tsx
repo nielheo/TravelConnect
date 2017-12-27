@@ -9,8 +9,8 @@ import HotelSearch from './hotelSearch'
 import Header from './Header'
 
 export default class Home extends React.Component<RouteComponentProps<{}>, any> {
-  constructor() {
-    super();
+  constructor(props: any) {
+    super(props);
     //let now = moment()
     //let today = moment({ year: now.year(), month: now.month(), day: now.day() })
 

@@ -11,8 +11,8 @@ import SelectDate from '../commons/SelectDate'
 import Occupancy from './Occupancy'
 
 export default class HotelSearch_Index extends React.Component<{ history: any }, any> {
-  constructor() {
-    super();
+  constructor(props: any) {
+    super(props);
     //let now = moment()
     //let today = moment({ year: now.year(), month: now.month(), day: now.day() })
 

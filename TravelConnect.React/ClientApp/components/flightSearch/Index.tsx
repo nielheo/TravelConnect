@@ -19,8 +19,8 @@ type FlightProps =
   & RouteComponentProps<{}>;
 
 class FlightSearch_Index extends React.Component<FlightProps, any> {
-  constructor() {
-    super();
+  constructor(props: any) {
+      super(props)
     //let now = moment()
     //let today = moment({ year: now.year(), month: now.month(), day: now.day() })
 
