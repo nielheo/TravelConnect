@@ -109,7 +109,7 @@ export default class HotelSearch_Index extends React.Component<{ history: any },
       </Row>
       
       <Row>
-        <Col md={6}>
+        <Col md={1}>
           <FormTextbox
             onChange={this._onCountryChange}
             label='Country'
@@ -118,7 +118,7 @@ export default class HotelSearch_Index extends React.Component<{ history: any },
             value={this.state.country}
           />
         </Col>
-        <Col md={6}>
+        <Col md={5}>
           <FormTextbox
             onChange={this._onCityChange}
             label='City'
@@ -127,10 +127,7 @@ export default class HotelSearch_Index extends React.Component<{ history: any },
             value={this.state.city}
           />
         </Col>
-      </Row>
-      
-      <Row>
-        <Col md={6}>
+        <Col md={3}>
           <SelectDate
             key="checkIn"
                     label="Check In Date"
@@ -140,7 +137,7 @@ export default class HotelSearch_Index extends React.Component<{ history: any },
             disabled={false}
           />
         </Col>
-        <Col md={6}>
+        <Col md={3}>
           <SelectDate
             key="checkIn"
                     label="Check Out Date"
@@ -152,7 +149,7 @@ export default class HotelSearch_Index extends React.Component<{ history: any },
         </Col>
       </Row>
       <Row>
-        <Col md={6}>
+        <Col md={3}>
           <FormDropdown
             key="Room"
             label="Room"
@@ -183,7 +180,7 @@ export default class HotelSearch_Index extends React.Component<{ history: any },
         this.state.occupancies.slice(1, this.state.rooms).map((o: any) => 
         {
           return <Row>
-            <Col md={6}></Col>
+            <Col md={3}></Col>
             <Occupancy
               index={idx++}
               onAdultChange={this._onAdultChange}

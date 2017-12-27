@@ -56,7 +56,7 @@ namespace TravelConnect.Ean.Services
                         $"&arrivalDate={request.CheckIn.ToString("MM/dd/yyyy")}" +
                         $"&departureDate={request.CheckOut.ToString("MM/dd/yyyy")}" +
                         $"&{OccupancyToString(request.Occupancies)}" +
-                        $"&options=HOTEL_SUMMARY",
+                        $"&maxRatePlanCount=3",
                         //+     $"&includeDetails=true",
                         RequestType.HotelList);
 

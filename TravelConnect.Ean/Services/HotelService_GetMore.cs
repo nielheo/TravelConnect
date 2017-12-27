@@ -38,14 +38,14 @@ namespace TravelConnect.Ean.Services
                     $"&currencyCode={request.Currency ?? "USD"}" +
                     $"&cachekey={request.CacheKey}" +
                     $"&cachelocation={request.CacheLocation}" +
-                    $"&options=HOTEL_SUMMARY",
+                    $"&maxRatePlanCount=3",
                     //+     $"&includeDetails=true",
                     RequestType.HotelList);
 
                 var rs = JsonConvert.DeserializeObject<HotelListRs>(response);
                 HotelSearchCityRS hotelSearchCityRS = ConvertToResponse(rs, request);
 
-                _LogService.LogInfo($"EAN/HotelGetMoreRS", response);
+                _LogService.LogInfo("EAN/HotelGetMoreRS", hotelSearchCityRS);
 
                 //Add result to cache
 

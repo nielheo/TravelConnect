@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\Class1.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="log4net.config">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>

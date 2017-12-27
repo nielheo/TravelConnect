@@ -19,7 +19,7 @@ export default class Occupancy extends React.Component<{
 }, any> {
   public render() {
     return <section>
-      <Col md={2}>
+      <Col md={1}>
         <FormInput
           label=' '
           error=''
@@ -27,7 +27,7 @@ export default class Occupancy extends React.Component<{
           <p>{'Room ' + this.props.index}</p>
         </FormInput>
       </Col>
-      <Col md={2}>
+      <Col md={1}>
         <FormInput label='Adult' disabled={false} error=''>
           <select className="form-control" value={this.props.adult}
             onChange={(e) => this.props.onAdultChange(e, this.props.index)}>
@@ -37,7 +37,7 @@ export default class Occupancy extends React.Component<{
           </select>
         </FormInput>
       </Col>
-      <Col md={2}>
+      <Col md={1}>
         <FormInput label='Child' disabled={false} error=''>
           <select className="form-control" value={this.props.child}
             onChange={(e) => this.props.onChildChange(e, this.props.index)}>

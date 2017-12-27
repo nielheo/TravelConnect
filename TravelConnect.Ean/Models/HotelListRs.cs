@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using TravelConnect.Ean.Models.Rooms;
 
 namespace TravelConnect.Ean.Models
 {
@@ -67,15 +69,16 @@ namespace TravelConnect.Ean.Models
         public bool hotelInDestination { get; set; }
         public string thumbNailUrl { get; set; }
         public string deepLink { get; set; }
-    //    public Roomratedetailslist RoomRateDetailsList { get; set; }
+        public Roomratedetailslist RoomRateDetailsList { get; set; }
     }
 
     public class Roomratedetailslist
     {
-        public Roomratedetails RoomRateDetails { get; set; }
+        [JsonConverter(typeof(SingleOrArrayConverter<Roomratedetail>))]
+        public List<Roomratedetail> RoomRateDetails { get; set; }
     }
 
-    public class Roomratedetails
+    public class Roomratedetail
     {
         public int roomTypeCode { get; set; }
         public int rateCode { get; set; }
