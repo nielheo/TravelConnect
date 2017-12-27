@@ -38,6 +38,18 @@ export default class HotelSearch_Index extends React.Component<{ history: any },
     this.setState({ city: e.target.value })
   }
 
+  _onCheckInChange = (date: any) => {
+    this.setState({
+      checkIn: date
+    })
+  }
+
+  _onCheckOutChange = (date: any) => {
+    this.setState({
+      checkOut: date
+    })
+  }
+
   _onRoomsChange = (e: any) => {
     this.setState({ rooms: e.target.value})
   }
@@ -121,8 +133,8 @@ export default class HotelSearch_Index extends React.Component<{ history: any },
         <Col md={6}>
           <SelectDate
             key="checkIn"
-            label="Check In Date"
-            onChange={this._onRoomsChange}
+                    label="Check In Date"
+                    onChange={this._onCheckInChange}
             selected={this.state.checkIn}
             error=""
             disabled={false}
@@ -131,8 +143,8 @@ export default class HotelSearch_Index extends React.Component<{ history: any },
         <Col md={6}>
           <SelectDate
             key="checkIn"
-            label="Check Out Date"
-            onChange={this._onCountryChange}
+                    label="Check Out Date"
+                    onChange={this._onCheckOutChange}
             selected={this.state.checkOut}
             error=""
             disabled={false}

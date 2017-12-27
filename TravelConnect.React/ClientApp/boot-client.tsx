@@ -1,5 +1,6 @@
 import './css/site.css';
 import './css/carousel.min.css'
+import './css/react-datepicker.min.css'
 import 'bootstrap';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';

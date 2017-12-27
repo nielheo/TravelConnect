@@ -227,7 +227,9 @@ namespace TravelConnect.Ean.Models.Rooms
         public int numberOfChildren { get; set; }
         public string childAges { get; set; }
         public string rateKey { get; set; }
-        public Chargeablenightlyrate[] ChargeableNightlyRates { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<Chargeablenightlyrate>))]
+        public List<Chargeablenightlyrate> ChargeableNightlyRates { get; set; }
     }
 
     public class Chargeablenightlyrate
@@ -284,7 +286,8 @@ namespace TravelConnect.Ean.Models.Rooms
     public class Nightlyratesperroom
     {
         public string size { get; set; }
-        public Nightlyrate[] NightlyRate { get; set; }
+        [JsonConverter(typeof(SingleOrArrayConverter<Nightlyrate>))]
+        public List<Nightlyrate> NightlyRate { get; set; }
     }
 
     public class Nightlyrate

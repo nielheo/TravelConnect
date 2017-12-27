@@ -17,8 +17,8 @@ export default class Home extends React.Component<any, any> {
     public render() {
 
         return <div>
-            <PageHeader><NavLink to='/'>Travel Connect</NavLink><br />
-            <small>Now everybody can go Online</small></PageHeader>
+            <h3><NavLink to='/'>Travel Connect</NavLink>  <small>Now everybody can go Online</small></h3>
+            <hr/>
         </div>
     }
 }

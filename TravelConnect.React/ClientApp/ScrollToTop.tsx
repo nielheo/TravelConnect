@@ -8,7 +8,6 @@ export default class ScrollToTop extends React.Component<any, any> {
   }
 
   public render() {
-    console.log(this.props.history)
     return <section>{this.props.children}</section>
   }
 }
