@@ -37,8 +37,8 @@ export default class HotelFilter extends React.Component<{
       })
 
     ratings.sort(this._compareRating)
-    console.log(this.props.filteredStarRating)
-    return <section>
+    
+return <section>
       <Row><Col md={12}><h1></h1></Col></Row>
       <Panel>
       

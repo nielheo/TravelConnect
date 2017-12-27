@@ -76,7 +76,6 @@ export default class HotelResult_Index extends React.Component<
   }
 
   _sendRequest = (request: any) => {
-    //console.log(request)
     return fetch('/api/hotels' + request, {
       method: 'get',
       headers: {
@@ -106,7 +105,6 @@ export default class HotelResult_Index extends React.Component<
       + '&cacheKey=' + this.state.result.cacheKey
       + '&cacheLocation=' + this.state.result.cacheLocation
       + '&requestKey=' + this.state.result.requestKey
-    console.log(req)
     return req
   }
 
@@ -128,10 +126,6 @@ export default class HotelResult_Index extends React.Component<
     })
   }
 
-  componentWillMount() {
-    console.log(this.state)
-  }
-
   componentDidMount() {
     this._sendRequest(this._constructRequest())
       .then(r => {
@@ -139,7 +133,6 @@ export default class HotelResult_Index extends React.Component<
         this.setState({ result: r })
 
         if (this.state.result.cacheKey) {
-          console.log('get more')
           this._getMore()
         }
       })
@@ -171,8 +164,6 @@ export default class HotelResult_Index extends React.Component<
       var filtered = this.state.filteredStarRating.filter((s: any) => s !== starRating)
       //filtered.splice(this.state.filteredStarRating.indexOf(starRating), 1)
 
-      console.log(filtered)
-
       this.setState({
         filteredStarRating: filtered
       })
@@ -185,9 +176,7 @@ export default class HotelResult_Index extends React.Component<
     url += '&cout=' + this.state.checkOut.format('YYYY-MM-DD')
     url += '&rooms=' + this.state.rooms + '&currency=' + this.state.currency
 
-    console.log(this.props)
     this.props.history.push(url)
-    console.log(id)
   }
 
   public render() {
@@ -201,8 +190,6 @@ export default class HotelResult_Index extends React.Component<
     if (this.state.filteredStarRating.length)
       hotels = hotels.filter((h: any) =>
         this.state.filteredStarRating.indexOf(h.starRating) >= 0)
-
-    console.log(hotels.length)
 
     const itemsPerPage = 20
     const { page } = this.state
