@@ -53,7 +53,7 @@ export default class HotelItem extends React.Component<{ hotel: any, url: any },
           <Row>
             <Col md={9}><h4>{hotel.name} {this._image(hotel.starRating)}<br /><small>{hotel.address}</small></h4>
             </Col>
-            <Col md={3}><h4><b>{cheapestRoom.chargeableRate.currency} {cheapestRoom.chargeableRate.maxNightlyRate}</b>
+            <Col md={3}><h4><b>{cheapestRoom.chargeableRate.currency} {cheapestRoom.chargeableRate.maxNightlyRate.toLocaleString('en-US')}</b>
               <br /><small>Nightly Rate</small>
             </h4>
             </Col>
