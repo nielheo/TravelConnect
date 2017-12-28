@@ -339,7 +339,9 @@ namespace TravelConnect.Ean.Models.Rooms
     public class Roomimages
     {
         public string size { get; set; }
-        public Roomimage[] RoomImage { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<Roomimage>))]
+        public List<Roomimage> RoomImage { get; set; }
     }
 
     public class Roomimage

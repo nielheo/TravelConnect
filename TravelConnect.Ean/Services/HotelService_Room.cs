@@ -100,6 +100,7 @@ namespace TravelConnect.Ean.Services
                 Id = hotelResponse.hotelId,
                 Name = hotelResponse.hotelName,
                 Address = hotelResponse.hotelAddress,
+                //StarRating = hotelResponse.HotelDetails
                 City = hotelResponse.hotelCity,
                 Country = hotelResponse.hotelCountry,
                 CheckInInstructions = hotelResponse.checkInInstructions,
@@ -114,6 +115,7 @@ namespace TravelConnect.Ean.Services
                 PropertyDescription = hotelResponse.HotelDetails?.propertyDescription,
                 HotelPolicy = hotelResponse.HotelDetails?.hotelPolicy,
                 RoomInformation = hotelResponse.HotelDetails?.roomInformation,
+                
                 PropertyAmenities = hotelResponse.PropertyAmenities?.PropertyAmenity.Select(am => new IdStringName
                 {
                     Id = am.amenityId.ToString(),

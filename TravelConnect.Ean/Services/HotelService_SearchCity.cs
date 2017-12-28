@@ -123,7 +123,23 @@ namespace TravelConnect.Ean.Services
                         Thumbnail = h.thumbNailUrl,
                         CurrCode = h.rateCurrencyCode,
                         RateFrom = (decimal)h.lowRate,
-                        RateTo = (decimal)h.highRate
+                        RateTo = (decimal)h.highRate,
+                        HotelRooms = h.RoomRateDetailsList.RoomRateDetails.Select(rm =>
+                        new RoomListRS
+                        {
+                            RoomTypeCode = rm.roomTypeCode.ToString(),
+                            RateCode = rm.rateCode.ToString(),
+                            PromoDesc = rm.RateInfos.RateInfo.promoDescription,
+                            Allotment = rm.RateInfos.RateInfo.currentAllotment,
+                            ChargeableRate = new ChargeableRateRS
+                            {
+                                Currency = rm.RateInfos.RateInfo.ChargeableRateInfo.currencyCode,
+                                MaxNightlyRate = Convert.ToDecimal(rm.RateInfos.RateInfo.ChargeableRateInfo.maxNightlyRate),
+                                TotalCommissionable = Convert.ToDecimal(rm.RateInfos.RateInfo.ChargeableRateInfo.commissionableUsdTotal),
+                                TotalSurcharge = Convert.ToDecimal(rm.RateInfos.RateInfo.ChargeableRateInfo.surchargeTotal),
+                                Total = Convert.ToDecimal(rm.RateInfos.RateInfo.ChargeableRateInfo.total),
+                            }
+                        }).OrderBy(r => r.ChargeableRate.Total).ToList()
                     }
                 ).ToList()
             };
@@ -190,3 +206,4 @@ namespace TravelConnect.Ean.Services
         }
     }
 }
+ 

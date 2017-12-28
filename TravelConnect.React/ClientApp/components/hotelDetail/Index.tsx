@@ -96,6 +96,14 @@ class HotelDetail_Index extends React.Component<HotelDetailProps, any> {
     this.props.setRateUnchange()
     this.props.history.push('/bookhotel')
   }
+
+  _image = (rating: number) => {
+    let imageTooltip = rating.toString() + ' Star' + (rating > 1 ? 's' : '')
+    const images = require.context('../commons/images', true);
+    let sRating = '00' + (rating * 10).toString()
+    return <img marginWidth={30} height={40} title={imageTooltip}
+      src={images('./star-' + sRating.slice(sRating.length - 2) + '.png')} />
+  }
   
   public render() {
     //console.log(this.state.result)
@@ -116,7 +124,7 @@ class HotelDetail_Index extends React.Component<HotelDetailProps, any> {
             
           <Row>
             <Col md={12}>
-              <PageHeader>{result.hotelDetail.name} <br />
+                <PageHeader>{result.hotelDetail.name}<br />
                 <small>{result.hotelDetail.address}, {result.hotelDetail.city}, {result.hotelDetail.country}</small>
 
               </PageHeader>

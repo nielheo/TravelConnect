@@ -49,7 +49,9 @@ export default class HotelResult_Index extends React.Component<{ room: any, onSe
                       </ButtonToolbar>
                     }
                   </Col>
-                  <Col md={3}><h4>{room.chargeableRate.currency} {room.chargeableRate.total.toLocaleString('en-US')}</h4>
+                  <Col md={3}><h4>{room.chargeableRate.currency} {room.chargeableRate.total.toLocaleString('en-US')}
+                    <br/><small>All inclusive</small>
+                  </h4>
                     
                     {
                       room.isNonRefundable

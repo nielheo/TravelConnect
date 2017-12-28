@@ -12,6 +12,7 @@ namespace TravelConnect.Models.Responses
         public decimal TotalCommissionable { get; set; }
         public decimal TotalSurcharge { get; set; }
         public decimal Total { get; set; }
+        public decimal MaxNightlyRate { get; set; }
     }
 
     [NotMapped]
@@ -102,6 +103,7 @@ namespace TravelConnect.Models.Responses
         public int Id { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
+        public decimal StarRating { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
         public string CheckInInstructions { get; set; }
@@ -116,6 +118,7 @@ namespace TravelConnect.Models.Responses
         public string PropertyDescription { get; set; }
         public string HotelPolicy { get; set; }
         public string RoomInformation { get; set; }
+        
         public List<IdStringName> PropertyAmenities { get; set; }
         public List<ImageRS> HotelImages { get; set; }
     }

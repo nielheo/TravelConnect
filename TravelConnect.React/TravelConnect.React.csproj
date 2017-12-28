@@ -37,6 +37,7 @@
     <None Remove="ClientApp\components\commons\FormDropdown.tsx" />
     <None Remove="ClientApp\components\commons\FormInput.tsx" />
     <None Remove="ClientApp\components\commons\FormTextbox.tsx" />
+    <None Remove="ClientApp\components\commons\starRating.ts" />
     <None Remove="ClientApp\components\file.tsx" />
     <None Remove="ClientApp\components\flightPax\Segment.tsx" />
     <None Remove="ClientApp\components\flightResult\Filter.tsx" />

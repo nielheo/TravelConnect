@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace TravelConnect.Models.Responses
 {
@@ -19,6 +20,17 @@ namespace TravelConnect.Models.Responses
         public string CurrCode { get; set; }
         public decimal RateFrom { get; set; }
         public decimal RateTo { get; set; }
+        public List<RoomListRS> HotelRooms { get; set; }
+    }
+
+    [NotMapped]
+    public class RoomListRS
+    {
+        public string RoomTypeCode { get; set; }
+        public string RateCode { get; set; }
+        public string PromoDesc { get; set; }
+        public int Allotment { get; set; }
+        public ChargeableRateRS ChargeableRate { get; set; }
     }
 
     [NotMapped]

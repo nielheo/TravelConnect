@@ -142,14 +142,30 @@ namespace TravelConnect.Ean.Models
 
     public class Chargeablerateinfo
     {
+        [JsonProperty(PropertyName = "@averageBaseRate")]
         public string averageBaseRate { get; set; }
+
+        [JsonProperty(PropertyName = "@averageRate")]
         public string averageRate { get; set; }
+
+        [JsonProperty(PropertyName = "@commissionableUsdTotal")]
         public string commissionableUsdTotal { get; set; }
+
+        [JsonProperty(PropertyName = "@currencyCode")]
         public string currencyCode { get; set; }
+
+        [JsonProperty(PropertyName = "@maxNightlyRate")]
         public string maxNightlyRate { get; set; }
+
+        [JsonProperty(PropertyName = "@nightlyRateTotal")]
         public string nightlyRateTotal { get; set; }
+
+        [JsonProperty(PropertyName = "@surchargeTotal")]
         public string surchargeTotal { get; set; }
+
+        [JsonProperty(PropertyName = "@total")]
         public string total { get; set; }
+
         public Nightlyratesperroom NightlyRatesPerRoom { get; set; }
         public Surcharges Surcharges { get; set; }
     }
