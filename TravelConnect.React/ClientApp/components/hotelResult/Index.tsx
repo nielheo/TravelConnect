@@ -1,6 +1,7 @@
 ﻿import * as React from 'react'
+import Helmet from 'react-helmet'
 
-import { Panel, Grid, Row, Col, Pagination } from 'react-bootstrap'
+import { Panel, Grid, Row, Col, Pagination, Button } from 'react-bootstrap'
 
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -11,6 +12,8 @@ import FormInput from '../commons/FormInput'
 import FormTextbox from '../commons/FormTextbox'
 import FormDropdown from '../commons/FormDropdown'
 import SelectDate from '../commons/SelectDate'
+
+import Camelize from '../commons/Camelize'
 
 import HotelItem from './HotelItem'
 import HotelFilter from './HotelFilter'
@@ -32,9 +35,9 @@ export default class HotelResult_Index extends React.Component<
     this.state = {
       country: props.match.params.country,
       city: props.match.params.city,
-      checkIn: this._parseDate(query.cin),
-      checkOut: this._parseDate(query.cout),
-      rooms: query.rooms,
+      checkIn: query.cin ? this._parseDate(query.cin) : moment().add(90, 'days'),
+      checkOut: query.cout ? this._parseDate(query.cout) : moment().add(92, 'days'),
+      rooms: query.rooms || '2',
       //occupancies: query.rooms,
       locale: props.match.params.locale || 'en_US',
       currency: query.currency || 'USD',
@@ -179,6 +182,26 @@ export default class HotelResult_Index extends React.Component<
     this.props.history.push(url)
   }
 
+  _onCountryChange = (e: any) => {
+    this.setState({ country: e.target.value })
+  }
+
+  _onCityChange = (e: any) => {
+    this.setState({ city: e.target.value })
+  }
+
+  _onCheckInChange = (date: any) => {
+    this.setState({
+      checkIn: date
+    })
+  }
+
+  _onCheckOutChange = (date: any) => {
+    this.setState({
+      checkOut: date
+    })
+  }
+
   public render() {
     let hotels = (this.state.result && this.state.result.hotels) || []
     if (this.state.filteredHotelName)
@@ -201,11 +224,75 @@ export default class HotelResult_Index extends React.Component<
     let _endIndex = _page * itemsPerPage
 
     return <section>
-        <Header />
-    <Row>
+      <Helmet>
+        <title>{Camelize(this.state.city)} Hotels, {Camelize(this.state.city)}: Greate value, enjoy travel</title>
+        <meta name='description' content={'Great value for hotels in ' + Camelize(this.state.city)} />
+        <meta name='keywords' content={Camelize(this.state.city) + ' hotels, ' + Camelize(this.state.city)} />
+      </Helmet>
+      <Header />
+      <Row className='bg-gray'>
+        <Col md={1}>
+          <FormTextbox
+            onChange={this._onCountryChange}
+            label='Country'
+            error={this.state.searchClicked && !this.state.country ? '* required' : ''}
+            disabled={false}
+            value={this.state.country}
+          />
+        </Col>
+        <Col md={4}>
+          <FormTextbox
+            onChange={this._onCityChange}
+            label='City'
+            error={this.state.searchClicked && !this.state.city ? '* required' : ''}
+            disabled={false}
+            value={this.state.city}
+          />
+        </Col>
+        <Col md={2}>
+          <SelectDate
+            key="checkIn"
+            label="Check In Date"
+            onChange={this._onCheckInChange}
+            selected={this.state.checkIn}
+            error=""
+            disabled={false}
+          />
+        </Col>
+        <Col md={2}>
+          <SelectDate
+            key="checkIn"
+            label="Check Out Date"
+            onChange={this._onCheckOutChange}
+            selected={this.state.checkOut}
+            error=""
+            disabled={false}
+          />
+        </Col>
+        <Col md={2}>
+          <FormTextbox
+            onChange={this._onCityChange}
+            label='Rooms'
+            error={this.state.searchClicked && !this.state.city ? '* required' : ''}
+            disabled={true}
+            value={this.state.rooms.split('|').length + ' room' + (this.state.rooms.split('|').length > 1 ? 's' : '')}
+          />
+        </Col>
+        <Col md={1}>
+          <FormInput
+            label=' '
+            error=''
+            disabled={false}
+          >
+            <Button>Search</Button>
+          </FormInput>
+        </Col>
+      </Row>
+      <Row>
+        <hr/>
       <Col md={3}>
         {
-          this.state.result && this.state.result.hotels &&
+          //this.state.result && this.state.result.hotels &&
           <HotelFilter
             hotels={hotelsByName}
             filteredHotels={hotels}
@@ -219,8 +306,10 @@ export default class HotelResult_Index extends React.Component<
       <Col md={9}>
         {
           this.state.result
-            ? <section>
-              <Row><Col md={12}><h3>Select from {hotels.length} hotels</h3></Col></Row>
+              ? <section>
+                
+                <Row><Col md={12}>
+                  <h3>{hotels.length.toLocaleString('en-US')} hotel{(hotels.length > 1) && 's'} found in {Camelize(this.state.city) + ', ' + this.state.country.toUpperCase()}</h3></Col></Row>
               <Row className="text-right">
                 <Col md={12}>
                   <Pagination prev next first last ellipsis boundaryLinks
@@ -247,7 +336,7 @@ export default class HotelResult_Index extends React.Component<
                 </Col>
               </Row>
             </section>
-            : <Row><Col md={12}>Search your hotels. Please wait....</Col></Row>
+              : <Row><Col md={12}><h3>Searching hotels in {Camelize(this.state.city) + ', ' + this.state.country.toUpperCase()}. Please wait ...</h3></Col></Row>
         }
       </Col>
     </Row>

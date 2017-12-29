@@ -10,6 +10,9 @@ import HotelDetail from './components/hotelDetail'
 import BookHotel from './components/bookHotel'
 import Thankyou from './components/thankyou'
 import ScrollToTop from './ScrollToTop'
+import Countries from './components/countries'
+import Cities from './components/cities'
+
 
 export const routes = <Layout>
   <ScrollToTop>
@@ -20,6 +23,8 @@ export const routes = <Layout>
     <Route exact path='/hotels/:country/:city' component={HotelResult} />
     <Route exact path='/bookHotel' component={BookHotel} />
     <Route exact path='/thankyou' component={Thankyou} />
+    <Route exact path='/countries' component={Countries} />
+    <Route exact path='/countries/:countryCode/cities' component={Cities} />
     <Route path='/flight/search' component={FlightSearch} />
     <Route path='/flight/result/:route' component={FlightResult} />
     <Route path='/flight/pax/' component={FlightPax} />

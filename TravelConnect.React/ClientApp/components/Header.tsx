@@ -12,7 +12,7 @@ export default class Home extends React.Component<any, any> {
     public render() {
 
         return <div>
-            <h3><NavLink to='/'>Travel Connect</NavLink>  <small>Now everybody can go Online</small></h3>
+            <h3><NavLink to='/'>Travel Connect</NavLink></h3>
             <hr/>
         </div>
     }

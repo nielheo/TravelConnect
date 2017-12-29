@@ -292,9 +292,16 @@ namespace TravelConnect.Ean.Models.Rooms
 
     public class Nightlyrate
     {
+        [JsonProperty(PropertyName = "@baseRate")]
         public string baseRate { get; set; }
+
+        [JsonProperty(PropertyName = "@rate")]
         public string rate { get; set; }
+
+        [JsonProperty(PropertyName = "@promo")]
         public string promo { get; set; }
+
+        [JsonProperty(PropertyName = "@fenced")]
         public string fenced { get; set; }
     }
 

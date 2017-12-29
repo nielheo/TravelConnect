@@ -37,7 +37,9 @@ namespace TravelConnect.Ean.Models
     {
         public string size { get; set; }
         public string activePropertyCount { get; set; }
-        public Hotelsummary[] HotelSummary { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<Hotelsummary>))]
+        public List<Hotelsummary> HotelSummary { get; set; }
     }
 
     public class Hotelsummary
@@ -173,13 +175,20 @@ namespace TravelConnect.Ean.Models
     public class Nightlyratesperroom
     {
         public string size { get; set; }
-        public Nightlyrate[] NightlyRate { get; set; }
+
+        [JsonConverter(typeof(SingleOrArrayConverter<Nightlyrate>))]
+        public List<Nightlyrate> NightlyRate { get; set; }
     }
 
     public class Nightlyrate
     {
+        [JsonProperty(PropertyName = "@baseRate")]
         public string baseRate { get; set; }
+
+        [JsonProperty(PropertyName = "@rate")]
         public string rate { get; set; }
+
+        [JsonProperty(PropertyName = "@promo")]
         public string promo { get; set; }
     }
 
@@ -191,7 +200,8 @@ namespace TravelConnect.Ean.Models
 
     public class Cancelpolicyinfolist
     {
-        public Cancelpolicyinfo[] CancelPolicyInfo { get; set; }
+        [JsonConverter(typeof(SingleOrArrayConverter<Cancelpolicyinfo>))]
+        public List<Cancelpolicyinfo> CancelPolicyInfo { get; set; }
     }
 
     public class Cancelpolicyinfo

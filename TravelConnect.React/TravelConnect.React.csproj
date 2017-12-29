@@ -32,12 +32,15 @@
     <None Remove="ClientApp\components\bookHotel\Index.tsx" />
     <None Remove="ClientApp\components\bookHotel\Info.tsx" />
     <None Remove="ClientApp\components\bookHotel\RoomGuest.tsx" />
+    <None Remove="ClientApp\components\cities\Index.tsx" />
     <None Remove="ClientApp\components\Classes.tsx" />
     <None Remove="ClientApp\components\Commons.tsx" />
+    <None Remove="ClientApp\components\commons\Camelize.ts" />
     <None Remove="ClientApp\components\commons\FormDropdown.tsx" />
     <None Remove="ClientApp\components\commons\FormInput.tsx" />
     <None Remove="ClientApp\components\commons\FormTextbox.tsx" />
     <None Remove="ClientApp\components\commons\starRating.ts" />
+    <None Remove="ClientApp\components\countries\Index.tsx" />
     <None Remove="ClientApp\components\file.tsx" />
     <None Remove="ClientApp\components\flightPax\Segment.tsx" />
     <None Remove="ClientApp\components\flightResult\Filter.tsx" />
@@ -84,11 +87,14 @@
     <TypeScriptCompile Include="ClientApp\components\bookHotel\Index.tsx" />
     <TypeScriptCompile Include="ClientApp\components\bookHotel\Info.tsx" />
     <TypeScriptCompile Include="ClientApp\components\bookHotel\RoomGuest.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\cities\Index.tsx" />
     <TypeScriptCompile Include="ClientApp\components\Classes.tsx" />
     <TypeScriptCompile Include="ClientApp\components\Commons.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\commons\Camelize.ts" />
     <TypeScriptCompile Include="ClientApp\components\commons\FormInput.tsx" />
     <TypeScriptCompile Include="ClientApp\components\commons\FormTextbox.tsx" />
     <TypeScriptCompile Include="ClientApp\components\commons\FormDropdown.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\countries\Index.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightPax\Segment.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightResult\Filter.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightResult\FilterAirline.tsx" />
@@ -121,6 +127,12 @@
 
   <ItemGroup>
     <Folder Include="Properties\PublishProfiles\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="google2b5a8f121d437c9d.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

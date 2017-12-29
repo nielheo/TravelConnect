@@ -7,6 +7,7 @@ import { createMemoryHistory } from 'history';
 import { createServerRenderer, RenderResult } from 'aspnet-prerendering';
 import { routes } from './routes';
 import configureStore from './configureStore';
+import Helmet from 'react-helmet'
 
 export default createServerRenderer(params => {
   return new Promise<RenderResult>((resolve, reject) => {
@@ -26,6 +27,7 @@ export default createServerRenderer(params => {
       </Provider>
     );
     renderToString(app);
+    const helmet = Helmet.renderStatic()
 
     // If there's a redirection, just send this information back to the host application
     if (routerContext.url) {
