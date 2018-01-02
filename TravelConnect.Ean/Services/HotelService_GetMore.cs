@@ -69,6 +69,13 @@ namespace TravelConnect.Ean.Services
                         }
                     });
 
+                    if (rs.HotelListResponse.moreResultsAvailable)
+                    {
+                        cacheSearchRS.CacheKey = rs.HotelListResponse.cacheKey;
+                        cacheSearchRS.CacheLocation = rs.HotelListResponse.cacheLocation;
+                        cacheSearchRS.RequestKey = request.RequestKey;
+                    }
+
                     _cache.Set(request.RequestKey, cacheSearchRS, cacheEntryOptions);
                 }
                 return hotelSearchCityRS;

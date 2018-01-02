@@ -1,10 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 using TravelConnect.CommonServices;
 using TravelConnect.Interfaces;
 using TravelConnect.Models;
@@ -64,6 +67,15 @@ namespace TravelConnect_React
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseStaticFiles();
+
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), @"StaticFiles")),
+                RequestPath = new PathString("/StaticFiles")
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -77,10 +89,10 @@ namespace TravelConnect_React
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
+            
             app.UseResponseCompression();
 
-            app.UseStaticFiles();
+           
 
             app.UseMvc(routes =>
             {
@@ -92,6 +104,8 @@ namespace TravelConnect_React
                     name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
             });
+
+            
         }
     }
 }

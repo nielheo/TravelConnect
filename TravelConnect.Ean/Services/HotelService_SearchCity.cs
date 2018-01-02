@@ -87,12 +87,12 @@ namespace TravelConnect.Ean.Services
                     _LogService = null;
                 }
             }
-            else
-            {
-                cacheSearchRS.CacheKey = "";
-                cacheSearchRS.CacheLocation = "";
-                cacheSearchRS.RequestKey = "";
-            }
+            //else
+            //{
+            //    cacheSearchRS.CacheKey = "";
+            //    cacheSearchRS.CacheLocation = "";
+            //    cacheSearchRS.RequestKey = "";
+            //}
 
             return cacheSearchRS;
         }

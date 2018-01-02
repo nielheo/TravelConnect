@@ -65,10 +65,10 @@ export default class Home extends React.Component<RouteComponentProps<{}>, any> 
         <Col md={3}>
           <ul>
             <li><NavLink to='hotels/id/bali'>Bali, Indonesia</NavLink></li>
-            <li><Link to='hotels/cn/hong kong'>Hong Kong, China</Link></li>
-            <li><Link to='hotels/th/bangkok'>Bangkok, Thailand</Link></li>
-            <li><Link to='hotels/vn/hanoi'>Hanoi, Vietnam</Link></li>
-            <li><Link to='hotels/ph/boracay'>Boracay, Philippine</Link></li>
+            <li><NavLink to='hotels/cn/hong kong'>Hong Kong, China</NavLink></li>
+            <li><NavLink to='hotels/th/bangkok'>Bangkok, Thailand</NavLink></li>
+            <li><NavLink to='hotels/vn/hanoi'>Hanoi, Vietnam</NavLink></li>
+            <li><NavLink to='hotels/ph/boracay'>Boracay, Philippine</NavLink></li>
           </ul>
         </Col>
         <Col md={3}></Col>

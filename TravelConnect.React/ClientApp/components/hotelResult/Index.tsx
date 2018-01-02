@@ -35,8 +35,8 @@ export default class HotelResult_Index extends React.Component<
     this.state = {
       country: props.match.params.country,
       city: props.match.params.city,
-      checkIn: query.cin ? this._parseDate(query.cin) : moment().add(90, 'days'),
-      checkOut: query.cout ? this._parseDate(query.cout) : moment().add(92, 'days'),
+      checkIn: query.cin ? this._parseDate(query.cin) : moment().add(7, 'days'),
+      checkOut: query.cout ? this._parseDate(query.cout) : moment().add(9, 'days'),
       rooms: query.rooms || '2',
       //occupancies: query.rooms,
       locale: props.match.params.locale || 'en_US',
@@ -228,6 +228,7 @@ export default class HotelResult_Index extends React.Component<
         <title>{Camelize(this.state.city)} Hotels, {Camelize(this.state.city)}: Greate value, enjoy travel</title>
         <meta name='description' content={'Great value for hotels in ' + Camelize(this.state.city)} />
         <meta name='keywords' content={Camelize(this.state.city) + ' hotels, ' + Camelize(this.state.city)} />
+        <link rel="canonical" href={'http://travelconn.azurewebsites.net/' + this.state.locale           + '/hotels/' + this.state.country + '/' + this.state.city} />
       </Helmet>
       <Header />
       <Row className='bg-gray'>

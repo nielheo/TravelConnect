@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" />
   </ItemGroup>
 
@@ -39,6 +40,7 @@
     <None Remove="ClientApp\components\commons\FormDropdown.tsx" />
     <None Remove="ClientApp\components\commons\FormInput.tsx" />
     <None Remove="ClientApp\components\commons\FormTextbox.tsx" />
+    <None Remove="ClientApp\components\commons\Seo.ts" />
     <None Remove="ClientApp\components\commons\starRating.ts" />
     <None Remove="ClientApp\components\countries\Index.tsx" />
     <None Remove="ClientApp\components\file.tsx" />
@@ -94,6 +96,7 @@
     <TypeScriptCompile Include="ClientApp\components\commons\FormInput.tsx" />
     <TypeScriptCompile Include="ClientApp\components\commons\FormTextbox.tsx" />
     <TypeScriptCompile Include="ClientApp\components\commons\FormDropdown.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\commons\Seo.ts" />
     <TypeScriptCompile Include="ClientApp\components\countries\Index.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightPax\Segment.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightResult\Filter.tsx" />
@@ -130,7 +133,46 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="StaticFiles\sitemap-6022967-europe1.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="StaticFiles\sitemap-6022967-europe2.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="google2b5a8f121d437c9d.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="StaticFiles\sitemap-500001-north-america.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="StaticFiles\sitemap-6022969-carribean.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="StaticFiles\sitemap-6023099-asia.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="StaticFiles\sitemap-6023117-south-america.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="StaticFiles\sitemap-6023180-oceania.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="StaticFiles\sitemap-6023181-central-america.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="StaticFiles\sitemap-6023182-middle-east.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="StaticFiles\sitemap-6023185-africa.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="StaticFiles\sitemap-empty.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="StaticFiles\sitemap.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

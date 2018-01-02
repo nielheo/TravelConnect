@@ -8,6 +8,9 @@ import * as queryString from 'query-string'
 
 import { ApplicationState } from '../../store'
 import * as HotelStore from '../../store/Hotel'
+import Camelize from '../commons/Camelize'
+
+import Helmet from 'react-helmet'
 
 import Room from './Room'
 import Header from '../Header'
@@ -28,10 +31,10 @@ class HotelDetail_Index extends React.Component<HotelDetailProps, any> {
     this.state = {
       country: props.match.params.country,
       city: props.match.params.city,
-      checkIn: this._parseDate(query.cin),
-      checkOut: this._parseDate(query.cout),
+      checkIn: query.cin ? this._parseDate(query.cin) : moment().add(7, 'days'),
+      checkOut: query.cout ? this._parseDate(query.cout) : moment().add(9, 'days'),
       hotelId: props.match.params.hotelId,
-      rooms: query.rooms,
+      rooms: query.rooms || '2',
       locale: props.match.params.locale || 'en_US',
       currency: query.currency || 'USD',
       result: null,
@@ -121,12 +124,17 @@ class HotelDetail_Index extends React.Component<HotelDetailProps, any> {
       {
         this.state.result 
           ? <section>
-            
+            <Helmet>
+              <title>{Camelize(result.hotelDetail.name)}, {Camelize(this.state.city)}: Greate value, enjoy travel</title>
+              <meta name='description' content={'Great value for ' + Camelize(result.hotelDetail.name) + ' in '
+                + Camelize(this.state.city) + ',' } />
+              <meta name='keywords' content={result.hotelDetail.name + ',' + Camelize(this.state.city) + ' hotels, ' + Camelize(this.state.city)} />
+              <link rel="canonical" href={'http://travelconn.azurewebsites.net/' + this.state.locale                + '/hotels/' + this.state.country + '/' + this.state.city + '/' + this.state.hotelId } />
+            </Helmet>
           <Row>
             <Col md={12}>
-                <PageHeader>{result.hotelDetail.name}<br />
+              <PageHeader>{result.hotelDetail.name}<br />
                 <small>{result.hotelDetail.address}, {result.hotelDetail.city}, {result.hotelDetail.country}</small>
-
               </PageHeader>
             </Col>
           </Row>
