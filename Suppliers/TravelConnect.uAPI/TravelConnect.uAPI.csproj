@@ -27,6 +27,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\TravelConnect.CommonServices\TravelConnect.CommonServices.csproj" />
     <ProjectReference Include="..\..\TravelConnect.Interfaces\TravelConnect.Interfaces.csproj" />
+    <ProjectReference Include="..\TravelConnect.Gta\TravelConnect.Gta.csproj" />
   </ItemGroup>
 
   <ItemGroup>

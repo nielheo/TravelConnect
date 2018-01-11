@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\TravelConnect.CommonServices\TravelConnect.CommonServices.csproj" />
+    <ProjectReference Include="..\TravelConnect.Sabre\TravelConnect.Sabre.csproj" />
+  </ItemGroup>
+
 </Project>

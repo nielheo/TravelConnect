@@ -209,12 +209,13 @@ namespace uAPI
             //};
 
             //var result = client.serviceAsync(req).Result;
-            var result = GenerateSignature();
+            //var result = GenerateSignature();
 
-            Console.WriteLine(result);
-            Console.ReadLine();
+            //Console.WriteLine(result);
+            //Console.ReadLine();
 
-    
+            TravelConnect.Gta.Services.HotelService svc = new TravelConnect.Gta.Services.HotelService();
+            svc.SearchHotelPriceRequest();
         }
     }
 }

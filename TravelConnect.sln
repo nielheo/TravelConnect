@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelConnect.Models", "TravelConnect.Models\TravelConnect.Models.csproj", "{41468E13-5514-4961-8053-3A5492DBF64E}"
 EndProject
@@ -15,13 +15,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelConnect.CommonService
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Suppliers", "Suppliers", "{87609528-8D01-48F0-8710-7632002D1558}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelConnect.Gta", "Suppliers\TravelConnect.Gta\TravelConnect.Gta.csproj", "{73A80D6D-990C-4F42-95B2-1C5C57CD027D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelConnect.Gta", "Suppliers\TravelConnect.Gta\TravelConnect.Gta.csproj", "{73A80D6D-990C-4F42-95B2-1C5C57CD027D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelConnect.Ean", "Suppliers\TravelConnect.Ean\TravelConnect.Ean.csproj", "{BCC000E3-CEC1-49DD-A88E-915A86ED4713}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelConnect.Sabre", "Suppliers\TravelConnect.Sabre\TravelConnect.Sabre.csproj", "{67269D96-3CA9-44DA-B928-5890F4B9B5E6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelConnect.uAPI", "Suppliers\TravelConnect.uAPI\TravelConnect.uAPI.csproj", "{F4D211C7-593A-4667-A082-7408A8DA43B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tester", "Tester\Tester.csproj", "{7486C8C5-B332-473C-8125-0AD3A9DE979E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +67,10 @@ Global
 		{F4D211C7-593A-4667-A082-7408A8DA43B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4D211C7-593A-4667-A082-7408A8DA43B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4D211C7-593A-4667-A082-7408A8DA43B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7486C8C5-B332-473C-8125-0AD3A9DE979E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7486C8C5-B332-473C-8125-0AD3A9DE979E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7486C8C5-B332-473C-8125-0AD3A9DE979E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7486C8C5-B332-473C-8125-0AD3A9DE979E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +80,7 @@ Global
 		{BCC000E3-CEC1-49DD-A88E-915A86ED4713} = {87609528-8D01-48F0-8710-7632002D1558}
 		{67269D96-3CA9-44DA-B928-5890F4B9B5E6} = {87609528-8D01-48F0-8710-7632002D1558}
 		{F4D211C7-593A-4667-A082-7408A8DA43B1} = {87609528-8D01-48F0-8710-7632002D1558}
+		{7486C8C5-B332-473C-8125-0AD3A9DE979E} = {87609528-8D01-48F0-8710-7632002D1558}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {58AEE8BB-641C-4805-9FEE-CF047DB89225}
