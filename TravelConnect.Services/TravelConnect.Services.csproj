@@ -5,10 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Suppliers\TravelConnect.Sabre\TravelConnect.Sabre.csproj" />
     <ProjectReference Include="..\TravelConnect.CommonServices\TravelConnect.CommonServices.csproj" />
     <ProjectReference Include="..\TravelConnect.Interfaces\TravelConnect.Interfaces.csproj" />
     <ProjectReference Include="..\TravelConnect.Models\TravelConnect.Models.csproj" />
-    <ProjectReference Include="..\TravelConnect.Sabre\TravelConnect.Sabre.csproj" />
   </ItemGroup>
 
 </Project>

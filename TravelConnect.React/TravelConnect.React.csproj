@@ -75,13 +75,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Suppliers\TravelConnect.Ean\TravelConnect.Ean.csproj" />
+    <ProjectReference Include="..\Suppliers\TravelConnect.uAPI\TravelConnect.uAPI.csproj" />
     <ProjectReference Include="..\TravelConnect.CommonServices\TravelConnect.CommonServices.csproj" />
-    <ProjectReference Include="..\TravelConnect.Ean\TravelConnect.Ean.csproj" />
     <ProjectReference Include="..\TravelConnect.Interfaces\TravelConnect.Interfaces.csproj" />
     <ProjectReference Include="..\TravelConnect.Models\TravelConnect.Models.csproj" />
-    <ProjectReference Include="..\TravelConnect.Sabre\TravelConnect.Sabre.csproj" />
     <ProjectReference Include="..\TravelConnect.Services\TravelConnect.Services.csproj" />
-    <ProjectReference Include="..\TravelConnect.uAPI\TravelConnect.uAPI.csproj" />
   </ItemGroup>
 
   <ItemGroup>
