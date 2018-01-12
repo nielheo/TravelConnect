@@ -5,7 +5,8 @@ using System.Xml.Serialization;
 
 namespace TravelConnect.Gta.Models
 {
-    public class Request
+    [XmlType(TypeName = "Request")]
+    public class SearchHotelPriceRequest
     {
         public Source Source { get; set; }
         public Requestdetails RequestDetails { get; set; }
@@ -75,7 +76,7 @@ namespace TravelConnect.Gta.Models
     public class Periodofstay
     {
         public string CheckInDate { get; set; }
-        public string Duration { get; set; }
+        public int Duration { get; set; }
     }
 
     public class Excludechargeableitems
@@ -108,5 +109,4 @@ namespace TravelConnect.Gta.Models
     {
         public string[] FacilityCode { get; set; }
     }
-
 }

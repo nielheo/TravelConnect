@@ -86,6 +86,7 @@ export default class HotelResult_Index extends React.Component<
         'Accept-Encoding': 'gzip',
       }
     }).then(res => {
+        console.log(res)
       if (res) return res.json()
     }).catch(err => { })
   }
@@ -132,10 +133,10 @@ export default class HotelResult_Index extends React.Component<
   componentDidMount() {
     this._sendRequest(this._constructRequest())
       .then(r => {
-
+          console.log(r)
         this.setState({ result: r })
 
-        if (this.state.result.cacheKey) {
+        if (r.cacheKey) {
           this._getMore()
         }
       })

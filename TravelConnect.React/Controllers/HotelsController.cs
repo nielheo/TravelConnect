@@ -52,7 +52,7 @@ namespace TravelConnect.React.Controllers
                 Country = country,
                 Locale = locale,
                 Currency = currency,
-                Suppliers = new List<string> { "EAN" },
+                Suppliers = new List<string> { "EAN", "GTA" },
                 Occupancies = rooms.Split('|').ToList().Select(r =>
                 {
                     var occu = new RoomOccupancy

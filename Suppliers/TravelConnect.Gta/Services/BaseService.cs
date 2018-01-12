@@ -5,6 +5,8 @@ using System.IO.Compression;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Serialization;
 using TravelConnect.CommonServices;
 
 namespace TravelConnect.Gta.Services
@@ -21,10 +23,46 @@ namespace TravelConnect.Gta.Services
             HotelList = 0,
             RoomAvailability = 1,
         }
-        
+
+        protected class Utf8StringWriter : StringWriter
+        {
+            public override Encoding Encoding => Encoding.UTF8;
+        }
+
+        protected string Serialize(object obj)
+        {
+            XmlSerializer x = new XmlSerializer(obj.GetType());
+            var xml = "";
+
+            using (var sww = new Utf8StringWriter())
+            {
+                using (XmlWriter writer = XmlWriter.Create(sww))
+                {
+                    x.Serialize(writer, obj);
+                    xml = sww.ToString(); // Your XML
+                }
+            }
+
+            return xml;
+        }
+
+        protected T Deserialize<T>(string xmlString)
+        {
+            XmlSerializer x = new XmlSerializer(typeof(T));
+
+            T result;
+
+            using (TextReader reader = new StringReader(xmlString))
+            {
+                result = (T)x.Deserialize(reader);
+            }
+            
+            return result;
+        }
+
         protected async Task<string> SubmitAsync(string request, RequestType requestType)
         {
-            _LogService = new LogService();
+            //_LogService = new LogService();
 
             _LogService.LogInfo($"GTA/Request - {request}");
             HttpWebRequest webRequest;
@@ -70,7 +108,7 @@ namespace TravelConnect.Gta.Services
 
             var rs = Encoding.UTF8.GetString(content.ToArray());
 
-            _LogService.LogInfo($"EAN/Response - {rs}");
+            _LogService.LogInfo($"GTA/Response - {rs}");
 
             return rs;
         }

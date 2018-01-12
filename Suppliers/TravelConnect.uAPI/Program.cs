@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ServiceModel;
 using System.Text;
 using TravelConnect.CommonServices;
+using TravelConnect.Models.Requests;
 using TravelConnect.uAPI.Utility;
 
 namespace uAPI
@@ -215,7 +216,12 @@ namespace uAPI
             //Console.ReadLine();
 
             TravelConnect.Gta.Services.HotelService svc = new TravelConnect.Gta.Services.HotelService();
-            svc.SearchHotelPriceRequest();
+            var result = svc.HotelSearchByCityAsync(new HotelSearchCityRQ
+            {
+                CheckIn = DateTime.Today.AddDays(90),
+                CheckOut = DateTime.Today.AddDays(92),
+
+            }).Result;
         }
     }
 }

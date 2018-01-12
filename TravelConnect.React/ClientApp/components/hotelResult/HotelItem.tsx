@@ -48,7 +48,11 @@ export default class HotelItem extends React.Component<{ hotel: any, url: any },
 
     return <Panel bsStyle={this.state.highlighted ? 'primary' : 'default'} onMouseOver={this._onMouseOver} onMouseLeave={this._onMouseLeave}>
       <Row>
-        <Col md={3}><img src={'https://i.travelapi.com' + hotel.thumbnail.replace('t.jpg', 's.jpg')} /></Col>
+            <Col md={3}>
+                { hotel.thumbnail &&
+                    <img src={'https://i.travelapi.com' + hotel.thumbnail.replace('t.jpg', 's.jpg')} />
+                }
+            </Col>
         <Col md={9}>
           <Row>
             <Col md={9}><h4>{hotel.name} {this._image(hotel.starRating)}<br /><small>{hotel.address}</small></h4>
