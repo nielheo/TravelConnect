@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 using TravelConnect.CommonServices;
+using TravelConnect.Gta.Models;
 
 namespace TravelConnect.Gta.Services
 {
@@ -17,11 +18,25 @@ namespace TravelConnect.Gta.Services
         protected string _ClientId = "36196";
         protected string _EmailAddress = "XML.INSOURCEASIA@TRAVELBULLZ.COM";
         protected string _Password = "TRAVB@1212";
-
-        protected enum RequestType
+        
+        protected Source Source
         {
-            HotelList = 0,
-            RoomAvailability = 1,
+            get
+            {
+                return new Source
+                {
+                    RequestorID = new Models.Requestorid
+                    {
+                        Client = _ClientId,
+                        EMailAddress = _EmailAddress,
+                        Password = _Password
+                    },
+                    RequestorPreferences = new Requestorpreferences
+                    {
+                        RequestMode = "SYNCHRONOUS"
+                    }
+                };
+            }
         }
 
         protected class Utf8StringWriter : StringWriter
@@ -60,7 +75,7 @@ namespace TravelConnect.Gta.Services
             return result;
         }
 
-        protected async Task<string> SubmitAsync(string request, RequestType requestType)
+        protected async Task<string> SubmitAsync(string request)
         {
             //_LogService = new LogService();
 

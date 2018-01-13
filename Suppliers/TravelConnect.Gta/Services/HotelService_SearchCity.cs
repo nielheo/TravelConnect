@@ -45,7 +45,7 @@ namespace TravelConnect.Gta.Services
 
                 var xRequest = Serialize(req);
 
-                var result = await SubmitAsync(xRequest, RequestType.HotelList);
+                var result = await SubmitAsync(xRequest);
 
                 var response = Deserialize<SearchHotelPriceResponse>(result);
 
@@ -130,19 +130,7 @@ namespace TravelConnect.Gta.Services
         {
             SearchHotelPriceRequest req = new SearchHotelPriceRequest
             {
-                Source = new Models.Source
-                {
-                    RequestorID = new Models.Requestorid
-                    {
-                        Client = _ClientId,
-                        EMailAddress = _EmailAddress,
-                        Password = _Password
-                    },
-                    RequestorPreferences = new Requestorpreferences
-                    {
-                        RequestMode = "SYNCHRONOUS"
-                    }
-                },
+                Source = Source,
                 RequestDetails = new Requestdetails
                 {
                     SearchHotelPriceRequest = new Searchhotelpricerequest

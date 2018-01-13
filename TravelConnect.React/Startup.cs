@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 using TravelConnect.CommonServices;
+using TravelConnect.Gta.DataServices;
 using TravelConnect.Interfaces;
 using TravelConnect.Models;
 using TravelConnect.Sabre;
@@ -53,7 +54,17 @@ namespace TravelConnect_React
             services.AddTransient<IPnrService, PnrService>();
             services.AddTransient<IAirService, TravelConnect.uAPI.Services.AirService>();
             services.AddTransient<IHotelService, TravelConnect.Gta.Services.HotelService>();
+            services.AddTransient<TravelConnect.Gta.Interfaces.IGeoService, 
+                TravelConnect.Gta.Services.GeoService>();
 
+
+            services.AddTransient<IGeoRepository, GeoRepository>();
+            services.AddDbContext<GtaContext>(options => 
+                options
+                    .UseSqlite("Data Source=gta.db",
+                        b => b.MigrationsAssembly("TravelConnect.React"))
+                    .EnableSensitiveDataLogging());
+        
             services.AddTransient<IUtilityService, UtilityService>();
             services.AddTransient<ILogService, LogService>();
 
