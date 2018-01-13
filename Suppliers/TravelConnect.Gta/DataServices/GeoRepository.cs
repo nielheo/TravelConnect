@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ namespace TravelConnect.Gta.DataServices
         public GeoRepository(GtaContext db, ILogger<GeoRepository> logger)
         {
             _db = db;
-            //_logger = logger;
+        //    _logger = logger;
         }
 
         public async Task<List<City>> GetCities(string CountryCode)
@@ -60,21 +61,35 @@ namespace TravelConnect.Gta.DataServices
 
         public async void InsertCities(List<City> Cities, string CountryCode)
         {
-            var dbCities = await _db.Cities
-                .Where(c => c.CountryCode.ToUpper() == CountryCode.ToUpper()).ToListAsync();
-
-            foreach (var city in Cities.Where(c => c.CountryCode.ToUpper() == CountryCode.ToUpper()))
+            _LogService = new LogService();
+            try
             {
-                if (!dbCities.Any(c => c.Code.ToUpper() == city.Code.ToUpper()))
-                    _db.Cities.Add(new City
-                    {
-                        Code = city.Code,
-                        Name = city.Name,
-                        CountryCode = city.CountryCode.ToUpper()
-                    });
-            }
+                var dbCities = await _db.Cities
+                    .Where(c => c.CountryCode.ToUpper() == CountryCode.ToUpper()).ToListAsync();
 
-            await _db.SaveChangesAsync();
+                foreach (var city in Cities.Where(c => c.CountryCode.ToUpper() == CountryCode.ToUpper()))
+                {
+                    if (!dbCities.Any(c => c.Code.ToUpper() == city.Code.ToUpper()))
+                        _db.Cities.Add(new City
+                        {
+                            Code = city.Code,
+                            Name = city.Name,
+                            CountryCode = city.CountryCode.ToUpper()
+                        });
+                }
+
+                await _db.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                _LogService.LogException(ex, "Gta.GeoService.InsertCities");
+            }
+        }
+
+        public async Task<List<City>> SearchCities(string cityName)
+        {
+            return await _db.Cities.Include(c => c.Country)
+                .Where(c => c.Name.ToLower().IndexOf(cityName.ToLower()) > -1).ToListAsync();
         }
     }
 }

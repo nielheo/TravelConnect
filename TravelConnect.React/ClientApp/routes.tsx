@@ -12,6 +12,7 @@ import Thankyou from './components/thankyou'
 import ScrollToTop from './ScrollToTop'
 import Countries from './components/countries'
 import Cities from './components/cities'
+import GtaCountries from './components/GtaCountries'
 
 
 export const routes = <Layout>
@@ -25,6 +26,7 @@ export const routes = <Layout>
     <Route exact path='/thankyou' component={Thankyou} />
     <Route exact path='/countries' component={Countries} />
     <Route exact path='/countries/:countryCode/cities' component={Cities} />
+    <Route exact path='/gtacountries' component={GtaCountries} />
     <Route path='/flight/search' component={FlightSearch} />
     <Route path='/flight/result/:route' component={FlightResult} />
     <Route path='/flight/pax/' component={FlightPax} />

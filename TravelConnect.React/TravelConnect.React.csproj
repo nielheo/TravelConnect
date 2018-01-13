@@ -59,6 +59,8 @@
     <None Remove="ClientApp\components\flightPax\Index.tsx" />
     <None Remove="ClientApp\components\flightSearch\SelectDate.tsx" />
     <None Remove="ClientApp\components\flightSearch\SelectPax.tsx" />
+    <None Remove="ClientApp\components\GtaCountries\Country.tsx" />
+    <None Remove="ClientApp\components\GtaCountries\Index.tsx" />
     <None Remove="ClientApp\components\Header.tsx" />
     <None Remove="ClientApp\components\hotelDetail\Index.tsx" />
     <None Remove="ClientApp\components\hotelDetail\Room.tsx" />
@@ -115,6 +117,8 @@
     <TypeScriptCompile Include="ClientApp\components\flightSearch\AirportAutocomplete.tsx" />
     <TypeScriptCompile Include="ClientApp\components\commons\SelectDate.tsx" />
     <TypeScriptCompile Include="ClientApp\components\flightSearch\SelectPax.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\GtaCountries\Country.tsx" />
+    <TypeScriptCompile Include="ClientApp\components\GtaCountries\Index.tsx" />
     <TypeScriptCompile Include="ClientApp\components\Header.tsx" />
     <TypeScriptCompile Include="ClientApp\components\hotelDetail\Index.tsx" />
     <TypeScriptCompile Include="ClientApp\components\hotelDetail\Room.tsx" />

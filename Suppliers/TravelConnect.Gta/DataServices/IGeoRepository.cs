@@ -16,6 +16,8 @@ namespace TravelConnect.Gta.DataServices
 
         Task<City> GetCity(string Code);
 
+        Task<List<City>> SearchCities(string cityName);
+
         void InsertCities(List<City> Cities, string CountryCode);
     }
 }

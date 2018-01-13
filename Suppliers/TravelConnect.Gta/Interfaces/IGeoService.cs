@@ -13,5 +13,7 @@ namespace TravelConnect.Gta.Interfaces
         Task<List<City>> GetCities(string CountryCode, bool forceRefresh = false);
 
         Task<City> GetCity(string Code, bool forceRefresh = false);
+
+        Task<List<City>> SearchCities(string cityName);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TravelConnect.Gta.DataModels;
 using TravelConnect.Gta.Interfaces;
@@ -33,6 +34,15 @@ namespace TravelConnect.React.Controllers
         public async Task<List<City>> Cities(string countryCode)
         {
             return await _GeoService.GetCities(countryCode);
+        }
+
+        [Route("searchcities")]
+        public async Task<List<City>> SearchCities(string cityName)
+        {
+            var cities = await _GeoService.SearchCities(cityName);
+            return cities
+                .OrderBy(c => c.Name.ToLower().IndexOf(cityName.ToLower()))
+                .ThenBy(c => c.Name).ToList();
         }
     }
 }
