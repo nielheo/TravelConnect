@@ -32,7 +32,8 @@ namespace TravelConnect_React
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc()
-                .AddJsonOptions(options => {
+                .AddJsonOptions(options =>
+                {
                     options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
                 });
 
@@ -45,7 +46,7 @@ namespace TravelConnect_React
                     "User id=sa;" +
                     "Password=123qwe!@#Q;";*/
 
-            services.AddDbContext<TCContext>(options => 
+            services.AddDbContext<TCContext>(options =>
                 options.UseSqlite(connection, b => b.MigrationsAssembly("TravelConnect.Models")));
 
             services.AddTransient<ISabreConnector, SabreConnector>();
@@ -54,17 +55,16 @@ namespace TravelConnect_React
             services.AddTransient<IPnrService, PnrService>();
             services.AddTransient<IAirService, TravelConnect.uAPI.Services.AirService>();
             services.AddTransient<IHotelService, TravelConnect.Gta.Services.HotelService>();
-            services.AddTransient<TravelConnect.Gta.Interfaces.IGeoService, 
+            services.AddTransient<TravelConnect.Gta.Interfaces.IGeoService,
                 TravelConnect.Gta.Services.GeoService>();
 
-
             services.AddTransient<IGeoRepository, GeoRepository>();
-            services.AddDbContext<GtaContext>(options => 
+            services.AddDbContext<GtaContext>(options =>
                 options
                     .UseSqlite("Data Source=gta.db",
                         b => b.MigrationsAssembly("TravelConnect.React"))
                     .EnableSensitiveDataLogging());
-        
+
             services.AddTransient<IUtilityService, UtilityService>();
             services.AddTransient<ILogService, LogService>();
 
@@ -72,7 +72,6 @@ namespace TravelConnect_React
             {
                 context.Database.Migrate();
             }
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -100,10 +99,8 @@ namespace TravelConnect_React
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-            
-            app.UseResponseCompression();
 
-           
+            app.UseResponseCompression();
 
             app.UseMvc(routes =>
             {
@@ -115,8 +112,6 @@ namespace TravelConnect_React
                     name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
             });
-
-            
         }
     }
 }

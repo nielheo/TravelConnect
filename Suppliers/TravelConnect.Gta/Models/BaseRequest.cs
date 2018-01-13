@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace TravelConnect.Gta.Models
 {
@@ -37,5 +34,4 @@ namespace TravelConnect.Gta.Models
         public string Currency { get; set; }
         public string Country { get; set; }
     }
-
 }

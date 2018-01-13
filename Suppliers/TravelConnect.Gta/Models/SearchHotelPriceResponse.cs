@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml.Serialization;
-
-namespace TravelConnect.Gta.Models
+﻿namespace TravelConnect.Gta.Models
 {
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
     [System.Xml.Serialization.XmlRootAttribute("Response", Namespace = "", IsNullable = false)]
     public partial class SearchHotelPriceResponse
     {
-
         private ResponseResponseDetails responseDetailsField;
 
         private string responseReferenceField;
@@ -46,7 +40,6 @@ namespace TravelConnect.Gta.Models
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
     public partial class ResponseResponseDetails
     {
-
         private ResponseResponseDetailsSearchHotelPriceResponse searchHotelPriceResponseField;
 
         private string languageField;
@@ -83,7 +76,6 @@ namespace TravelConnect.Gta.Models
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
     public partial class ResponseResponseDetailsSearchHotelPriceResponse
     {
-
         private ResponseResponseDetailsSearchHotelPriceResponseHotel[] hotelDetailsField;
 
         /// <remarks/>
@@ -105,7 +97,6 @@ namespace TravelConnect.Gta.Models
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
     public partial class ResponseResponseDetailsSearchHotelPriceResponseHotel
     {
-
         private ResponseResponseDetailsSearchHotelPriceResponseHotelCity cityField;
 
         private ResponseResponseDetailsSearchHotelPriceResponseHotelItem itemField;
@@ -283,7 +274,6 @@ namespace TravelConnect.Gta.Models
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
     public partial class ResponseResponseDetailsSearchHotelPriceResponseHotelCity
     {
-
         private string codeField;
 
         private string valueField;
@@ -321,7 +311,6 @@ namespace TravelConnect.Gta.Models
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
     public partial class ResponseResponseDetailsSearchHotelPriceResponseHotelItem
     {
-
         private string codeField;
 
         private string valueField;
@@ -359,7 +348,6 @@ namespace TravelConnect.Gta.Models
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
     public partial class ResponseResponseDetailsSearchHotelPriceResponseHotelLocation
     {
-
         private string codeField;
 
         private string valueField;
@@ -397,7 +385,6 @@ namespace TravelConnect.Gta.Models
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
     public partial class ResponseResponseDetailsSearchHotelPriceResponseHotelHotelRooms
     {
-
         private ResponseResponseDetailsSearchHotelPriceResponseHotelHotelRoomsHotelRoom hotelRoomField;
 
         /// <remarks/>
@@ -418,7 +405,6 @@ namespace TravelConnect.Gta.Models
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
     public partial class ResponseResponseDetailsSearchHotelPriceResponseHotelHotelRoomsHotelRoom
     {
-
         private string codeField;
 
         private byte numberOfRoomsField;
@@ -456,7 +442,6 @@ namespace TravelConnect.Gta.Models
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
     public partial class ResponseResponseDetailsSearchHotelPriceResponseHotelRoomCategory
     {
-
         private string descriptionField;
 
         private ResponseResponseDetailsSearchHotelPriceResponseHotelRoomCategoryItemPrice itemPriceField;
@@ -569,7 +554,6 @@ namespace TravelConnect.Gta.Models
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
     public partial class ResponseResponseDetailsSearchHotelPriceResponseHotelRoomCategoryItemPrice
     {
-
         private string currencyField;
 
         private decimal grossWithoutDiscountField;
@@ -671,7 +655,6 @@ namespace TravelConnect.Gta.Models
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
     public partial class ResponseResponseDetailsSearchHotelPriceResponseHotelRoomCategoryOffer
     {
-
         private string codeField;
 
         private string valueField;
@@ -709,7 +692,6 @@ namespace TravelConnect.Gta.Models
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
     public partial class ResponseResponseDetailsSearchHotelPriceResponseHotelRoomCategoryConfirmation
     {
-
         private string codeField;
 
         private string valueField;
@@ -747,7 +729,6 @@ namespace TravelConnect.Gta.Models
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
     public partial class ResponseResponseDetailsSearchHotelPriceResponseHotelRoomCategoryMeals
     {
-
         private ResponseResponseDetailsSearchHotelPriceResponseHotelRoomCategoryMealsBasis basisField;
 
         private ResponseResponseDetailsSearchHotelPriceResponseHotelRoomCategoryMealsBreakfast breakfastField;
@@ -783,7 +764,6 @@ namespace TravelConnect.Gta.Models
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
     public partial class ResponseResponseDetailsSearchHotelPriceResponseHotelRoomCategoryMealsBasis
     {
-
         private string codeField;
 
         private string valueField;
@@ -821,7 +801,6 @@ namespace TravelConnect.Gta.Models
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
     public partial class ResponseResponseDetailsSearchHotelPriceResponseHotelRoomCategoryMealsBreakfast
     {
-
         private string codeField;
 
         private string valueField;
@@ -859,7 +838,6 @@ namespace TravelConnect.Gta.Models
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
     public partial class ResponseResponseDetailsSearchHotelPriceResponseHotelRoomCategoryInformation
     {
-
         private string textField;
 
         private ResponseResponseDetailsSearchHotelPriceResponseHotelRoomCategoryInformationDateRange dateRangeField;
@@ -895,7 +873,6 @@ namespace TravelConnect.Gta.Models
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
     public partial class ResponseResponseDetailsSearchHotelPriceResponseHotelRoomCategoryInformationDateRange
     {
-
         private System.DateTime fromDateField;
 
         private System.DateTime toDateField;

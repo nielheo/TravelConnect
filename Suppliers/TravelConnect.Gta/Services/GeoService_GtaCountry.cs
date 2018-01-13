@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TravelConnect.Gta.DataModels;
 using TravelConnect.Gta.Interfaces;
@@ -17,7 +16,6 @@ namespace TravelConnect.Gta.Services
             {
                 _LogService = new CommonServices.LogService();
                 _LogService.LogInfo("GTA/SearchCountryRQ", "");
-
 
                 SearchCountryRequest req = new SearchCountryRequest
                 {
@@ -39,16 +37,16 @@ namespace TravelConnect.Gta.Services
 
                 List<Country> countries = new List<Country>();
 
-                foreach(var coun in response.ResponseDetails.SearchCountryResponse.CountryDetails)
+                foreach (var coun in response.ResponseDetails.SearchCountryResponse.CountryDetails)
                 {
                     if (countries.FirstOrDefault(c => c.Code == coun.Code) == null)
                         countries.Add(new Country
                         {
-                            Code = coun.Code,
+                            Code = coun.Code.ToUpper(),
                             Name = coun.Value
                         });
                 }
-                
+
                 _LogService.LogInfo("GTA/SearchCountryRS", countries);
 
                 return countries;

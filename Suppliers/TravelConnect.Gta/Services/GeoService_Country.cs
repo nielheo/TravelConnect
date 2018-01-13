@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TravelConnect.Gta.DataModels;
 using TravelConnect.Gta.Interfaces;
@@ -34,7 +33,21 @@ namespace TravelConnect.Gta.Services
 
         public async Task<Country> GetCountry(string Code, bool forceRefresh = false)
         {
-            throw new System.NotImplementedException();
+            if (forceRefresh)
+            {
+                var couns = await RefreshCountry();
+                return couns.FirstOrDefault(c => c.Code.ToUpper() == Code.ToUpper());
+            }
+
+            var countries = await _GeoRepository.GetCountry(Code.ToUpper());
+
+            if (countries == null)
+            {
+                var cns = await RefreshCountry();
+                return cns.FirstOrDefault(c => c.Code.ToUpper() == Code.ToUpper());
+            }
+            else
+                return countries;
         }
     }
 }

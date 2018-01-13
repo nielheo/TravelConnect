@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.IO.Compression;
 using System.Net;
 using System.Text;
@@ -18,7 +16,7 @@ namespace TravelConnect.Gta.Services
         protected string _ClientId = "36196";
         protected string _EmailAddress = "XML.INSOURCEASIA@TRAVELBULLZ.COM";
         protected string _Password = "TRAVB@1212";
-        
+
         protected Source Source
         {
             get
@@ -71,7 +69,7 @@ namespace TravelConnect.Gta.Services
             {
                 result = (T)x.Deserialize(reader);
             }
-            
+
             return result;
         }
 
@@ -97,7 +95,6 @@ namespace TravelConnect.Gta.Services
             {
                 await stream.WriteAsync(data, 0, data.Length);
             }
-
 
             MemoryStream content = new MemoryStream();
             using (HttpWebResponse response = (HttpWebResponse)await webRequest.GetResponseAsync())

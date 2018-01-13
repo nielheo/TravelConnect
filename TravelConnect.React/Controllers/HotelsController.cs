@@ -1,14 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using TravelConnect.Interfaces;
+using TravelConnect.Models;
 using TravelConnect.Models.Requests;
 using TravelConnect.Models.Responses;
-using TravelConnect.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace TravelConnect.React.Controllers
 {
@@ -103,7 +101,7 @@ namespace TravelConnect.React.Controllers
         }
 
         [Route("{id}/recheck")]
-        public async Task<HotelRoomRS> RecheckPrice(int id, DateTime checkIn, DateTime checkOut, 
+        public async Task<HotelRoomRS> RecheckPrice(int id, DateTime checkIn, DateTime checkOut,
             string locale, string currency, string rooms, string rateCode, string roomTypeCode)
         {
             HotelRecheckPriceRQ request = new HotelRecheckPriceRQ()

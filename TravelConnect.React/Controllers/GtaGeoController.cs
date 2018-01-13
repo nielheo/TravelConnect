@@ -1,9 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using TravelConnect.Gta.DataModels;
 using TravelConnect.Gta.Interfaces;
 
@@ -13,7 +10,7 @@ namespace TravelConnect.React.Controllers
     [Route("api/GtaGeo")]
     public class GtaGeoController : Controller
     {
-        IGeoService _GeoService;
+        private IGeoService _GeoService;
 
         public GtaGeoController(IGeoService _GeoService)
         {
@@ -23,7 +20,19 @@ namespace TravelConnect.React.Controllers
         [Route("countries")]
         public async Task<List<Country>> Countries()
         {
-            return await _GeoService.GetCountries(false);
+            return await _GeoService.GetCountries();
+        }
+
+        [Route("countries/{code}")]
+        public async Task<Country> Country(string Code)
+        {
+            return await _GeoService.GetCountry(Code);
+        }
+
+        [Route("countries/{countryCode}/cities")]
+        public async Task<List<City>> Cities(string countryCode)
+        {
+            return await _GeoService.GetCities(countryCode);
         }
     }
 }

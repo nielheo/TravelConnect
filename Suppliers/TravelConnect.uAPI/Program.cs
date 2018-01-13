@@ -1,21 +1,13 @@
-﻿using kestrel.AirService;
-using kestrel.SystemService;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.ServiceModel;
+﻿using System;
 using System.Text;
-using TravelConnect.CommonServices;
 using TravelConnect.Models.Requests;
-using TravelConnect.uAPI.Utility;
 
 namespace uAPI
 {
-    class Program
+    internal class Program
     {
         protected static string ApiKey = "sb4ps442bpwzv4fc6m9gd7rb";
         protected static string SharedSecret = "eETy7g9Y";
-
 
         protected static string GenerateSignature()
         {
@@ -41,9 +33,8 @@ namespace uAPI
             }
         }
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-
             //var binding = new BasicHttpsBinding();
             //binding.Name = "SystemPingPort";
             //binding.CloseTimeout = TimeSpan.FromMinutes(1);
@@ -162,7 +153,6 @@ namespace uAPI
 
             //LogService _LogService = new LogService();
 
-
             ////string jRequest = JsonConvert.SerializeObject(req);
             //_LogService.LogInfo($"uAPI/LowFareSearchReq", req);
 
@@ -171,9 +161,6 @@ namespace uAPI
             ////string jResult = JsonConvert.SerializeObject(result);
             //_LogService.LogInfo($"uAPI/LowFareSearchRsp", result);
             ///*
-
-
-
 
             //var binding = new BasicHttpsBinding();
             //binding.Name = "SystemPingPort";
@@ -220,7 +207,6 @@ namespace uAPI
             {
                 CheckIn = DateTime.Today.AddDays(90),
                 CheckOut = DateTime.Today.AddDays(92),
-
             }).Result;
         }
     }

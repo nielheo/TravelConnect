@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,12 +23,12 @@ namespace TravelConnect.Gta.DataServices
 
         public async Task<List<City>> GetCities(string CountryCode)
         {
-            return await _db.Cities.Where(c => c.CountryCode == CountryCode).ToListAsync();
+            return await _db.Cities.Where(c => c.CountryCode.ToUpper() == CountryCode.ToUpper()).ToListAsync();
         }
 
         public async Task<City> GetCity(string Code)
         {
-            return await _db.Cities.FirstOrDefaultAsync(c => c.Code == Code);
+            return await _db.Cities.FirstOrDefaultAsync(c => c.Code.ToUpper() == Code.ToUpper());
         }
 
         public async Task<List<Country>> GetCountries()
@@ -39,16 +38,16 @@ namespace TravelConnect.Gta.DataServices
 
         public async Task<Country> GetCountry(string Code)
         {
-            return await _db.Countries.FirstOrDefaultAsync(c => c.Code == Code);
+            return await _db.Countries.FirstOrDefaultAsync(c => c.Code.ToUpper() == Code.ToUpper());
         }
 
         public async void InsertCountries(List<Country> Countries)
         {
             var dbCountries = await _db.Countries.ToListAsync();
 
-            foreach(var country in Countries)
+            foreach (var country in Countries)
             {
-                if (!dbCountries.Any(c => c.Code == country.Code))
+                if (!dbCountries.Any(c => c.Code.ToUpper() == country.Code.ToUpper()))
                     _db.Countries.Add(new Country
                     {
                         Code = country.Code,
@@ -58,19 +57,20 @@ namespace TravelConnect.Gta.DataServices
 
             await _db.SaveChangesAsync();
         }
-        
-        public  async void InsertCities(List<City> Cities, string CountryCode)
-        {
-            var dbCities = await _db.Cities.Where(c => c.CountryCode == CountryCode).ToListAsync();
 
-            foreach(var city in Cities.Where(c=>c.CountryCode == CountryCode))
+        public async void InsertCities(List<City> Cities, string CountryCode)
+        {
+            var dbCities = await _db.Cities
+                .Where(c => c.CountryCode.ToUpper() == CountryCode.ToUpper()).ToListAsync();
+
+            foreach (var city in Cities.Where(c => c.CountryCode.ToUpper() == CountryCode.ToUpper()))
             {
-                if (!dbCities.Any(c => c.Code == city.Code))
+                if (!dbCities.Any(c => c.Code.ToUpper() == city.Code.ToUpper()))
                     _db.Cities.Add(new City
                     {
                         Code = city.Code,
                         Name = city.Name,
-                        CountryCode = city.CountryCode
+                        CountryCode = city.CountryCode.ToUpper()
                     });
             }
 

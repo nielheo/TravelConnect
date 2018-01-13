@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TravelConnect.CommonServices;
 using TravelConnect.Ean.Models;
@@ -23,7 +22,7 @@ namespace TravelConnect.Ean.Services
         {
             this._cache = memoryCache;
         }
-        
+
         public async Task<HotelSearchCityRS> HotelSearchByCityAsync(HotelSearchCityRQ request)
         {
             if (!request.Suppliers.Contains("EAN"))
@@ -74,7 +73,7 @@ namespace TravelConnect.Ean.Services
                         // Save data in cache.
                         _cache.Set(sRequest, cityResponse, cacheEntryOptions);
                     }
-                    
+
                     return cityResponse;
                 }
                 catch (Exception ex)
@@ -206,4 +205,3 @@ namespace TravelConnect.Ean.Services
         }
     }
 }
- 

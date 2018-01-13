@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Tester
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             TravelConnect.Gta.Services.HotelService svc = new TravelConnect.Gta.Services.HotelService();
             var result = svc.HotelSearchByCityAsync(new TravelConnect.Models.Requests.HotelSearchCityRQ

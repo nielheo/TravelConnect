@@ -1,15 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using TravelConnect.Gta.DataModels;
 
 namespace TravelConnect.Gta.DataServices
 {
     public class GtaContext : DbContext
     {
-
         public readonly ILogger<GtaContext> _logger;
         public readonly DbContextOptions _options;
         private bool _migrations;
@@ -46,24 +42,24 @@ namespace TravelConnect.Gta.DataServices
             // Country
             modelBuilder.Entity<Country>().HasKey(c => c.Code);
             modelBuilder.Entity<Country>().Property(e => e.Code)
-                .HasColumnType("varchar")
+                .HasColumnType("varchar(2)")
                 .HasMaxLength(2)
                 .ValueGeneratedNever();
             modelBuilder.Entity<Country>().Property(e => e.Name)
-                .HasColumnType("nvarchar")
+                .HasColumnType("nvarchar(100)")
                 .HasMaxLength(100);
 
             // City
             modelBuilder.Entity<City>().HasKey(c => c.Code);
             modelBuilder.Entity<City>().Property(e => e.Code)
-                .HasColumnType("varchar")
+                .HasColumnType("varchar(2)")
                 .HasMaxLength(2)
                 .ValueGeneratedNever();
             modelBuilder.Entity<City>().Property(e => e.Name)
-                .HasColumnType("nvarchar")
+                .HasColumnType("nvarchar(100)")
                 .HasMaxLength(100);
             modelBuilder.Entity<City>().Property(e => e.CountryCode)
-                .HasColumnType("varchar")
+                .HasColumnType("varchar(2)")
                 .HasMaxLength(2);
 
             // City - Country

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace TravelConnect.Gta.Models
 {
@@ -9,10 +6,9 @@ namespace TravelConnect.Gta.Models
     [System.Xml.Serialization.XmlRootAttribute("Request", Namespace = "", IsNullable = false)]
     public class SearchHotelPriceRequest : BaseRequest
     {
-
     }
-    
-    public partial class Requestdetails 
+
+    public partial class Requestdetails
     {
         public Searchhotelpricerequest SearchHotelPriceRequest { get; set; }
     }
@@ -41,6 +37,7 @@ namespace TravelConnect.Gta.Models
 
         [XmlAttribute]
         public string DestinationCode { get; set; }
+
         public string WestLongitude { get; set; }
         public string SouthLatitude { get; set; }
         public string EastLongitude { get; set; }
@@ -57,13 +54,14 @@ namespace TravelConnect.Gta.Models
     {
         public string CancellationDeadlineDays { get; set; }
     }
-    
+
     public class Room
     {
         public Extrabeds ExtraBeds { get; set; }
 
         [XmlAttribute]
         public string Code { get; set; }
+
         public string NumberOfRooms { get; set; }
         public string NumberOfCots { get; set; }
     }

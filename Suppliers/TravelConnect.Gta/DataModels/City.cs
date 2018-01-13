@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TravelConnect.Gta.DataModels
 {
@@ -18,6 +15,7 @@ namespace TravelConnect.Gta.DataModels
         [Required]
         [StringLength(2)]
         public string CountryCode { get; set; }
+
         public Country Country { get; set; }
     }
 }

@@ -9,21 +9,12 @@ namespace TravelConnect.Gta.Services
     public partial class GeoService : BaseService, IGeoService
     {
         private IGeoRepository _GeoRepository;
+
         public GeoService(IGeoRepository _GeoRepository)
         {
             this._GeoRepository = _GeoRepository;
         }
 
-
-        public Task<List<City>> GetCities(string CountryCode, bool forceRefresh = false)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task<City> GetCity(string Code, bool forceRefresh = false)
-        {
-            throw new System.NotImplementedException();
-        }
         
     }
 }
