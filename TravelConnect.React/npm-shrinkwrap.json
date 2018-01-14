@@ -15,9 +15,17 @@
       "integrity": "sha1-CT1n7XgNiJyVQ/bcok6+4La5/EU="
     },
     "@types/lodash": {
-      "version": "4.14.91",
-      "resolved": "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.91.tgz",
-      "integrity": "sha512-k+nc3moSlAaXacyvz4/c6D9lnUeI6AKsLvkXFuNzUEEqMw7sjDnLW2GqlJ4nyFgMX/p+QzvVG6zRoDo4lJIV5g=="
+      "version": "4.14.92",
+      "resolved": "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.92.tgz",
+      "integrity": "sha512-cdvY1fyUGYgG7/i07a/sR5PnD6+Z+ljUrD0CNVf0qj645VvEdLNtZPjvCp4siPy3rQ/KRXMfUATIqi3+9x57Sw=="
+    },
+    "@types/lodash.debounce": {
+      "version": "4.0.3",
+      "resolved": "https://registry.npmjs.org/@types/lodash.debounce/-/lodash.debounce-4.0.3.tgz",
+      "integrity": "sha512-/2RpcexzkSH16nENwuL/Gd3Y2xvdkNwX32KPESB/D8K2c6HBs7GdSnoj6ngyFWNT1UhXNrIpJd0lgSC3Rmt/3g==",
+      "requires": {
+        "@types/lodash": "4.14.92"
+      }
     },
     "@types/material-ui": {
       "version": "0.18.0",
@@ -60,6 +68,14 @@
       "version": "0.31.1",
       "resolved": "https://registry.npmjs.org/@types/react-bootstrap/-/react-bootstrap-0.31.1.tgz",
       "integrity": "sha512-WGiPuN+GYG7MjrH//QjoC6cdofBFd0bwgkvXb5Dc69u8Ilfato6i1d63MXdjz0Bgzju860Zb0ACWFhbEEUL00A==",
+      "requires": {
+        "@types/react": "15.0.35"
+      }
+    },
+    "@types/react-bootstrap-typeahead": {
+      "version": "2.0.0",
+      "resolved": "https://registry.npmjs.org/@types/react-bootstrap-typeahead/-/react-bootstrap-typeahead-2.0.0.tgz",
+      "integrity": "sha512-ruG4+OBehrUiuVviyEhAcxxjfET6hn6wPRr1Pmm2iAyxQi9Tyc4DwkpzpC8VWkayJ3qcawYU9muUIXAIAmuTKg==",
       "requires": {
         "@types/react": "15.0.35"
       }
@@ -1687,11 +1703,6 @@
         "ua-parser-js": "0.7.13"
       }
     },
-    "fetch-please": {
-      "version": "0.4.3",
-      "resolved": "https://registry.npmjs.org/fetch-please/-/fetch-please-0.4.3.tgz",
-      "integrity": "sha512-dXItxYKOjdsCQT6pjMfkLUjbVaATl/HaUenttrTtidmMWuqfMNA7Bvz9I+nH35J8QLhO7ADEHJvFn5XJ2D94Ow=="
-    },
     "file-loader": {
       "version": "0.11.2",
       "resolved": "https://registry.npmjs.org/file-loader/-/file-loader-0.11.2.tgz",
@@ -3181,6 +3192,11 @@
       "version": "4.3.0",
       "resolved": "https://registry.npmjs.org/lodash.camelcase/-/lodash.camelcase-4.3.0.tgz",
       "integrity": "sha1-soqmKIorn8ZRA1x3EfZathkDMaY="
+    },
+    "lodash.debounce": {
+      "version": "4.0.8",
+      "resolved": "https://registry.npmjs.org/lodash.debounce/-/lodash.debounce-4.0.8.tgz",
+      "integrity": "sha1-gteb/zCmfEAF/9XiUVMArZyk168="
     },
     "lodash.memoize": {
       "version": "4.1.2",

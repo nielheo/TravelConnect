@@ -41,9 +41,9 @@ export default class GtaCountries_Country extends React.Component<
             <td>{country.name}</td>
             <td>
                 {
-                    this.state.cities 
+                    this.state.cities
                         ? <label>{`${this.state.cities.length} cities`}</label>
-                        : <label>loading ... </label>
+                        : <span>-----</span>
                 }
 
             </td>

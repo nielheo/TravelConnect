@@ -10,9 +10,10 @@ using TravelConnect.Gta.DataServices;
 namespace TravelConnect.React.Migrations
 {
     [DbContext(typeof(GtaContext))]
-    partial class GtaContextModelSnapshot : ModelSnapshot
+    [Migration("20180114161501_HotelDetail")]
+    partial class HotelDetail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

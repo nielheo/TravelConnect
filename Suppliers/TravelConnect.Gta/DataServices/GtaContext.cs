@@ -34,11 +34,13 @@ namespace TravelConnect.Gta.DataServices
             base.OnConfiguring(optionsBuilder);
         }
 
+        /*
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // https://docs.microsoft.com/en-us/ef/core/modeling/relationships
             // http://stackoverflow.com/questions/38520695/multiple-relationships-to-the-same-table-in-ef7core
 
+            #region Country
             // Country
             modelBuilder.Entity<Country>().HasKey(c => c.Code);
             modelBuilder.Entity<Country>().Property(e => e.Code)
@@ -48,7 +50,9 @@ namespace TravelConnect.Gta.DataServices
             modelBuilder.Entity<Country>().Property(e => e.Name)
                 .HasColumnType("nvarchar(100)")
                 .HasMaxLength(100);
+            #endregion
 
+            #region City
             // City
             modelBuilder.Entity<City>().HasKey(c => c.Code);
             modelBuilder.Entity<City>().Property(e => e.Code)
@@ -68,9 +72,43 @@ namespace TravelConnect.Gta.DataServices
                 .WithMany(p => p.Cities)
                 .HasForeignKey(h => h.CountryCode)
                 .OnDelete(DeleteBehavior.Restrict);
+            #endregion City
+
+            #region Hotel
+            //Hotel
+            modelBuilder.Entity<Hotel>().HasKey(c => c.Code);
+            modelBuilder.Entity<Hotel>().Property(e => e.Code)
+                .HasColumnType("varchar(15)")
+                .HasMaxLength(15)
+                .ValueGeneratedNever();
+            modelBuilder.Entity<Hotel>().Property(e => e.Name)
+                .HasColumnType("nvarchar(100)")
+                .HasMaxLength(100);
+            modelBuilder.Entity<Hotel>().Property(e => e.StarRating);
+            
+            // Hotel - City
+            modelBuilder.Entity<Hotel>()
+                .HasOne(h => h.City)
+                .WithMany(p => p.Hotels)
+                .HasForeignKey(h => h.CityCode)
+                .OnDelete(DeleteBehavior.Restrict);
+            #endregion Hotel
         }
+        */
 
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Country> Countries { get; set; }
+        public virtual DbSet<Hotel> Hotels { get; set; }
+        public virtual DbSet<HotelAreaDetail> HotelAreaDetails { get; set; }
+        public virtual DbSet<HotelFacility> HotelFacilities { get; set; }
+        public virtual DbSet<HotelImageLink> HotelImageLinks { get; set; }
+        public virtual DbSet<HotelLocation> HotelLocations { get; set; }
+        public virtual DbSet<HotelMapLink> HotelMapLinks { get; set; }
+        public virtual DbSet<HotelReport> HotelReports { get; set; }
+        public virtual DbSet<HotelRoomCategory> HotelRoomCategories { get; set; }
+        public virtual DbSet<HotelRoomFacility> HotelRoomFacilities { get; set; }
+        public virtual DbSet<HotelRoomType> HotelRoomTypes { get; set; }
+        public virtual DbSet<Location> Locations { get; set; }
+        public virtual DbSet<RoomType> RoomTypes { get; set; }
     }
 }

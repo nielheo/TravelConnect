@@ -1,22 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 
 namespace TravelConnect.Gta.DataModels
 {
-    public class Country
+    public class RoomType
     {
         [Key]
         [Required]
-        [StringLength(2)]
-        [Column(TypeName = "varchar(2)")]
+        [StringLength(3)]
+        [Column(TypeName = "varchar(3)")]
         public string Code { get; set; }
 
         [Required]
-        [StringLength(100)]
-        [Column(TypeName = "nvarchar(100)")]
+        [StringLength(30)]
+        [Column(TypeName = "varchar(30)")]
         public string Name { get; set; }
-
-        public ICollection<City> Cities { get; set; }
     }
 }

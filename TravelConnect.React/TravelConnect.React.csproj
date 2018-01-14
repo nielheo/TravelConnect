@@ -73,7 +73,9 @@
     <None Remove="ClientApp\components\hotelSearch\Occupancy.tsx" />
     <None Remove="ClientApp\ScrollToTop.tsx" />
     <None Remove="ClientApp\store\Flight.ts" />
+    <None Remove="gta.db" />
     <None Remove="Properties\PublishProfiles\TravelConnectReact20171002093432 - Web Deploy.pubxml" />
+    <None Remove="travelconnect.db" />
   </ItemGroup>
 
   <ItemGroup>
