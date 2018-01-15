@@ -57,6 +57,9 @@ namespace TravelConnect_React
             services.AddTransient<IHotelService, TravelConnect.Gta.Services.HotelService>();
             services.AddTransient<TravelConnect.Gta.Interfaces.IGeoService,
                 TravelConnect.Gta.Services.GeoService>();
+            services.AddTransient<TravelConnect.Gta.Interfaces.IGtaHotelService,
+                TravelConnect.Gta.Services.HotelService>();
+
 
             services.AddTransient<IGeoRepository, GeoRepository>();
             services.AddDbContext<GtaContext>(options =>
