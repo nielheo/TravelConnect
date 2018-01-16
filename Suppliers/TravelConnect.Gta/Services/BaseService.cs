@@ -13,9 +13,10 @@ namespace TravelConnect.Gta.Services
     public class BaseService
     {
         protected LogService _LogService = null;
-        protected string _ClientId = "36196";
-        protected string _EmailAddress = "XML.INSOURCEASIA@TRAVELBULLZ.COM";
-        protected string _Password = "TRAVB@1212";
+        protected string _ClientId = "1601";
+        protected string _EmailAddress = "XML@INSOURCEASIA.ORG";
+        protected string _Password = "PASS";
+        protected string _Url = "https://interface.demo.gta-travel.com/wbsapi/RequestListenerServlet";
 
         protected Source Source
         {
@@ -84,7 +85,7 @@ namespace TravelConnect.Gta.Services
 
             byte[] data = Encoding.ASCII.GetBytes(request);
 
-            webRequest = (HttpWebRequest)WebRequest.Create("https://rs.gta-travel.com/wbsapi/RequestListenerServlet");
+            webRequest = (HttpWebRequest)WebRequest.Create(_Url);
             webRequest.Method = "POST";
             webRequest.ContentType = "application/xml";
             webRequest.ContentLength = data.Length;

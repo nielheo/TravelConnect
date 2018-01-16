@@ -23,5 +23,10 @@ namespace TravelConnect.Gta.DataModels
         [StringLength(4000)]
         [Column(TypeName = "varchar(4000)")]
         public string Report { get; set; }
+
+        [Required]
+        [StringLength(30)]
+        [Column(TypeName = "varchar(30)")]
+        public string Type { get; set; }
     }
 }

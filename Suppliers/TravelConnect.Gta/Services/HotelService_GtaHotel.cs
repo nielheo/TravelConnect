@@ -17,9 +17,11 @@ namespace TravelConnect.Gta.Services
             if (itemDetail == null)
                 return null;
 
+            string hotelCode = $"{itemDetail.City.Code.ToUpper() }.{itemDetail.Item.Code.ToUpper() }";
+
             Hotel hotel = new Hotel
             {
-                Code = $"{itemDetail.City.Code.ToUpper() }.{itemDetail.Item.Code.ToUpper() }",
+                Code = hotelCode,
                 Name = itemDetail.Item.Value,
                 Address1 = itemDetail.HotelInformation.AddressLines?.AddressLine1,
                 Address2 = itemDetail.HotelInformation.AddressLines?.AddressLine2,
@@ -34,12 +36,89 @@ namespace TravelConnect.Gta.Services
                 Website = itemDetail.HotelInformation.AddressLines?.WebSite,
                 Copyright = itemDetail.Copyright,
                 Phone = itemDetail.HotelInformation.AddressLines?.Telephone,
-                HotelImageLinks = itemDetail.HotelInformation.Links.ImageLinks.Select(img => 
+                HotelImageLinks = itemDetail.HotelInformation.Links.ImageLinks.Select(img =>
                     new HotelImageLink
                     {
+                        HotelCode = hotelCode,
                         Caption = img.Text,
-                         Thumbnail = img.ThumbNail,
-                         Image= img.Image
+                        Thumbnail = img.ThumbNail,
+                        Image = img.Image
+                    }
+                ).ToList(),
+                HotelAreaDetails = itemDetail.HotelInformation.AreaDetails.Select(ad =>
+                    new HotelAreaDetail
+                    {
+                        HotelCode = hotelCode,
+                        AreaDetail = ad,
+                    }
+                ).ToList(),
+                HotelFacilities = itemDetail.HotelInformation.Facilities.Select(fa =>
+                    new HotelFacility
+                    {
+                        HotelCode = hotelCode,
+                        FacilityCode = fa.Code,
+                        Facility = new Facility
+                        {
+                            Name = fa.Value
+                        }
+                    }
+                ).ToList(),
+                HotelLocations = new List<HotelLocation> {
+                    new HotelLocation
+                    {
+                        HotelCode = hotelCode,
+                        LocationCode = itemDetail.LocationDetails.Location.Code,
+                        Location = new Location
+                        {
+                            Name = itemDetail.LocationDetails.Location.Value
+                        }
+                    }
+                },
+                HotelMapLinks = new List<HotelMapLink>
+                {
+                    new HotelMapLink
+                    {
+                        HotelCode = hotelCode,
+                        MapLink = itemDetail.HotelInformation.Links.MapLinks.MapPageLink
+                    }
+                },
+                HotelReports = itemDetail.HotelInformation.Reports.Select(rpt =>
+                    new HotelReport
+                    {
+                        HotelCode = hotelCode,
+                        Report = rpt.Value,
+                        Type = rpt.Type
+                    }
+                ).ToList(),
+                HotelRoomCategories = itemDetail.HotelInformation.RoomCategories.Select(rm =>
+                    new HotelRoomCategory
+                    {
+                        HotelCode = hotelCode,
+                        Id = rm.Id,
+                        Name = rm.Description,
+                        Description = rm.RoomDescription,
+                    }
+                ).ToList(),
+                HotelRoomFacilities = itemDetail.HotelInformation.RoomFacilities.Select(fac =>
+                    new HotelRoomFacility
+                    {
+                        HotelCode = hotelCode,
+                        FacilityCode = fac.Code,
+                        Facility = new Facility
+                        {
+                            Name = fac.Value
+                        }
+                    }
+                ).ToList(),
+                HotelRoomTypes = itemDetail.HotelInformation.RoomTypes.RoomType.Select(rt =>
+                    new HotelRoomType
+                    {
+                        HotelCode = hotelCode,
+                        RoomTypeCode = rt.Code,
+                        RoomType = new RoomType
+                        {
+                            Name = rt.Value
+                        }
                     }
                 ).ToList()
             };
