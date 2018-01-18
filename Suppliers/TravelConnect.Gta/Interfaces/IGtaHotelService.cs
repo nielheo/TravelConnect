@@ -7,7 +7,7 @@ namespace TravelConnect.Gta.Interfaces
     public interface IGtaHotelService
     {
         Task<Hotel> GetHotel(string code, bool forceRefresh = false);
-
+        Task<HotelForList> GetHotelForList(string code);
         Task<List<Hotel>> GetHotels(string cityCode, bool forceRefresh = false);
     }
 }

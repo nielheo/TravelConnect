@@ -17,7 +17,8 @@ namespace TravelConnect.Gta.Services
             try
             {
                 _LogService = new CommonServices.LogService();
-                _LogService.LogInfo("GTA/SearchCityRQ", countryCode);
+                List<string> codes = new List<string> { countryCode };
+                _LogService.LogInfo("GTA/SearchCityRQ", codes);
 
                 SearchCountryRequest req = new SearchCountryRequest
                 {

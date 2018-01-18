@@ -42,9 +42,9 @@ namespace TravelConnect.Gta.DataServices
             return await _db.Countries.FirstOrDefaultAsync(c => c.Code.ToUpper() == Code.ToUpper());
         }
 
-        public async void InsertCountries(List<Country> Countries)
+        public async Task InsertCountries(List<Country> Countries)
         {
-            var dbCountries = await _db.Countries.ToListAsync();
+            var dbCountries = _db.Countries.ToList();
 
             foreach (var country in Countries)
             {
@@ -59,13 +59,17 @@ namespace TravelConnect.Gta.DataServices
             await _db.SaveChangesAsync();
         }
 
-        public async void InsertCities(List<City> Cities, string CountryCode)
+        public async Task InsertCities(List<City> Cities, string CountryCode)
         {
+            if (Cities.Count == 0)
+                return;
+
             _LogService = new LogService();
             try
             {
-                var dbCities = await _db.Cities
-                    .Where(c => c.CountryCode.ToUpper() == CountryCode.ToUpper()).ToListAsync();
+                _LogService.LogInfo($"Insert Cities. Country Code: {CountryCode} - START");
+                var dbCities = _db.Cities
+                    .Where(c => c.CountryCode.ToUpper() == CountryCode.ToUpper());
 
                 foreach (var city in Cities.Where(c => c.CountryCode.ToUpper() == CountryCode.ToUpper()))
                 {
@@ -79,6 +83,7 @@ namespace TravelConnect.Gta.DataServices
                 }
 
                 await _db.SaveChangesAsync();
+                _LogService.LogInfo($"Insert Cities. COuntry Code: {CountryCode} - FINISH");
             }
             catch(Exception ex)
             {

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TravelConnect.CommonServices;
 using TravelConnect.Gta.DataModels;
 using TravelConnect.Gta.Interfaces;
 using TravelConnect.Interfaces;
@@ -19,6 +20,8 @@ namespace TravelConnect.React.Controllers
     {
         private IHotelService _HotelService;
         private IGtaHotelService _GtaHotelService;
+
+        protected LogService _LogService = null;
 
         public HotelsController(IHotelService _HotelService,
             IGtaHotelService _GtaHotelService)
@@ -109,6 +112,14 @@ namespace TravelConnect.React.Controllers
         public async Task<Hotel> GetDetail(string country, string city, string id)
         {
             var hotel = await _GtaHotelService.GetHotel($"{city}.{id}");
+
+            return hotel;
+        }
+
+        [Route("{country}/{city}/{id}/info")]
+        public async Task<HotelForList> GetInfo(string country, string city, string id)
+        {
+            var hotel = await _GtaHotelService.GetHotelForList($"{city}.{id}");
 
             return hotel;
         }

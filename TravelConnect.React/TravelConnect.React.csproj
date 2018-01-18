@@ -29,6 +29,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20180116015304_Initiate.cs" />
+    <Compile Remove="Migrations\20180116015304_Initiate.Designer.cs" />
+    <Compile Remove="Migrations\20180117121118_ChangeGeoLocationDataType.cs" />
+    <Compile Remove="Migrations\20180117121118_ChangeGeoLocationDataType.Designer.cs" />
+    <Compile Remove="Migrations\20180117125007_ChangeToNonAutogenerateKey.cs" />
+    <Compile Remove="Migrations\20180117125007_ChangeToNonAutogenerateKey.Designer.cs" />
+    <Compile Remove="Migrations\20180117132215_Initiate.cs" />
+    <Compile Remove="Migrations\20180117132215_Initiate.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="ClientApp\components\bookHotel\Guest.tsx" />
     <None Remove="ClientApp\components\bookHotel\Index.tsx" />
     <None Remove="ClientApp\components\bookHotel\Info.tsx" />

@@ -12,7 +12,7 @@ namespace TravelConnect.Gta.DataServices
 
         public GtaContext()
         {
-            _migrations = true;
+            _migrations = false;
         }
 
         public GtaContext(DbContextOptions options, ILogger<GtaContext> logger)
@@ -21,15 +21,16 @@ namespace TravelConnect.Gta.DataServices
             _options = options;
             _logger = logger;
             Database.EnsureCreated();
+            _migrations = false;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (_migrations)
-            {
-                optionsBuilder.UseSqlite("Data Source=gta.db",
-                    b => b.MigrationsAssembly("TravelConnect.React"));
-            }
+            //if (_migrations)
+            //{
+            //    optionsBuilder.UseSqlite("Data Source=gta.db",
+            //        b => b.MigrationsAssembly("TravelConnect.React"));
+            //}
 
             base.OnConfiguring(optionsBuilder);
         }
@@ -98,6 +99,7 @@ namespace TravelConnect.Gta.DataServices
 
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Country> Countries { get; set; }
+        public virtual DbSet<Facility> Facilities { get; set; }
         public virtual DbSet<Hotel> Hotels { get; set; }
         public virtual DbSet<HotelAreaDetail> HotelAreaDetails { get; set; }
         public virtual DbSet<HotelFacility> HotelFacilities { get; set; }

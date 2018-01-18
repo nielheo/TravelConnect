@@ -12,6 +12,7 @@ namespace TravelConnect.Gta.DataModels
         [Required]
         [StringLength(10)]
         [Column(TypeName = "varchar(10)")]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.None)]
         public string Code { get; set; }
 
         [Required]

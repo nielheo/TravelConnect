@@ -10,13 +10,14 @@ namespace TravelConnect.Gta.DataModels
     {
         [Key]
         [Required]
-        [StringLength(3)]
-        [Column(TypeName = "varchar(3)")]
+        [StringLength(5)]
+        [Column(TypeName = "varchar(5)")]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.None)]
         public string Code { get; set; }
 
         [Required]
         [StringLength(30)]
-        [Column(TypeName = "varchar(30)")]
+        [Column(TypeName = "nvarchar(30)")]
         public string Name { get; set; }
     }
 }

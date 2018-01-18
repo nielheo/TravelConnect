@@ -21,7 +21,7 @@ namespace TravelConnect.Gta.DataModels
 
         [Required]
         [StringLength(4000)]
-        [Column(TypeName = "varchar(4000)")]
+        [Column(TypeName = "nvarchar(4000)")]
         public string AreaDetail { get; set; }
     }
 }

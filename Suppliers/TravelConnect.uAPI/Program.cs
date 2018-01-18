@@ -202,12 +202,12 @@ namespace uAPI
             //Console.WriteLine(result);
             //Console.ReadLine();
 
-            TravelConnect.Gta.Services.HotelService svc = new TravelConnect.Gta.Services.HotelService();
-            var result = svc.HotelSearchByCityAsync(new HotelSearchCityRQ
-            {
-                CheckIn = DateTime.Today.AddDays(90),
-                CheckOut = DateTime.Today.AddDays(92),
-            }).Result;
+            //TravelConnect.Gta.Services.HotelService svc = new TravelConnect.Gta.Services.HotelService();
+            //var result = svc.HotelSearchByCityAsync(new HotelSearchCityRQ
+            //{
+            //    CheckIn = DateTime.Today.AddDays(90),
+            //    CheckOut = DateTime.Today.AddDays(92),
+            //}).Result;
         }
     }
 }

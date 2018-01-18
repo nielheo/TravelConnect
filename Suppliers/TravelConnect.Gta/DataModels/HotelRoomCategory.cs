@@ -24,12 +24,12 @@ namespace TravelConnect.Gta.DataModels
 
         [Required]
         [StringLength(100)]
-        [Column(TypeName = "varchar(100)")]
+        [Column(TypeName = "nvarchar(100)")]
         public string Name { get; set; }
 
         [Required]
         [StringLength(4000)]
-        [Column(TypeName = "varchar(4000)")]
+        [Column(TypeName = "nvarchar(4000)")]
         public string Description { get; set; }
     }
 }

@@ -20,11 +20,11 @@ namespace TravelConnect.Gta.DataModels
         public Hotel Hotel { get; set; }
 
         [Required]
-        [StringLength(3)]
-        [Column(TypeName = "varchar(3)")]
+        [StringLength(5)]
+        [Column(TypeName = "varchar(5)")]
         public string RoomTypeCode { get; set; }
 
-        [ForeignKey("HotelCode")]
+        [ForeignKey("RoomTypeCode")]
         public RoomType RoomType { get; set; }
     }
 }

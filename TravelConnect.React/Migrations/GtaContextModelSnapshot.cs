@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 using TravelConnect.Gta.DataServices;
 
@@ -16,7 +17,8 @@ namespace TravelConnect.React.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.0.1-rtm-125");
+                .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("TravelConnect.Gta.DataModels.City", b =>
                 {
@@ -62,7 +64,6 @@ namespace TravelConnect.React.Migrations
             modelBuilder.Entity("TravelConnect.Gta.DataModels.Facility", b =>
                 {
                     b.Property<string>("Code")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("varchar(10)")
                         .HasMaxLength(10);
 
@@ -73,7 +74,7 @@ namespace TravelConnect.React.Migrations
 
                     b.HasKey("Code");
 
-                    b.ToTable("Facility");
+                    b.ToTable("Facilities");
                 });
 
             modelBuilder.Entity("TravelConnect.Gta.DataModels.Hotel", b =>
@@ -120,13 +121,9 @@ namespace TravelConnect.React.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
-                    b.Property<float?>("Latitude")
-                        .HasColumnType("float")
-                        .HasMaxLength(100);
+                    b.Property<float?>("Latitude");
 
-                    b.Property<float?>("Longitude")
-                        .HasColumnType("float")
-                        .HasMaxLength(100);
+                    b.Property<float?>("Longitude");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -158,7 +155,7 @@ namespace TravelConnect.React.Migrations
 
                     b.Property<string>("AreaDetail")
                         .IsRequired()
-                        .HasColumnType("varchar(4000)")
+                        .HasColumnType("nvarchar(4000)")
                         .HasMaxLength(4000);
 
                     b.Property<string>("HotelCode")
@@ -188,13 +185,11 @@ namespace TravelConnect.React.Migrations
                         .HasColumnType("varchar(15)")
                         .HasMaxLength(15);
 
-                    b.Property<string>("LocationCode");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("HotelCode");
+                    b.HasIndex("FacilityCode");
 
-                    b.HasIndex("LocationCode");
+                    b.HasIndex("HotelCode");
 
                     b.ToTable("HotelFacilities");
                 });
@@ -206,7 +201,7 @@ namespace TravelConnect.React.Migrations
 
                     b.Property<string>("Caption")
                         .IsRequired()
-                        .HasColumnType("varchar(100)")
+                        .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
                     b.Property<string>("HotelCode")
@@ -289,8 +284,13 @@ namespace TravelConnect.React.Migrations
 
                     b.Property<string>("Report")
                         .IsRequired()
-                        .HasColumnType("varchar(4000)")
+                        .HasColumnType("nvarchar(4000)")
                         .HasMaxLength(4000);
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("varchar(30)")
+                        .HasMaxLength(30);
 
                     b.HasKey("Id");
 
@@ -308,7 +308,7 @@ namespace TravelConnect.React.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("varchar(4000)")
+                        .HasColumnType("nvarchar(4000)")
                         .HasMaxLength(4000);
 
                     b.Property<string>("HotelCode")
@@ -318,7 +318,7 @@ namespace TravelConnect.React.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(100)")
+                        .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
                     b.HasKey("Id");
@@ -366,12 +366,14 @@ namespace TravelConnect.React.Migrations
 
                     b.Property<string>("RoomTypeCode")
                         .IsRequired()
-                        .HasColumnType("varchar(3)")
-                        .HasMaxLength(3);
+                        .HasColumnType("varchar(5)")
+                        .HasMaxLength(5);
 
                     b.HasKey("Id");
 
                     b.HasIndex("HotelCode");
+
+                    b.HasIndex("RoomTypeCode");
 
                     b.ToTable("HotelRoomTypes");
                 });
@@ -379,7 +381,6 @@ namespace TravelConnect.React.Migrations
             modelBuilder.Entity("TravelConnect.Gta.DataModels.Location", b =>
                 {
                     b.Property<string>("Code")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("varchar(10)")
                         .HasMaxLength(10);
 
@@ -396,13 +397,12 @@ namespace TravelConnect.React.Migrations
             modelBuilder.Entity("TravelConnect.Gta.DataModels.RoomType", b =>
                 {
                     b.Property<string>("Code")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(3)")
-                        .HasMaxLength(3);
+                        .HasColumnType("varchar(5)")
+                        .HasMaxLength(5);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(30)")
+                        .HasColumnType("nvarchar(30)")
                         .HasMaxLength(30);
 
                     b.HasKey("Code");
@@ -436,14 +436,15 @@ namespace TravelConnect.React.Migrations
 
             modelBuilder.Entity("TravelConnect.Gta.DataModels.HotelFacility", b =>
                 {
+                    b.HasOne("TravelConnect.Gta.DataModels.Facility", "Facility")
+                        .WithMany("HotelFacilities")
+                        .HasForeignKey("FacilityCode")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("TravelConnect.Gta.DataModels.Hotel", "Hotel")
                         .WithMany("HotelFacilities")
                         .HasForeignKey("HotelCode")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("TravelConnect.Gta.DataModels.Facility", "Facility")
-                        .WithMany("HotelFacilities")
-                        .HasForeignKey("LocationCode");
                 });
 
             modelBuilder.Entity("TravelConnect.Gta.DataModels.HotelImageLink", b =>
@@ -512,7 +513,7 @@ namespace TravelConnect.React.Migrations
 
                     b.HasOne("TravelConnect.Gta.DataModels.RoomType", "RoomType")
                         .WithMany()
-                        .HasForeignKey("HotelCode")
+                        .HasForeignKey("RoomTypeCode")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

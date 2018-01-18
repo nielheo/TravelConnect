@@ -24,7 +24,7 @@ namespace TravelConnect.Gta.DataModels
         [Column(TypeName = "varchar(10)")]
         public string FacilityCode { get; set; }
 
-        [ForeignKey("LocationCode")]
+        [ForeignKey("FacilityCode")]
         public Facility Facility { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace TravelConnect.Gta.DataModels
 {
-    public class HotelImageLink
+    public class HotelMapLink
     {
         [Key]
         public int Id { get; set; }
@@ -20,18 +20,8 @@ namespace TravelConnect.Gta.DataModels
         public Hotel Hotel { get; set; }
 
         [Required]
-        [StringLength(100)]
-        [Column(TypeName = "varchar(100)")]
-        public string Caption { get; set; }
-
-        [Required]
-        [StringLength(200)]
-        [Column(TypeName = "varchar(200)")]
-        public string Thumbnail { get; set; }
-
-        [Required]
-        [StringLength(200)]
-        [Column(TypeName = "varchar(200)")]
-        public string Image { get; set; }
+        [StringLength(4000)]
+        [Column(TypeName = "varchar(4000)")]
+        public string MapLink { get; set; }
     }
 }

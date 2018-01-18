@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TravelConnect.Gta.DataModels;
+using TravelConnect.Gta.DataServices;
 using TravelConnect.Gta.Interfaces;
 using TravelConnect.Gta.Models;
 
@@ -10,6 +11,13 @@ namespace TravelConnect.Gta.Services
 {
     public partial class HotelService : BaseService, IGtaHotelService
     {
+        private IHotelRepository _HotelRepository;
+
+        public HotelService(IHotelRepository _HotelRepository)
+        {
+            this._HotelRepository = _HotelRepository;
+        }
+
         private Hotel ConvertToHotel(SearchItemInformationResponse response)
         {
             var itemDetail = response.ResponseDetails.SearchItemInformationResponse.ItemDetails.ItemDetail;
@@ -133,6 +141,31 @@ namespace TravelConnect.Gta.Services
 
         public async Task<Hotel> GetHotel(string code, bool forceRefresh = false)
         {
+            if (forceRefresh)
+            {
+                return await RefreshHotel(code);
+            }
+
+            var hotel = await _HotelRepository.GetHotelWithDetails(code);
+
+            if (hotel == null)
+                return await RefreshHotel(code);
+            else
+                return hotel;
+        }
+
+        private async Task<Hotel> RefreshHotel(string code)
+        {
+            var hotel = await GetGtaHotel(code);
+
+            if (hotel != null)
+                await _HotelRepository.InsertHotel(hotel);
+            
+            return hotel;
+        }
+
+        public async Task<Hotel> GetGtaHotel(string code)
+        {
             code = code.ToUpper();
             string[] codes = code.Split(".");
 
@@ -184,6 +217,36 @@ namespace TravelConnect.Gta.Services
             {
                 _LogService.LogException(ex, "Gta.GeoService.GetGtaCities");
                 return null;
+            }
+        }
+
+        public async Task<HotelForList> GetHotelForList(string code)
+        {
+            var hotel = await _HotelRepository.GetHotelWithImages(code);
+
+            if (hotel == null)
+                hotel = await RefreshHotel(code);
+            
+            return ConvertToHotelForList(hotel);
+        }
+
+        private HotelForList ConvertToHotelForList (Hotel hotel)
+        {
+            try
+            {
+                HotelForList hotelForList = new HotelForList(hotel);
+
+                if (hotel.HotelImageLinks?.Count > 0)
+                {
+                    hotelForList.HotelImage = hotel.HotelImageLinks.FirstOrDefault();
+                    hotelForList.HotelImage.Hotel = null;
+                }
+
+                return hotelForList;
+            }
+            catch (Exception ex)
+            {
+                return new HotelForList();
             }
         }
     }

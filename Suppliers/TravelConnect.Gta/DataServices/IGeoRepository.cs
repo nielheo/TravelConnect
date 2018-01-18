@@ -10,7 +10,7 @@ namespace TravelConnect.Gta.DataServices
 
         Task<Country> GetCountry(string Code);
 
-        void InsertCountries(List<Country> Countries);
+        Task InsertCountries(List<Country> Countries);
 
         Task<List<City>> GetCities(string CountryCode);
 
@@ -18,6 +18,6 @@ namespace TravelConnect.Gta.DataServices
 
         Task<List<City>> SearchCities(string cityName);
 
-        void InsertCities(List<City> Cities, string CountryCode);
+        Task InsertCities(List<City> Cities, string CountryCode);
     }
 }

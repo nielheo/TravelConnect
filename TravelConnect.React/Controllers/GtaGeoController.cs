@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TravelConnect.CommonServices;
 using TravelConnect.Gta.DataModels;
 using TravelConnect.Gta.Interfaces;
 
@@ -12,6 +13,8 @@ namespace TravelConnect.React.Controllers
     public class GtaGeoController : Controller
     {
         private IGeoService _GeoService;
+
+        protected LogService _LogService = null;
 
         public GtaGeoController(IGeoService _GeoService)
         {
@@ -25,14 +28,18 @@ namespace TravelConnect.React.Controllers
         }
 
         [Route("countries/{code}")]
-        public async Task<Country> Country(string Code)
+        public async Task<Country> Country(string code)
         {
-            return await _GeoService.GetCountry(Code);
+            _LogService = new LogService();
+            _LogService.LogInfo($"------------ COUNTRY: countries/{code} ----------");
+            return await _GeoService.GetCountry(code);
         }
 
         [Route("countries/{countryCode}/cities")]
         public async Task<List<City>> Cities(string countryCode)
         {
+            _LogService = new LogService();
+            _LogService.LogInfo($"------------ CITY: countries/{countryCode}/cities ----------");
             return await _GeoService.GetCities(countryCode);
         }
 
