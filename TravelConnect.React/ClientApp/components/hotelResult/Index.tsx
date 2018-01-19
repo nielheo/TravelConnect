@@ -203,6 +203,83 @@ export default class HotelResult_Index extends React.Component<
         })
     }
 
+    _getHotelsInfo = (codes: string[]) => {
+        console.log(codes.join(','))
+        //console.log(`_getHotelInfo: ${city}.${id}`)
+        fetch(`/api/hotels/${codes.join(',')}/info`, {
+            method: 'get',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept-Encoding': 'gzip',
+            }
+        }).then(res => {
+            console.log(res)
+            if (res) return res.json()
+            }).then(res => {
+                //let hotel = this.state.result.hotels.find((f: any) => f.id === id)
+                //console.log(`_getHotelInfo - Result: ${city}.${id}`)
+                console.log(res)
+                if (res.length) {
+                    let hotels = this.state.result.hotels
+
+                    hotels.map((hotel: any) => {
+                        console.log('---------------------')
+                        console.log(hotel)
+                        let r = res.find((rs: any) => rs.code === hotel.id)
+                        if (r) {
+                            console.log(r)
+                            
+                            hotel.address = r.address1
+                            hotel.thumbnail = r.hotelImage.thumbnail
+                        }
+                    })
+
+                    console.log('**************')
+                    console.log(hotels)
+
+                    this.setState({
+                        result: {
+                            ...this.state.result,
+                            hotels: hotels
+                        }
+                    })
+                }
+            //    let hotel = this.state.hotel
+                //hotel.address = res.address1 || '-'
+                //hotel.thumbnail = res.hotelImage.thumbnail
+                //hotel.latitude = res.latitude
+                //hotel.longitude = res.longitude
+
+                //let hotels: any[] = []
+
+                //this.state.result.hotels.map((h: any) => {
+                //    if (h.id !== id)
+                //        hotels.push(h)
+                //    else
+                //        hotels.push(hotel)
+                //})
+
+                
+                //console.log(hotels)
+
+                ////this.state.result.hotels.filter((h: any) => h.id !== id).map((h: any) => {
+                ////    hotels.push(h)
+                ////})
+
+                ////console.log(hotels)
+
+                //this.setState({
+                //    result: {
+                //        ...this.state.result,
+                //        hotels: hotels
+                //    }
+                    
+                //})
+            //    this.setState({ hotel: hotel })
+
+            }).catch(err => { })
+    }
+
     public render() {
         let hotels = (this.state.result && this.state.result.hotels) || []
         if (this.state.filteredHotelName)
@@ -223,6 +300,17 @@ export default class HotelResult_Index extends React.Component<
         let _page = page > _totalPages ? _totalPages : page
         let _startIndex = (_page - 1) * itemsPerPage
         let _endIndex = _page * itemsPerPage
+
+        let missingDetails: string[] = []
+        hotels.slice(_startIndex, _endIndex).map((htl: any) => {
+            if (!htl.address) {
+                missingDetails.push(htl.id)
+            }
+        });
+
+        if (missingDetails.length) {
+            this._getHotelsInfo(missingDetails)
+        }
 
         return <section>
             <Helmet>
@@ -322,11 +410,12 @@ export default class HotelResult_Index extends React.Component<
 
                                 {
                                     hotels.slice(_startIndex, _endIndex).map((hotel: any) =>
-                                        <HotelItem hotel={hotel} url={
-                                            '/' + this.state.locale + '/hotels/' + this.state.country + '/' + this.state.city + '/' + hotel.id
-                                            + '?cin=' + this.state.checkIn.format('YYYY-MM-DD')
-                                            + '&cout=' + this.state.checkOut.format('YYYY-MM-DD')
-                                            + '&rooms=' + this.state.rooms + '&currency=' + this.state.currency
+                                        <HotelItem hotel={hotel}
+                                            url={`/${this.state.locale}/hotels/${this.state.country}/`
+                                                + `/${this.state.city}/${hotel.id}`
+                                                + `?cin=${this.state.checkIn.format('YYYY-MM-DD')}`
+                                                + `&cout=${this.state.checkOut.format('YYYY-MM-DD')}`
+                                                + `&rooms=${this.state.rooms}&currency=${this.state.currency}`
                                         } />
                                     )
                                 }

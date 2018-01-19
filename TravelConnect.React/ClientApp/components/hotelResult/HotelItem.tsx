@@ -8,7 +8,8 @@ export default class HotelItem extends React.Component<{ hotel: any, url: any },
         super(props)
 
         this.state = {
-            highlighted: false
+            highlighted: false,
+        //    hotel: this.props.hotel
         }
     }
 
@@ -41,6 +42,36 @@ export default class HotelItem extends React.Component<{ hotel: any, url: any },
             src={images('./star-' + sRating.slice(sRating.length - 2) + '.png')} />
     }
 
+    //componentWillMount() {
+    //    console.log('componentWillMount')
+    //    this.setState({
+    //        hotel: this.props.hotel
+    //    })
+    //}
+
+    //componentDidMount() {
+    //    console.log('componentDidMount')
+    //    let { hotel } = this.state
+    //    if (!hotel.address) {
+    //        fetch(`/api/hotels/country/${hotel.cityCode}/${hotel.id}/info`, {
+    //            method: 'get',
+    //            headers: {
+    //                'Content-Type': 'application/json',
+    //                'Accept-Encoding': 'gzip',
+    //            }
+    //        }).then(res => {
+    //            console.log(res)
+    //            if (res) return res.json()
+    //            }).then(res => {
+    //            //    let hotel = this.state.hotel
+    //                hotel.address = res.address
+    //                hotel.thumbnail = res.hotelImage.thumbnail
+    //            //    this.setState({ hotel: hotel })
+
+    //            }).catch(err => { })
+    //    }
+    //}
+
     _content = (hotel: any) => {
         let cheapestRoom = hotel.hotelRooms.sort(this._compareHotelRoomMaxNightlyRate)[0]
 
@@ -48,7 +79,9 @@ export default class HotelItem extends React.Component<{ hotel: any, url: any },
             <Row>
                 <Col md={3}>
                     {hotel.thumbnail &&
-                        <img src={'https://i.travelapi.com' + hotel.thumbnail.replace('t.jpg', 's.jpg')} />
+                        <img src={ //'https://i.travelapi.com' + hotel.thumbnail.replace('t.jpg', 's.jpg')
+                        hotel.thumbnail
+                            } />
                     }
                 </Col>
                 <Col md={9}>
@@ -71,7 +104,7 @@ export default class HotelItem extends React.Component<{ hotel: any, url: any },
 
     public render() {
         let { hotel } = this.props
-
+        
         return <section>
             {this.state.highlighted
                 ?

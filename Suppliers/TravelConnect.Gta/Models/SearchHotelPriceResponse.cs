@@ -407,7 +407,7 @@
     {
         private string codeField;
 
-        private byte numberOfRoomsField;
+        private int numberOfRoomsField;
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -425,7 +425,7 @@
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public byte NumberOfRooms
+        public int NumberOfRooms
         {
             get
             {

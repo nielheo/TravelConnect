@@ -116,10 +116,12 @@ namespace TravelConnect.React.Controllers
             return hotel;
         }
 
-        [Route("{country}/{city}/{id}/info")]
-        public async Task<HotelForList> GetInfo(string country, string city, string id)
+        [Route("{ids}/info")]
+        public async Task<List<HotelForList>> GetInfo(string ids)
         {
-            var hotel = await _GtaHotelService.GetHotelForList($"{city}.{id}");
+            List<string> codes = ids.Split(',').ToList();
+
+            var hotel = await _GtaHotelService.GetHotelsForList(codes);
 
             return hotel;
         }

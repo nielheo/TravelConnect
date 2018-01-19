@@ -104,7 +104,7 @@ namespace TravelConnect.Gta.Services
                         HotelCode = hotelCode,
                         Id = rm.Id,
                         Name = rm.Description,
-                        Description = rm.RoomDescription,
+                        Description = rm.RoomDescription ?? "-",
                     }
                 ).ToList(),
                 HotelRoomFacilities = itemDetail.HotelInformation.RoomFacilities.Select(fac =>
@@ -226,8 +226,27 @@ namespace TravelConnect.Gta.Services
 
             if (hotel == null)
                 hotel = await RefreshHotel(code);
-            
+
+            if (hotel == null)
+                hotel = new Hotel { Code = code };
+
             return ConvertToHotelForList(hotel);
+        }
+
+        public async Task<List<HotelForList>> GetHotelsForList(List<string> codes)
+        {
+            var tasksHotel = codes.Select(c =>
+                GetHotelForList(c)
+            );
+
+            List<HotelForList> hotels = new List<HotelForList>();
+
+            foreach(var task in tasksHotel)
+            {
+                hotels.Add(await task);
+            }
+
+            return hotels;
         }
 
         private HotelForList ConvertToHotelForList (Hotel hotel)

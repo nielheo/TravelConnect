@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace TravelConnect.Models.Responses
 {
@@ -20,7 +21,10 @@ namespace TravelConnect.Models.Responses
         public string CurrCode { get; set; }
         public decimal RateFrom { get; set; }
         public decimal RateTo { get; set; }
+        public string CityCode { get; set; }
+        public string CityName { get; set; }
         public List<RoomListRS> HotelRooms { get; set; }
+        
     }
 
     [NotMapped]
@@ -47,5 +51,10 @@ namespace TravelConnect.Models.Responses
         public string CacheKey { get; set; }
         public string CacheLocation { get; set; }
         public string RequestKey { get; set; }
+
+        //public static implicit operator HotelSearchCityRS(HotelSearchCityRS v)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

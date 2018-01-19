@@ -763,7 +763,7 @@ namespace TravelConnect.Gta.Models
 
         private ResponseResponseDetailsSearchItemInformationResponseItemDetailsItemDetailHotelInformationRoomTypesRoomType[] roomTypeField;
 
-        private byte roomCountField;
+        private int roomCountField;
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("RoomType")]
@@ -781,7 +781,7 @@ namespace TravelConnect.Gta.Models
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public byte RoomCount
+        public int RoomCount
         {
             get
             {

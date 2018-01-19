@@ -71,31 +71,33 @@ namespace TravelConnect.Gta.Services
                 CheckOut = request.CheckOut,
                 Supplier = "GTA",
                 Hotels = response.ResponseDetails.SearchHotelPriceResponse.HotelDetails.Select(htl =>
-                    new HotelRS
-                    {
-                        Id = htl.Item.Code,
-                        Name = htl.Item.Value,
-                        Address = "",
-                        StarRating = htl.StarRating,
-                        CurrCode = htl.RoomCategories.First().ItemPrice.Currency,
-                        RateFrom = htl.RoomCategories.Min(r => r.ItemPrice.Value),
-                        RateTo = htl.RoomCategories.Max(r => r.ItemPrice.Value),
-                        HotelRooms = htl.RoomCategories.Select(rm =>
-                            new RoomListRS
-                            {
-                                Allotment = request.Occupancies.Count(),
-                                RoomTypeCode = rm.Id,
-                                RateCode = rm.Id,
-                                PromoDesc = rm.Description,
-                                ChargeableRate = new ChargeableRateRS
-                                {
-                                    Currency = rm.ItemPrice.Currency,
-                                    Total = rm.ItemPrice.Value,
-                                    MaxNightlyRate = rm.ItemPrice.Value / (decimal)(request.CheckOut - request.CheckIn).TotalDays
-                                }
-                            }
-                        ).ToList()
-                    }).ToList()
+                     new HotelRS
+                     {
+                         Id = $"{htl.City.Code}.{htl.Item.Code}",
+                         Name = htl.Item.Value,
+                         Address = "",
+                         StarRating = htl.StarRating,
+                         CurrCode = htl.RoomCategories.First().ItemPrice.Currency,
+                         RateFrom = htl.RoomCategories.Min(r => r.ItemPrice.Value),
+                         RateTo = htl.RoomCategories.Max(r => r.ItemPrice.Value),
+                         CityCode = htl.City.Code,
+                         CityName = htl.City.Value,
+                         HotelRooms = htl.RoomCategories.Select(rm =>
+                             new RoomListRS
+                             {
+                                 Allotment = request.Occupancies.Count(),
+                                 RoomTypeCode = rm.Id,
+                                 RateCode = rm.Id,
+                                 PromoDesc = rm.Description,
+                                 ChargeableRate = new ChargeableRateRS
+                                 {
+                                     Currency = rm.ItemPrice.Currency,
+                                     Total = rm.ItemPrice.Value,
+                                     MaxNightlyRate = rm.ItemPrice.Value / (decimal)(request.CheckOut - request.CheckIn).TotalDays
+                                 }
+                             }
+                            ).ToList()
+                     }).ToList()
             };
 
             return res;
