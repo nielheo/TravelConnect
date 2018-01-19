@@ -17,6 +17,8 @@ namespace TravelConnect.Gta.DataServices
         Task<List<Hotel>> GetHotelsWithDetails(string cityCode);
 
         Task<Hotel> GetHotelWithImages(string code);
+
+        Task<List<Hotel>> GetHotelsWithImages(List<string> codes);
         
         Task InsertHotel(Hotel hotel);
 

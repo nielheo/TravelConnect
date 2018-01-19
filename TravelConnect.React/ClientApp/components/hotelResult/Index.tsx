@@ -86,7 +86,6 @@ export default class HotelResult_Index extends React.Component<
                 'Accept-Encoding': 'gzip',
             }
         }).then(res => {
-            console.log(res)
             if (res) return res.json()
         }).catch(err => { })
     }
@@ -133,7 +132,6 @@ export default class HotelResult_Index extends React.Component<
     componentDidMount() {
         this._sendRequest(this._constructRequest())
             .then(r => {
-                console.log(r)
                 this.setState({ result: r })
 
                 if (r.cacheKey) {
@@ -204,8 +202,6 @@ export default class HotelResult_Index extends React.Component<
     }
 
     _getHotelsInfo = (codes: string[]) => {
-        console.log(codes.join(','))
-        //console.log(`_getHotelInfo: ${city}.${id}`)
         fetch(`/api/hotels/${codes.join(',')}/info`, {
             method: 'get',
             headers: {
@@ -213,29 +209,19 @@ export default class HotelResult_Index extends React.Component<
                 'Accept-Encoding': 'gzip',
             }
         }).then(res => {
-            console.log(res)
             if (res) return res.json()
             }).then(res => {
-                //let hotel = this.state.result.hotels.find((f: any) => f.id === id)
-                //console.log(`_getHotelInfo - Result: ${city}.${id}`)
-                console.log(res)
+
                 if (res.length) {
                     let hotels = this.state.result.hotels
 
                     hotels.map((hotel: any) => {
-                        console.log('---------------------')
-                        console.log(hotel)
                         let r = res.find((rs: any) => rs.code === hotel.id)
                         if (r) {
-                            console.log(r)
-                            
                             hotel.address = r.address1
                             hotel.thumbnail = r.hotelImage.thumbnail
                         }
                     })
-
-                    console.log('**************')
-                    console.log(hotels)
 
                     this.setState({
                         result: {
@@ -244,38 +230,6 @@ export default class HotelResult_Index extends React.Component<
                         }
                     })
                 }
-            //    let hotel = this.state.hotel
-                //hotel.address = res.address1 || '-'
-                //hotel.thumbnail = res.hotelImage.thumbnail
-                //hotel.latitude = res.latitude
-                //hotel.longitude = res.longitude
-
-                //let hotels: any[] = []
-
-                //this.state.result.hotels.map((h: any) => {
-                //    if (h.id !== id)
-                //        hotels.push(h)
-                //    else
-                //        hotels.push(hotel)
-                //})
-
-                
-                //console.log(hotels)
-
-                ////this.state.result.hotels.filter((h: any) => h.id !== id).map((h: any) => {
-                ////    hotels.push(h)
-                ////})
-
-                ////console.log(hotels)
-
-                //this.setState({
-                //    result: {
-                //        ...this.state.result,
-                //        hotels: hotels
-                //    }
-                    
-                //})
-            //    this.setState({ hotel: hotel })
 
             }).catch(err => { })
     }

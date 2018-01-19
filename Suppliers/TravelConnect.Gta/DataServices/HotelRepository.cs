@@ -191,5 +191,21 @@ namespace TravelConnect.Gta.DataServices
                 return null;
             }
         }
+
+        public async Task<List<Hotel>> GetHotelsWithImages(List<string> codes)
+        {
+            try
+            {
+                return await _db.Hotels
+                    .Include(c => c.HotelImageLinks)
+                    .Where(c => codes.Contains(c.Code))
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _LogService.LogException(ex, "Gta.HotelRepository.GetHotelWithImages");
+                return null;
+            }
+        }
     }
 }
