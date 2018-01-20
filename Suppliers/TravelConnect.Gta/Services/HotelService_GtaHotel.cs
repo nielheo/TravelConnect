@@ -82,14 +82,7 @@ namespace TravelConnect.Gta.Services
                         }
                     }
                 },
-                HotelMapLinks = new List<HotelMapLink>
-                {
-                    new HotelMapLink
-                    {
-                        HotelCode = hotelCode,
-                        MapLink = itemDetail.HotelInformation.Links.MapLinks.MapPageLink
-                    }
-                },
+                
                 HotelReports = itemDetail.HotelInformation.Reports.Select(rpt =>
                     new HotelReport
                     {
@@ -130,6 +123,18 @@ namespace TravelConnect.Gta.Services
                     }
                 ).ToList()
             };
+
+            if (itemDetail.HotelInformation.Links.MapLinks != null)
+            {
+                hotel.HotelMapLinks = new List<HotelMapLink>
+                {
+                    new HotelMapLink
+                    {
+                        HotelCode = hotelCode,
+                        MapLink = itemDetail.HotelInformation.Links.MapLinks.MapPageLink
+                    }
+                };
+            }
 
             return hotel;
         }

@@ -119,7 +119,7 @@ namespace TravelConnect.Ean.Services
                         Location = h.locationDescription,
                         ShortDesc = h.shortDescription,
                         StarRating = (decimal)h.hotelRating,
-                        Thumbnail = h.thumbNailUrl,
+                        Thumbnail = $"https://i.travelapi.com{h.thumbNailUrl.Replace("t.jpg", "s.jpg")}",
                         CurrCode = h.rateCurrencyCode,
                         RateFrom = (decimal)h.lowRate,
                         RateTo = (decimal)h.highRate,

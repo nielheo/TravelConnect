@@ -46,6 +46,7 @@ export default class HotelResult_Index extends React.Component<
 
             filteredHotelName: '',
             filteredStarRating: [],
+            loadingHotels: []
         };
     }
 
@@ -201,15 +202,25 @@ export default class HotelResult_Index extends React.Component<
         })
     }
 
-    _getHotelsInfo = (codes: string[]) => {
-        fetch(`/api/hotels/${codes.join(',')}/info`, {
-            method: 'get',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept-Encoding': 'gzip',
-            }
-        }).then(res => {
-            if (res) return res.json()
+    _getHotelInfo = (code: string) => {
+        if (this.state.loadingHotels.indexOf(code) < 0) {
+            console.log(code)
+
+            this.setState({
+                loadingHotels: [
+                    ...this.state.loadingHotels,
+                    code
+                ]
+            })
+
+            fetch(`/api/hotels/${code}/info`, {
+                method: 'get',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept-Encoding': 'gzip',
+                }
+            }).then(res => {
+                if (res) return res.json()
             }).then(res => {
 
                 if (res.length) {
@@ -232,6 +243,11 @@ export default class HotelResult_Index extends React.Component<
                 }
 
             }).catch(err => { })
+        }
+    }
+
+    _getHotelsInfo = (codes: string[]) => {
+        codes.map((code: any) => { this._getHotelInfo(code) })
     }
 
     public render() {
@@ -365,7 +381,7 @@ export default class HotelResult_Index extends React.Component<
                                 {
                                     hotels.slice(_startIndex, _endIndex).map((hotel: any) =>
                                         <HotelItem hotel={hotel}
-                                            url={`/${this.state.locale}/hotels/${this.state.country}/`
+                                            url={`/${this.state.locale}/hotels/${this.state.country}`
                                                 + `/${this.state.city}/${hotel.id}`
                                                 + `?cin=${this.state.checkIn.format('YYYY-MM-DD')}`
                                                 + `&cout=${this.state.checkOut.format('YYYY-MM-DD')}`

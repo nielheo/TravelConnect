@@ -55,7 +55,7 @@ namespace TravelConnect_React
             services.AddTransient<IFlightService, FlightService>();
             services.AddTransient<IPnrService, PnrService>();
             services.AddTransient<IAirService, TravelConnect.uAPI.Services.AirService>();
-            services.AddTransient<IHotelService, TravelConnect.Gta.Services.HotelService>();
+            services.AddTransient<IHotelService, TravelConnect.Ean.Services.HotelService>();
             services.AddTransient<TravelConnect.Gta.Interfaces.IGeoService,
                 TravelConnect.Gta.Services.GeoService>();
             services.AddTransient<TravelConnect.Gta.Interfaces.IGtaHotelService,

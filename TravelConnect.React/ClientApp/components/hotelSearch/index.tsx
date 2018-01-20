@@ -50,28 +50,37 @@ export default class HotelSearch_Index extends React.Component<{ history: any },
   }
 
   _onCountryChange = (e: any) => {
-    this.setState({country: e.target.value})
+      if (this.state.country !== e.target.value) {
+          this.setState({ country: e.target.value })
+      }
   }
 
   _onCityChange = (e: any) => {
-      this.setState({ city: e.target.value })
-      //this._CityAutocomplete()
+      if (this.state.city !== e.target.value) {
+          this.setState({ city: e.target.value })
+      }
   }
 
   _onCheckInChange = (date: any) => {
-    this.setState({
-      checkIn: date
-    })
+      if (date !== this.state.checkIn) {
+          this.setState({
+              checkIn: date
+          })
+      }
   }
 
   _onCheckOutChange = (date: any) => {
-    this.setState({
-      checkOut: date
-    })
+      if (date !== this.state.checkOut) {
+          this.setState({
+              checkOut: date
+          })
+      }
   }
 
   _onRoomsChange = (e: any) => {
-    this.setState({ rooms: e.target.value})
+      if (this.state.rooms !== e.target.value) {
+          this.setState({ rooms: e.target.value })
+      }
   }
 
   _onAdultChange = (e: any, index: number) => {
@@ -103,7 +112,6 @@ export default class HotelSearch_Index extends React.Component<{ history: any },
         if (this.state.occupancies[x].child > 0) {
             room += ',' + this.state.occupancies[x].childAges.slice(0, this.state.occupancies[x].child).join(',')
         }
-        //console.log(this.state.occupancies[x])
         aRoom.push(room)
     }
 
@@ -114,7 +122,6 @@ export default class HotelSearch_Index extends React.Component<{ history: any },
 
   _onSearchClick = () => {
     this.setState({ searchClicked: true })
-    //console.log(this._createResultUrl())
     this.props.history.push(this._createResultUrl())
   }
 
@@ -140,7 +147,6 @@ export default class HotelSearch_Index extends React.Component<{ history: any },
 
   public render() {
       var idx = 2
-      console.log(this.state)
     return <Col md={12}>
 
       <Row>

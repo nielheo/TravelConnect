@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace TravelConnect.Gta.Models
 {
@@ -926,6 +927,7 @@ namespace TravelConnect.Gta.Models
         private ResponseResponseDetailsSearchItemInformationResponseItemDetailsItemDetailHotelInformationLinksImageLink[] imageLinksField;
 
         /// <remarks/>
+        [System.Xml.Serialization.XmlElement(IsNullable = true)]
         public ResponseResponseDetailsSearchItemInformationResponseItemDetailsItemDetailHotelInformationLinksMapLinks MapLinks
         {
             get
@@ -939,7 +941,7 @@ namespace TravelConnect.Gta.Models
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("ImageLink", IsNullable = false)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("ImageLink", IsNullable = true)]
         public ResponseResponseDetailsSearchItemInformationResponseItemDetailsItemDetailHotelInformationLinksImageLink[] ImageLinks
         {
             get
