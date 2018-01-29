@@ -23,7 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelConnect.Sabre", "Supp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelConnect.uAPI", "Suppliers\TravelConnect.uAPI\TravelConnect.uAPI.csproj", "{F4D211C7-593A-4667-A082-7408A8DA43B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tester", "Tester\Tester.csproj", "{7486C8C5-B332-473C-8125-0AD3A9DE979E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tester", "Tester\Tester.csproj", "{7486C8C5-B332-473C-8125-0AD3A9DE979E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelConnect.Api", "TravelConnect.Api\TravelConnect.Api.csproj", "{D0A738ED-3ED4-4AA9-8428-7F644139C8F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +73,10 @@ Global
 		{7486C8C5-B332-473C-8125-0AD3A9DE979E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7486C8C5-B332-473C-8125-0AD3A9DE979E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7486C8C5-B332-473C-8125-0AD3A9DE979E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0A738ED-3ED4-4AA9-8428-7F644139C8F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0A738ED-3ED4-4AA9-8428-7F644139C8F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0A738ED-3ED4-4AA9-8428-7F644139C8F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0A738ED-3ED4-4AA9-8428-7F644139C8F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -80,15 +80,21 @@ export default class HotelResult_Index extends React.Component<
     }
 
     _sendRequest = (request: any) => {
-        return fetch('/api/hotels' + request, {
+        return fetch('http://localhost:6500/api/hotels' + request, {
             method: 'get',
+            mode: 'cors',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept-Encoding': 'gzip',
+                'Access-Control-Allow-Origin': '*',
             }
         }).then(res => {
-            if (res) return res.json()
-        }).catch(err => { })
+            if (res) {
+                return res.json()
+            }
+            }).catch(err => {
+                console.log(err)
+            })
     }
 
     _constructRequest = () => {
@@ -133,10 +139,14 @@ export default class HotelResult_Index extends React.Component<
     componentDidMount() {
         this._sendRequest(this._constructRequest())
             .then(r => {
-                this.setState({ result: r })
+                console.log(r)
 
-                if (r.cacheKey) {
-                    this._getMore()
+                if (r) {
+                    this.setState({ result: r })
+
+                    if (r.cacheKey) {
+                        this._getMore()
+                    }
                 }
             })
     }

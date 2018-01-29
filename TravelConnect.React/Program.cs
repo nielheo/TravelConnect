@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using TravelConnect.CommonServices;
+//using TravelConnect.CommonServices;
 
 namespace TravelConnect_React
 {
@@ -8,11 +8,11 @@ namespace TravelConnect_React
     {
         public static void Main(string[] args)
         {
-            LogService _LogService = new LogService();
+            //LogService _LogService = new LogService();
 
-            _LogService.LogInfo("Entering application.");
+            //_LogService.LogInfo("Entering application.");
             BuildWebHost(args).Run();
-            _LogService.LogInfo("Exiting  application.");
+            //_LogService.LogInfo("Exiting  application.");
         }
 
         public static IWebHost BuildWebHost(string[] args) =>

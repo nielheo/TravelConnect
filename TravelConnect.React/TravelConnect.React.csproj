@@ -29,14 +29,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20180116015304_Initiate.cs" />
-    <Compile Remove="Migrations\20180116015304_Initiate.Designer.cs" />
-    <Compile Remove="Migrations\20180117121118_ChangeGeoLocationDataType.cs" />
-    <Compile Remove="Migrations\20180117121118_ChangeGeoLocationDataType.Designer.cs" />
-    <Compile Remove="Migrations\20180117125007_ChangeToNonAutogenerateKey.cs" />
-    <Compile Remove="Migrations\20180117125007_ChangeToNonAutogenerateKey.Designer.cs" />
-    <Compile Remove="Migrations\20180117132215_Initiate.cs" />
-    <Compile Remove="Migrations\20180117132215_Initiate.Designer.cs" />
+    <Compile Remove="Controllers\AirlinesController.cs" />
+    <Compile Remove="Controllers\AirportAutocompleteController.cs" />
+    <Compile Remove="Controllers\AirportsController.cs" />
+    <Compile Remove="Controllers\AirPriceController.cs" />
+    <Compile Remove="Controllers\FlightsController.cs" />
+    <Compile Remove="Controllers\GtaGeoController.cs" />
+    <Compile Remove="Controllers\HotelsController.cs" />
+    <Compile Remove="Controllers\PnrController.cs" />
+    <Compile Remove="Controllers\SampleDataController.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -87,15 +88,6 @@
     <None Remove="gta.db" />
     <None Remove="Properties\PublishProfiles\TravelConnectReact20171002093432 - Web Deploy.pubxml" />
     <None Remove="travelconnect.db" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Suppliers\TravelConnect.Ean\TravelConnect.Ean.csproj" />
-    <ProjectReference Include="..\Suppliers\TravelConnect.uAPI\TravelConnect.uAPI.csproj" />
-    <ProjectReference Include="..\TravelConnect.CommonServices\TravelConnect.CommonServices.csproj" />
-    <ProjectReference Include="..\TravelConnect.Interfaces\TravelConnect.Interfaces.csproj" />
-    <ProjectReference Include="..\TravelConnect.Models\TravelConnect.Models.csproj" />
-    <ProjectReference Include="..\TravelConnect.Services\TravelConnect.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>

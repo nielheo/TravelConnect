@@ -36,7 +36,7 @@ export default class HotelSearch_Index extends React.Component<{ history: any },
     }
 
   _CityAutocomplete = (query: string) => {
-    return fetch(`/api/gtageo/searchcities?cityname=${query}`, {
+    return fetch(`http://localhost:6500/api/gtageo/searchcities?cityname=${query}`, {
         method: 'get',
         headers: {
             'Content-Type': 'application/json',

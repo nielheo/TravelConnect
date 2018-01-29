@@ -40,7 +40,7 @@ class BookHotel_Index extends React.Component<HotelDetailProps, any> {
 
   _sendRequest = (request: any) => {
     //console.log(request)
-    return fetch('/api/hotels/' + this.props.selectedHotel.hotelId + '/recheck' + request, {
+    return fetch('http://localhost:6500/api/hotels/' + this.props.selectedHotel.hotelId + '/recheck' + request, {
       method: 'get',
       headers: {
         'Content-Type': 'application/json',
