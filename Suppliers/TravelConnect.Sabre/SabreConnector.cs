@@ -7,11 +7,6 @@ using TravelConnect.Models;
 
 namespace TravelConnect.Sabre
 {
-    public interface ISabreConnector
-    {
-        Task<string> SendRequestAsync(string url, string request, bool isPost);
-    }
-
     public partial class SabreConnector : ISabreConnector
     {
         private string endPoint = "https://api.test.sabre.com";

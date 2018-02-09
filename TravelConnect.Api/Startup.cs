@@ -4,13 +4,9 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.Swagger;
 using TravelConnect.CommonServices;
-using TravelConnect.Gta.DataServices;
 using TravelConnect.Interfaces;
-using TravelConnect.Models;
-using TravelConnect.Sabre;
-using TravelConnect.Sabre.Interfaces;
-using TravelConnect.Sabre.Services;
 using TravelConnect.Services;
 
 namespace TravelConnect.Api
@@ -46,9 +42,14 @@ namespace TravelConnect.Api
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 });
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Contacts API", Version = "v1" });
+            });
+
             services.Configure<GzipCompressionProviderOptions>(options => options.Level = System.IO.Compression.CompressionLevel.Optimal);
             services.AddResponseCompression();
-            
+
             var connection =
                     "Data Source=travelconnect.db";/* +
                     "Initial Catalog=TravelConnect;" +
@@ -58,43 +59,38 @@ namespace TravelConnect.Api
             services.AddDbContext<TCContext>(options =>
                 options.UseSqlite(connection, b => b.MigrationsAssembly("TravelConnect.Models")));
 
-            services.AddTransient<ISabreConnector, SabreConnector>();
-            services.AddTransient<IGeoService, GeoService>();
-            services.AddTransient<IFlightService, FlightService>();
-            services.AddTransient<IPnrService, PnrService>();
-            services.AddTransient<IAirService, TravelConnect.uAPI.Services.AirService>();
+            //services.AddTransient<ISabreConnector, SabreConnector>();
+            //services.AddTransient<IGeoService, GeoService>();
+            //services.AddTransient<IFlightService, FlightService>();
+            //services.AddTransient<IPnrService, PnrService>();
+            //services.AddTransient<IAirService, TravelConnect.uAPI.Services.AirService>();
             services.AddTransient<IHotelService, TravelConnect.Ean.Services.HotelService>();
-            services.AddTransient<TravelConnect.Gta.Interfaces.IGeoService,
-                TravelConnect.Gta.Services.GeoService>();
-            services.AddTransient<TravelConnect.Gta.Interfaces.IGtaHotelService,
-                TravelConnect.Gta.Services.HotelService>();
+            //services.AddTransient<TravelConnect.Gta.Interfaces.IGeoService,
+            //    TravelConnect.Gta.Services.GeoService>();
+            //services.AddTransient<TravelConnect.Gta.Interfaces.IGtaHotelService,
+            //    TravelConnect.Gta.Services.HotelService>();
 
-
-            services.AddTransient<IGeoRepository, GeoRepository>();
-            services.AddTransient<IHotelRepository, HotelRepository>();
+            //services.AddTransient<IGeoRepository, GeoRepository>();
+            //services.AddTransient<IHotelRepository, HotelRepository>();
 
             var gtaConnection = "Initial Catalog=GTA;" +
                     "User id=sa;" +
                     "Password=123qwe!@#Q;";
 
-            services.AddDbContext<GtaContext>(options =>
-               options
-                   //.UseSqlite("Data Source=gta.db",
-                   //    b => b.MigrationsAssembly("TravelConnect.React"))
-                   .UseSqlServer(gtaConnection,
-                       b => b.MigrationsAssembly("TravelConnect.React"))
-                   .EnableSensitiveDataLogging());
+            //services.AddDbContext<GtaContext>(options =>
+            //   options
+            //       //.UseSqlite("Data Source=gta.db",
+            //       //    b => b.MigrationsAssembly("TravelConnect.React"))
+            //       .UseSqlServer(gtaConnection,
+            //           b => b.MigrationsAssembly("TravelConnect.React"))
+            //       .EnableSensitiveDataLogging());
 
-            services.AddTransient<IUtilityService, UtilityService>();
+            //services.AddTransient<IUtilityService, UtilityService>();
             services.AddTransient<ILogService, LogService>();
-
-           
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, TCContext db)
         {
             app.UseCors("CorsPolicy");
 
@@ -110,8 +106,16 @@ namespace TravelConnect.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-            
+
             app.UseMvc();
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "TravelConnect API V1");
+            });
+
+            db.EnsureSeedData();
         }
     }
 }

@@ -160,12 +160,12 @@ namespace TravelConnect.Services
 
         private async Task<Country> RetrieveCountryFromDbAsync(string code)
         {
-            var country = await _context.Countries.SingleOrDefaultAsync(c => c.Id == code);
+            var country = await _context.Countries.SingleOrDefaultAsync(c => c.Code == code);
             if (country == null)
             {
                 country = _context.Countries.Add(new Country
                 {
-                    Id = code,
+                    Code = code,
                     Name = code,
                     CreatedTime = DateTime.Now,
                     UpdatedTime = DateTime.Now

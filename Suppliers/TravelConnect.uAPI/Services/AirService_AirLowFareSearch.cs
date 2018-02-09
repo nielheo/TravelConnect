@@ -117,7 +117,7 @@ namespace TravelConnect.uAPI.Services
             if (isAirport)
                 return new typeSearchLocation { Item = new kestrel.AirService.Airport { Code = point } };
             else
-                return new typeSearchLocation { Item = new City { Code = point } };
+                return new typeSearchLocation { Item = new kestrel.AirService.City { Code = point } };
         }
 
         private SearchAirLeg GenerateSearchAirLeg(string originPoint, bool isOriginAirport,

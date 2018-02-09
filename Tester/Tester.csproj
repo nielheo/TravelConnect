@@ -15,8 +15,4 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Suppliers\TravelConnect.Gta\TravelConnect.Gta.csproj" />
-  </ItemGroup>
-
 </Project>
