@@ -50,42 +50,13 @@ namespace TravelConnect.Api
             services.Configure<GzipCompressionProviderOptions>(options => options.Level = System.IO.Compression.CompressionLevel.Optimal);
             services.AddResponseCompression();
 
-            var connection =
-                    "Data Source=travelconnect.db";/* +
-                    "Initial Catalog=TravelConnect;" +
-                    "User id=sa;" +
-                    "Password=123qwe!@#Q;";*/
-
             services.AddDbContext<TCContext>(options =>
-                options.UseSqlite(connection, b => b.MigrationsAssembly("TravelConnect.Models")));
-
-            //services.AddTransient<ISabreConnector, SabreConnector>();
-            //services.AddTransient<IGeoService, GeoService>();
-            //services.AddTransient<IFlightService, FlightService>();
-            //services.AddTransient<IPnrService, PnrService>();
-            //services.AddTransient<IAirService, TravelConnect.uAPI.Services.AirService>();
+                options.UseInMemoryDatabase(databaseName: "TravelConnCountries")
+                .EnableSensitiveDataLogging());
+            
             services.AddTransient<IHotelService, TravelConnect.Ean.Services.HotelService>();
-            //services.AddTransient<TravelConnect.Gta.Interfaces.IGeoService,
-            //    TravelConnect.Gta.Services.GeoService>();
-            //services.AddTransient<TravelConnect.Gta.Interfaces.IGtaHotelService,
-            //    TravelConnect.Gta.Services.HotelService>();
-
-            //services.AddTransient<IGeoRepository, GeoRepository>();
-            //services.AddTransient<IHotelRepository, HotelRepository>();
-
-            var gtaConnection = "Initial Catalog=GTA;" +
-                    "User id=sa;" +
-                    "Password=123qwe!@#Q;";
-
-            //services.AddDbContext<GtaContext>(options =>
-            //   options
-            //       //.UseSqlite("Data Source=gta.db",
-            //       //    b => b.MigrationsAssembly("TravelConnect.React"))
-            //       .UseSqlServer(gtaConnection,
-            //           b => b.MigrationsAssembly("TravelConnect.React"))
-            //       .EnableSensitiveDataLogging());
-
-            //services.AddTransient<IUtilityService, UtilityService>();
+            services.AddTransient<ICountryService, TravelConnect.Services.CountryService>();
+            
             services.AddTransient<ILogService, LogService>();
         }
 

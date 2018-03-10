@@ -33,6 +33,7 @@ namespace TravelConnect.React.Controllers
         }
 
         [Route("more")]
+        [HttpGet]
         public async Task<HotelSearchCityRS> Get(string locale, string currency, string cacheKey,
             string cacheLocation, string requestKey)
         {
@@ -50,6 +51,7 @@ namespace TravelConnect.React.Controllers
         }
 
         [Route("{country}/{city}")]
+        [HttpGet]
         public async Task<HotelSearchCityRS> Get(string country, string city, DateTime checkIn, DateTime checkOut, string locale, string currency, string rooms)
         {
             HotelSearchCityRQ request = new HotelSearchCityRQ
@@ -81,6 +83,7 @@ namespace TravelConnect.React.Controllers
         }
 
         [Route("{country}/{city}/{id}/rooms")]
+        [HttpGet]
         public async Task<HotelRoomRS> GetRoom(string country, string city, int id, DateTime checkIn, DateTime checkOut, string locale, string currency, string rooms)
         {
             HotelRoomRQ request = new HotelRoomRQ()
@@ -130,6 +133,7 @@ namespace TravelConnect.React.Controllers
 
 
         [Route("{id}/recheck")]
+        [HttpGet]
         public async Task<HotelRoomRS> RecheckPrice(int id, DateTime checkIn, DateTime checkOut,
             string locale, string currency, string rooms, string rateCode, string roomTypeCode)
         {

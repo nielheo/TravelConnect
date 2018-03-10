@@ -6,7 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\AirlinesController.cs" />
+    <Compile Remove="Controllers\AirportAutocompleteController.cs" />
+    <Compile Remove="Controllers\AirportsController.cs" />
+    <Compile Remove="Controllers\AirPriceController.cs" />
+    <Compile Remove="Controllers\FlightsController.cs" />
     <Compile Remove="Controllers\GtaGeoController.cs" />
+    <Compile Remove="Controllers\HomeController.cs" />
+    <Compile Remove="Controllers\PnrController.cs" />
+    <Compile Remove="Controllers\SampleDataController.cs" />
+    <Compile Remove="Controllers\ValuesController.cs" />
   </ItemGroup>
 
   <ItemGroup>

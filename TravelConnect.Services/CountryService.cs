@@ -89,6 +89,7 @@ namespace TravelConnect.Services
                 })
                 .OrderBy(c => c.Display.ToLower().IndexOf(name))
                 .ThenBy(c => c.Display)
+                .Take(30)
                 .ToListAsync();
         }
 
